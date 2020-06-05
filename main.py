@@ -18,8 +18,8 @@ async def on_message(message):
 			for g in globals():
 				m = globals()[g]
 				if g.startswith("cmds_") and type(m) == type(__builtins__):
-					s += "`%s`: %s" % (g[5:], m.desc)
-			await channel.send(s)
+					s += "\n`%s`: %s" % (g[5:], m.desc)
+			await message.channel.send(s)
 		try:
 			await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel)
 		except Exception as e:
@@ -30,7 +30,10 @@ async def run_command(name, arguments, channel):
 		m = globals()[g]
 		if g.startswith("cmds_") and type(m) == type(__builtins__):
 			if name == "help" and arguments == g[5:]:
-				await channel.send("`%s`: %s" % (g[5:], m.desc))
+				s = "Commands in set `%s`:" % (g[5:])
+				for c in m.cmds:
+					s += "\n`%s` from `%s`" % (g[5:], c)
+				await channel.send(s)
 				return
 			for c in m.cmds:
 				if name == "help" and arguments.split()[0] == g[5:] and arguments.split()[1] == c:
