@@ -19,7 +19,7 @@ async def run_command(name, arguments, channel):
 		m = globals()[g]
 		if g.startswith("cmds_") and type(m) == type(__builtins__):
 			for c in m.cmds:
-				if c == arg:
+				if c == name:
 					await m.cmds[c][1](arguments, client, channel)
 
 client.run(open("token").read())
