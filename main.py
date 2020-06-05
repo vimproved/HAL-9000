@@ -20,6 +20,7 @@ async def on_message(message):
 				if g.startswith("cmds_") and type(m) == type(__builtins__):
 					s += "\n`%s`: %s" % (g[5:], m.desc)
 			await message.channel.send(s)
+			return
 		try:
 			await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel)
 		except Exception as e:
