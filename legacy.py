@@ -14,3 +14,4 @@ async def ping_msg(args, bot, channel):
 cmds = {"time": ("Displays the time.", display_time),
 	"flip": ("Flips a coin.", flip_coin),
 	"ping": ("Responds with a pong message.", ping_msg)}
+#gnome
