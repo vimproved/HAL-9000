@@ -13,8 +13,10 @@ async def on_ready():
 async def on_message(message):
 	if message.author != client.user and message.content.startswith(prefix):
 		text = message.content[len(prefix):]
-		await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel)
-
+		try:
+			await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel)
+		except:
+			await message.channel.send("I'm sorry, <@%d>, I'm afraid I can't do that." % message.author.id)
 async def run_command(name, arguments, channel):
 	for g in globals():
 		m = globals()[g]
