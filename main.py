@@ -21,8 +21,13 @@ async def run_command(name, arguments, channel):
 	for g in globals():
 		m = globals()[g]
 		if g.startswith("cmds_") and type(m) == type(__builtins__):
+			if name == "help" and arguments == g[5:]:
+				await channel.send("`%s`: %s" % (g[5:], g.desc))
+				return
 			for c in m.cmds:
-				if c == name:
+				if name == "help" and arguments.split()[0] == g[5:] and arguments.split()[1] == c:
+					await channel.send("`%s` from `%s`: %s" % (g[5:], c, m.cmds[c][0]))
+				elif c == name:
 					await m.cmds[c][1](arguments, client, channel)
 
 client.run(open("token").read())
