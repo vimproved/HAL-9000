@@ -1,3 +1,4 @@
+import random
 async def roll_dice(arguments, bot, channel):
 	total = 0
 	for die in arguments.split():
