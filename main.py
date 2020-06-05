@@ -19,6 +19,7 @@ async def on_message(message):
 				m = globals()[g]
 				if g.startswith("cmds_") and type(m) == type(__builtins__):
 					s += "\n`%s`: %s" % (g[5:], m.desc)
+			s += "\nTry `"+prefix+"help <command set>` to list commands in a set."
 			await message.channel.send(s)
 			return
 		try:
@@ -34,6 +35,7 @@ async def run_command(name, arguments, channel):
 				s = "Commands in set `%s`:" % (g[5:])
 				for c in m.cmds:
 					s += "\n`%s` from `%s`" % (c, g[5:])
+				s += "\nTry `"+prefix+"help <command set> <command>` for individual command help."
 				await channel.send(s)
 				return
 			for c in m.cmds:
