@@ -4,6 +4,7 @@ async def roll_dice(arguments, bot, channel):
 	for die in arguments.split():
 		if 'd' not in die:
 			total += int(die)
+			continue
 		num, sides = die.split('d')
 		if num == '':
 			num = '1'
