@@ -1,5 +1,6 @@
 import legacy as cmds_legacy
 import rngesus as cmds_rngesus
+import dnd as cmds_dnd
 import discord
 
 client = discord.Client()
