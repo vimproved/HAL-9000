@@ -33,12 +33,12 @@ async def run_command(name, arguments, channel):
 			if name == "help" and arguments == g[5:]:
 				s = "Commands in set `%s`:" % (g[5:])
 				for c in m.cmds:
-					s += "\n`%s` from `%s`" % (g[5:], c)
+					s += "\n`%s` from `%s`" % (c, g[5:])
 				await channel.send(s)
 				return
 			for c in m.cmds:
 				if name == "help" and arguments.split()[0] == g[5:] and arguments.split()[1] == c:
-					await channel.send("`%s` from `%s`: %s" % (g[5:], c, m.cmds[c][0]))
+					await channel.send("`%s` from `%s`: %s" % (c, g[5:], m.cmds[c][0]))
 				elif c == name:
 					await m.cmds[c][1](arguments, client, channel)
 
