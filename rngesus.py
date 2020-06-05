@@ -3,7 +3,7 @@ async def roll_dice(arguments, bot, channel):
 	for die in arguments.split():
 		if 'd' not in die:
 			total += int(die)
-		num, sides, _* = die.split('d')
+		num, sides = die.split('d')
 		if num == '':
 			num = '1'
 		total += sum([random.randint(1, int(sides)) for n in range(int(num))])
