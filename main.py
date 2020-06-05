@@ -11,7 +11,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
 	if message.author != client.user and message.content.startswith(prefix):
-		text = message.content[:len(prefix)]
+		text = message.content[len(prefix):]
 		await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel)
 
 async def run_command(name, arguments, channel):
