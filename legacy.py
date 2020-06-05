@@ -7,7 +7,7 @@ async def display_time(args, bot, channel):
 	await channel.send(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
 async def flip_coin(args, bot, channel):
 	"""Command for flipping a coin. Ignores arguments."""
-	await channel.send(random.choice(["Heads!"*50, "Tails!"*50, "The coin landed on the side!!"]))
+	await channel.send(random.choice(["Heads!"]*50 + ["Tails!"]*50 +["The coin landed on the side!!"]))
 async def ping_msg(args, bot, channel):
 	"""Pings the bot. Ignores arguments."""
 	await channel.send("Pong!")
