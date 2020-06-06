@@ -2,6 +2,7 @@ import legacy as cmds_legacy
 import rngesus as cmds_rngesus
 import dnd as cmds_dnd
 import joke as cmds_joke
+import botlog as cmds_botlog
 import discord
 
 client = discord.Client()
