@@ -7,5 +7,5 @@ async def botlog(args, bot, channel):
         guildchannellist = pickle.load( open( "guildchannellist", "rb" ))
         guildchannellist.update({message.guild : botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
-cmds = {"botlog": ("configures botlogger."), botlog}
+cmds = {"botlog": ("configures botlogger.", botlog)}
 desc = "The Botlogger module of HAL."
