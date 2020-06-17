@@ -26,11 +26,18 @@ async def on_message(message):
 			await message.channel.send(s)
 			return
 		try:
-			await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel)
+			await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel, perm_level(message.author))
 		except Exception as e:
 			print(e)
 			await message.channel.send("I'm sorry, <@%d>, I'm afraid I can't do that." % message.author.id)
-async def run_command(name, arguments, channel):
+perm_roles = ['user', 'Contributor', 'Admin']
+async def perm_level(user):
+	perm = 0
+	for role in user.roles:
+		if role.name in perm_roles:
+			perm = max(perm, perm_roles.index(role.name))
+	return perm
+async def run_command(name, arguments, channel, perm):
 	for g in globals():
 		m = globals()[g]
 		if g.startswith("cmds_") and type(m) == type(__builtins__):
@@ -45,6 +52,11 @@ async def run_command(name, arguments, channel):
 				if name == "help" and arguments.split()[0] == g[5:] and arguments.split()[1] == c:
 					await channel.send("`%s` from `%s`: %s" % (c, g[5:], m.cmds[c][0]))
 				elif c == name:
+					if len(m.cmds[c]) > 2:
+						req_perm = m.cmds[c][1]
+						if perm < req_perm:
+							await channel.send("Sorry, this command needs %s permissions; you only have %s permissions." % (perm_roles[req_perm], perm_roles[user])
+							return
 					await m.cmds[c][1](arguments, client, channel)
 
 client.run(open("token").read())
