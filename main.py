@@ -55,7 +55,7 @@ async def run_command(name, arguments, channel, perm):
 					if len(m.cmds[c]) > 2:
 						req_perm = m.cmds[c][2]
 						if perm < req_perm:
-							await channel.send("Sorry, this command needs %s permissions; you only have %s permissions." % (perm_roles[req_perm], perm_roles[user]))
+							await channel.send("Sorry, this command needs %s permissions; you only have %s permissions." % (perm_roles[req_perm], perm_roles[perm]))
 							return
 					await m.cmds[c][1](arguments, client, channel)
 
