@@ -26,7 +26,7 @@ async def on_message(message):
 			await message.channel.send(s)
 			return
 		try:
-			await run_command(text.split()[0], ' '.join(text.split()[1:]), message.channel, await perm_level(message.author))
+			await run_command(text.split()[0], ' '.join((text.split()+[''])[1:]), message.channel, await perm_level(message.author))
 		except Exception as e:
 			print(e)
 			await message.channel.send("I'm sorry, <@%d>, I'm afraid I can't do that." % message.author.id)
