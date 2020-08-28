@@ -49,7 +49,7 @@ async def run_command(name, arguments, channel, perm):
 				await channel.send(s)
 				return
 			for c in m.cmds:
-				if name == "help" and arguments.split()[0] == g[5:] and arguments.split()[1] == c:
+				if name == "help" and (arguments.split()+[''])[0] == g[5:] and (arguments.split()+['',''])[1] == c:
 					await channel.send("`%s` from `%s`: %s" % (c, g[5:], m.cmds[c][0]))
 				elif c == name:
 					if len(m.cmds[c]) > 2:
