@@ -7,10 +7,6 @@ import discord
 
 client = discord.Client()
 prefix = "//"
-e=0
-def true(m): #This function is required for clean but this function is also dumb
-	global e
-	return m.created_at>e
 
 @client.event
 async def on_ready():
@@ -18,17 +14,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	global e
 	if message.author != client.user and message.content.startswith(prefix):
 		text = message.content[len(prefix):]
-		if (message.content == prefix+'clean' and any([d.permissions.manage_messages for d in message.author.roles])): #clean
-			e = await message.channel.history(limit=2).flatten()
-			e=e[1]
-			try:
-				e = e.created_at.replace(year=e.created_at.year, month=e.created_at.month, day=e.created_at.day, hour=e.created_at.hour-1, minute=e.created_at.minute, second=e.created_at.second, microsecond=e.created_at.microsecond, tzinfo=e.created_at.tzinfo)
-			except:
-				e = e.created_at.replace(year=e.created_at.year, month=e.created_at.month, day=e.created_at.day-1, hour=e.created_at.hour+23, minute=e.created_at.minute, second=e.created_at.second, microsecond=e.created_at.microsecond, tzinfo=e.created_at.tzinfo)
-			await message.channel.purge(limit=100, check=true) #end clean
 		if text == "help":
 			s = "Command sets: "
 			for g in globals():
