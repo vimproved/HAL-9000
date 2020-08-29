@@ -15,7 +15,7 @@ async def botlog(args, bot, channel, message):
             await channel.send("Cool! How many ranks do you have?")
             answer = channel.last_message
             for x in range (0,int(answer.role.id)+1):
-                await channel.send(channel.last_message
+                await channel.send(channel.last_message)
                 answer = channel.last_message
                 guildrolelist2.append(answer)
                 guildrolelist.update({message.guild.id: guildrolelist2})
