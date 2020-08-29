@@ -15,7 +15,7 @@ async def botlog(args, bot, channel, message):
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await channel.send("Cool! How many ranks do you have?")
-            answer = channel.last_message
+            answer = channel.last_message.content
             for x in range (0,int(answer.role.id)+1):
                 await channel.send(channel.last_message)
                 answer = channel.last_message
