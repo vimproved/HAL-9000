@@ -1,6 +1,6 @@
 import pickle
 async def botlog(args, bot, channel, message):
-    if args=="logchannel":
+    if args=="logchannel ":
         msgauth1 = message.author
         await channel.send("What channel would you like log messages to be posted in?")
         while channel.last_message.author != message.author:
