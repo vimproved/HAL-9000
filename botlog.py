@@ -7,7 +7,7 @@ async def botlog(args, bot, channel, message):
         while channel.last_message_id.author != message.author:
             time.sleep(0.1)
             print(str(channel.last_message_id.author)+" "+str(message.author))
-        botlogchannel = channel.last_message.content
+        botlogchannel = channel.last_message_id.content
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({message.guild.id: botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
