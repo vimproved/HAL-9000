@@ -4,7 +4,7 @@ async def botlog(args, bot, channel, message):
         msgauth1 = message.author
         await channel.send("What channel would you like log messages to be posted in?")
         botlogchannel = await channel.history().find(lambda m: m.author.id == msgauth1)
-        guildchannellist = pickle.load(open( "guildchannellist", "rb" ))
+        guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({message.guild.id: botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await channel.send('Would you like to configure demotion/promotion logging?')
