@@ -3,22 +3,22 @@ async def botlog(args, bot, channel, message):
     if args=="logchannel ":
         msgauth1 = message.author
         await channel.send("What channel would you like log messages to be posted in?")
-        botlogchannel = await channel.history().find(lambda m: m.author.id == msgauth1)
+        botlogchannel = channel.last_message
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({message.guild.id: botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await channel.send('Would you like to configure demotion/promotion logging?')
-        answer = await channel.history().find(lambda m: m.author.id == msgauth1)
+        answer = channel.last_message
         if answer.tolowercase == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await channel.send("Cool! How many ranks do you have?")
-            answer = await channel.history().find(lambda m: m.author.id == msgauth1)
+            answer = channel.last_message
             for x in range (0,int(answer.role.id)+1):
-                await channel.send("Tag the rank that is #" + x + " in the hierarchy.")
+                await channel.send(channel.last_message
                 answer = await channel.history().find(lambda m: m.author.id == msgauth1)
                 guildrolelist2.append(answer)
                 guildrolelist.update({message.guild.id: guildrolelist2})
                 pickle.dump(guildrolelist, open("guildrolelist", "wb"))
-cmds = {"botlog": ("configures botlogger.", botlog  )}
+cmds = {"botlog": ("configures botlogger.", botlog)}
 desc = "The Botlogger module of HAL."
