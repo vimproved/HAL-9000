@@ -1,6 +1,6 @@
 import requests
 from fuzzywuzzy import process
-async def dnd_get(arguments, bot, channel):
+async def dnd_get(arguments, bot, channel, message):
 	endpoint, *args = arguments.split()
 	name = ' '.join(args[:args.index('/')])
 	vals = args[args.index('/')+1:]

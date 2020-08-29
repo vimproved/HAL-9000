@@ -3,6 +3,8 @@ async def botlog(args, bot, channel, message):
     if args=="logchannel":
         msgauth1 = message.author
         await channel.send("What channel would you like log messages to be posted in?")
+        while channel.last_message.author != message.author:
+            print("blarg")
         botlogchannel = channel.last_message.content
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({message.guild.id: botlogchannel})

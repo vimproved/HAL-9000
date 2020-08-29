@@ -1,5 +1,5 @@
 import random
-async def roll_dice(arguments, bot, channel):
+async def roll_dice(arguments, bot, channel, message):
 	total = 0
 	crits = 0
 	critf = 0
