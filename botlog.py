@@ -1,10 +1,11 @@
 import pickle
 import time
+import discord
 async def botlog(args, bot, channel, message):
     if args=="logchannel ":
         msgauth1 = message.author
         await channel.send("What channel would you like log messages to be posted in?")
-        answer = await fetch_message(channel.last_message_id)
+        answer = await discord.fetch_message(channel.last_message_id)
         while answer != msgauth1:
             time.sleep(0.1)
             print(answer)
@@ -13,7 +14,7 @@ async def botlog(args, bot, channel, message):
         guildchannellist.update({message.guild.id: botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await channel.send('Would you like to configure demotion/promotion logging?')
-        answer = await fetch_message(channel.last_message_id)
+        answer = await discord.fetch_message(channel.last_message_id)
         if answer.tolowercase == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
