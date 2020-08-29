@@ -1,5 +1,5 @@
 import pickle
-@bot.command
+@bot.command()
 async def botlog(ctx, args, bot, channel):
     if args=="logchannel ":
         msgauth1 = message.author
