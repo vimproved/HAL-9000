@@ -16,7 +16,7 @@ async def botlog(args, bot, channel, message):
             answer = channel.last_message
             for x in range (0,int(answer.role.id)+1):
                 await channel.send(channel.last_message
-                answer = await channel.history().find(lambda m: m.author.id == msgauth1)
+                answer = channel.last_message
                 guildrolelist2.append(answer)
                 guildrolelist.update({message.guild.id: guildrolelist2})
                 pickle.dump(guildrolelist, open("guildrolelist", "wb"))
