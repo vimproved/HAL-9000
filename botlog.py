@@ -1,13 +1,12 @@
 import pickle
 import discord
-@bot.command()
-async def botlog(ctx, args, bot, channel):
+async def botlog(args, bot, channel):
     if args=="logchannel ":
         msgauth1 = message.author
         await channel.send("What channel would you like log messages to be posted in?")
         botlogchannel = await channel.history().find(lambda m: m.author.id == msgauth1)
         guildchannellist = pickle.load(open( "guildchannellist", "rb" ))
-        guildcnhannellist.update({ctx.message.guild : botlogchannel})
+        guildcnhannellist.update({discord.guild.id: botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await channel.send('Would you like to configure demotion/promotion logging?')
         answer = await channel.history().find(lambda m: m.author.id == msgauth1)
@@ -20,7 +19,7 @@ async def botlog(ctx, args, bot, channel):
                 await channel.send("Tag the rank that is #" + x + " in the hierarchy.")
                 answer = await channel.history().find(lambda m: m.author.id == msgauth1)
                 guildrolelist2.append(answer)
-                guildrolelist.update({ctx.message.guild: guildrolelist2})
+                guildrolelist.update({discord.guild.id: guildrolelist2})
                 pickle.dump(guildrolelist, open("guildrolelist", "wb"))
 cmds = {"botlog": ("configures botlogger.", botlog  )}
 desc = "The Botlogger module of HAL."
