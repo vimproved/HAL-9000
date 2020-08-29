@@ -9,7 +9,7 @@ async def botlog(args, bot, channel, message):
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await channel.send('Would you like to configure demotion/promotion logging?')
         answer = channel.last_message
-        if answer.message.tolowercase == "yes" or "y":
+        if answer.content.tolowercase == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await channel.send("Cool! How many ranks do you have?")
