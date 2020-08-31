@@ -16,7 +16,7 @@ async def on_ready():
 async def on_message(message):
 	except Exception as e:
 		print(e)
-		await message.channel.send(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id)+str(e))
+		await bot.say(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id)+str(e))
 
 
 @bot.command()
