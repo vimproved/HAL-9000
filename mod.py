@@ -1,5 +1,5 @@
 async def ban(args, bot, channel, message):
-    await user = bot.getUser(int(args[2:-2]))
+    user = args
     banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
     userbanroles = []
     for x in user.roles:
