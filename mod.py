@@ -1,0 +1,9 @@
+async def ban(args, bot, channel, message):
+    user = args
+    banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
+    for x in user.roles:
+        if x.id in banroleids:
+            if x != 3:
+                await user.add_roles(banroleids.index(x)+1)
+            else:
+                await chanel.send("That user is already the highest banned level.")
