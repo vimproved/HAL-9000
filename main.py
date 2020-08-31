@@ -1,9 +1,3 @@
-import legacy as cmds_legacy
-import rngesus as cmds_rngesus
-import dnd as cmds_dnd
-import joke as cmds_joke
-import botlog as cmds_botlog
-import mod as cmds_mod
 import discord
 from datetime import datetime
 import random
@@ -27,8 +21,8 @@ async def time():
 @bot.command()
 async def coinflip(times : int):
     """Command for flipping a coin. Ignores arguments."""
-	for x in range [0, int]:
-    	await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
+    for x in range [0, times]:
+        await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
 @bot.command(name="ping")
