@@ -77,4 +77,4 @@ async def coinflip():
 async def ping():
 	"""Pings the bot. Ignores arguments."""
 	await bot.say("Pong! :ping_pong:")
-client.run(open("token").read())
+bot.run(open("token").read())
