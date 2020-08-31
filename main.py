@@ -26,8 +26,8 @@ async def time(message):
 @bot.command()
 async def coinflip(times : int):
     """Command for flipping a coin. Ignores arguments."""
-	for x in range [0, times]:
-    	await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
+    for x in range [0, times]:
+        await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
 @bot.command(name="ping")
