@@ -12,6 +12,13 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 
+@bot.event
+async def on_message(message):
+	except Exception as e:
+		print(e)
+		await message.channel.send(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id)+str(e))
+
+
 @bot.command()
 async def time():
     """Command for displaying time. Ignores arguments."""
@@ -21,8 +28,8 @@ async def time():
 @bot.command()
 async def coinflip(times : int):
     """Command for flipping a coin. Ignores arguments."""
-    for x in range [0, times]:
-        await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
+	for x in range [0, times]:
+    	await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
 @bot.command(name="ping")
