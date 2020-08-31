@@ -30,7 +30,7 @@ async def coinflip():
     await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
-@bot.command()
+@bot.command(name="ping")
 async def ping():
     """Pings the bot. Ignores arguments."""
     await bot.say("Pong! :ping_pong:")
