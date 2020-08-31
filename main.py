@@ -10,11 +10,10 @@ import random
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='?', description = "HAL-9000, the shoddily coded bot made by two teenagers for their shitty server.")
-prefix = "//"
 
 @bot.event
 async def on_ready():
-	print('We have logged in as {0.user}'.format(client))
+	print('We have logged in as {0.user}'.format(bot))
 
 #@bot.event
 #async def on_message(message):
