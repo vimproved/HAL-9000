@@ -5,6 +5,7 @@ import joke as cmds_joke
 import botlog as cmds_botlog
 import mod as cmds_mod
 import discord
+import discord.ext.commands
 
 client = discord.Client()
 prefix = "//"
@@ -27,10 +28,10 @@ async def on_message(message):
 			await message.channel.send(s)
 			return
 		try:
-			await run_command(text.split()[0], ' '.join((text.split()+[''])[1:]), message.channel, await perm_level(message.author), message)
+			await run_command(text.split()[0], ' '.join((text.split()+[''])[1:]), message.channel, await perm_level(message.author), message, ctx)
 		except Exception as e:
 			print(e)
-			await message.channel.send(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: THIS IS DEBUG LOL LOL LOL: " % message.author.id)+str(e))
+			await message.channel.send(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id)+str(e))
 perm_roles = ['user', 'Contributor', 'Admin']
 async def perm_level(user):
 	perm = 0
@@ -38,7 +39,7 @@ async def perm_level(user):
 		if role.name in perm_roles:
 			perm = max(perm, perm_roles.index(role.name))
 	return perm
-async def run_command(name, arguments, channel, perm, message):
+async def run_command(name, arguments, channel, perm, message, ctx):
 	for g in globals():
 		m = globals()[g]
 		if g.startswith("cmds_") and type(m) == type(__builtins__):
@@ -58,6 +59,6 @@ async def run_command(name, arguments, channel, perm, message):
 						if perm < req_perm:
 							await channel.send("Sorry, this command needs %s permissions; you only have %s permissions." % (perm_roles[req_perm], perm_roles[perm]))
 							return
-					await m.cmds[c][1](arguments, client, channel, message)
+					await m.cmds[c][1](arguments, client, channel, message, ctx)
 
 client.run(open("token").read())
