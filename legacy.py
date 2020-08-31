@@ -10,7 +10,7 @@ async def flip_coin(args, bot, channel, message):
 	await channel.send(random.choice(["Heads!"]*50 + ["Tails!"]*50 +["The coin landed on the side!!"]))
 async def ping_msg(args, bot, channel, message):
 	"""Pings the bot. Ignores arguments."""
-	await channel.send("Pong! :ping_pong:")
+	await channel.send("Pong! :ping_pong: THIS IS DEBUG REEEEEEEEEEEEEEE")
 cmds = {"time": ("Displays the time.", display_time),
 	"ping": ("Responds with a pong message.", ping_msg),
 	"coinflip": ("Flips a coin.", flip_coin)}
