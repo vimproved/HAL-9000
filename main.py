@@ -30,7 +30,7 @@ async def on_message(message):
 			await run_command(text.split()[0], ' '.join((text.split()+[''])[1:]), message.channel, await perm_level(message.author), message)
 		except Exception as e:
 			print(e)
-			await message.channel.send(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id)+str(e))
+			await message.channel.send(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: THIS IS DEBUG LOL LOL LOL: " % message.author.id)+str(e))
 perm_roles = ['user', 'Contributor', 'Admin']
 async def perm_level(user):
 	perm = 0
