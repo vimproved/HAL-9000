@@ -10,3 +10,5 @@ async def ban(args, bot, channel, message):
         await user.add_roles(banroleids.index(x) + 1)
     else:
         await channel.send("That user is already the highest banned level.")
+cmds = {"ban": ('"Bans" the user.', ban)}
+desc = "Moderation related commands."
