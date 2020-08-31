@@ -12,17 +12,15 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 
-@bot.event
-async def on_message(message):
-	except Exception as e:
-		print(e)
-		await bot.say(("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id)+str(e))
-
-
 @bot.command()
-async def time():
-    """Command for displaying time. Ignores arguments."""
-    await bot.say(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
+async def time(message):
+    try:
+        """Command for displaying time. Ignores arguments."""
+        await bot.say(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
+    except Exception as e:
+        print(e)
+        await bot.say(
+            ("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id) + str(e))
 
 
 @bot.command()
