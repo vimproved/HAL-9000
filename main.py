@@ -21,8 +21,7 @@ async def time(ctx):
 @bot.command()
 async def coinflip(ctx):
     """Command for flipping a coin. Ignores arguments."""
-    for x in range [0]:
-        await ctx.send(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
+    await ctx.send(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
 @bot.command()
@@ -30,5 +29,10 @@ async def ping(ctx):
     """Pings the bot. Ignores arguments."""
     await ctx.send("Pong! :ping_pong:")
 
+
+@bot.command()
+async def open_pbd(ctx, args):
+    if "pod bay doors" in args.lower():
+        ctx.send("I'm sorry dave, I'm afraid I can't do that.")
 
 bot.run(open("token").read())
