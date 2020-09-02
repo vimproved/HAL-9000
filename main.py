@@ -31,7 +31,7 @@ async def ping(ctx):
 
 
 @bot.command()
-async def open_pbd(ctx, args):
+async def open(ctx, args):
     if "pod bay doors" in args.lower():
         ctx.send("I'm sorry dave, I'm afraid I can't do that.")
 
