@@ -13,27 +13,23 @@ async def on_ready():
 
 
 @bot.command()
-async def time(message):
+async def time(ctx):
     try:
         """Command for displaying time. Ignores arguments."""
-        await bot.say(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
-    except Exception as e:
-        print(e)
-        await bot.say(
-            ("I'm sorry, <@%d>, I'm afraid I can't do that. Exception generated: " % message.author.id) + str(e))
+        await ctx.send(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
 
 
 @bot.command()
-async def coinflip(times : int):
+async def coinflip(ctx):
     """Command for flipping a coin. Ignores arguments."""
-    for x in range [0, times]:
-        await bot.say(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
+    for x in range [0]:
+        await ctx.send(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
-@bot.command(name="ping")
-async def ping():
+@bot.command()
+async def ping(ctx):
     """Pings the bot. Ignores arguments."""
-    await bot.say("Pong! :ping_pong:")
+    await ctx.send("Pong! :ping_pong:")
 
 
 bot.run(open("token").read())
