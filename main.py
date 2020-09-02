@@ -14,9 +14,8 @@ async def on_ready():
 
 @bot.command()
 async def time(ctx):
-    try:
-        """Command for displaying time. Ignores arguments."""
-        await ctx.send(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
+    """Command for displaying time. Ignores arguments."""
+    await ctx.send(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
 
 
 @bot.command()
