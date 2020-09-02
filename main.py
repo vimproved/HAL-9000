@@ -1,7 +1,10 @@
-import discord
 from datetime import datetime
-import random
 from discord.ext import commands
+import discord
+import random
+import requests
+from fuzzywuzzy import process
+
 
 description = "HAL-9000, the shoddily coded bot made by two teenagers for their shitty server."
 bot = commands.Bot(command_prefix = '//', description = description)
@@ -31,9 +34,42 @@ async def ping(ctx):
 
 
 @bot.command()
-async def open(ctx, args):
-    """Open the pod bay doors, HAL."""
-    if "pod bay doors" in args.lower():
-        await ctx.send("I'm sorry dave, I'm afraid I can't do that.")
+async def roll(ctx, args):
+    total = 0
+    crits = 0
+    critf = 0
+    for die in args.split():
+        if 'd' not in die:
+            total += int(die)
+            continue
+        num, sides = die.split('d')
+        if num == '':
+            num = '1'
+        rolls = [random.randint(1, int(sides)) for n in range(int(num))]
+        if sides == '20':
+            crits += rolls.count(20)
+            critf += rolls.count(1)
+        total += sum(rolls)
+    await ctx.send("Result: "+str(total)+"\n***CRITICAL SUCCESS!***"*crits+"\n***CRITICAL FAILURE!***"*critf)
+
+
+@bot.command()
+async def dnd_get(ctx, args):
+    endpoint, *args = args.split()
+    name = ' '.join(args[:args.index('/')])
+    vals = args[args.index('/')+1:]
+    of_that_type = requests.get("https://www.dnd5eapi.co/api/"+endpoint).json()
+    real_name = process.extractOne(name, of_that_type['results'])[0]
+    await ctx.send("Data for `%s`: " % real_name['name'])
+    url = real_name['url']
+    data = requests.get("https://www.dnd5eapi.co"+url).json()
+    props = list(data.keys())
+    for val in vals:
+        real_val = process.extractOne(val, props)[0]
+        if not real_val:
+            await ctx.send("`%s`: *not defined*" % val)
+        else:
+            await ctx.send("`%s => %s`" % (real_val, str(data[real_val])))
+
 
 bot.run(open("token").read())
