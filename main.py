@@ -1,4 +1,5 @@
 from datetime import datetime
+from discord.ext import MemberConverter
 from discord.ext import commands
 import discord
 import random
@@ -35,6 +36,7 @@ async def ping(ctx):
 
 @bot.command()
 async def roll(ctx, args):
+    """Rolls any amount of dice with any amount of sides. Format: //roll XdX"""
     total = 0
     crits = 0
     critf = 0
@@ -55,6 +57,7 @@ async def roll(ctx, args):
 
 @bot.command()
 async def dnd_get(ctx, args):
+    """Gets something from the D%D 5e API."""
     endpoint, *args = args.split()
     name = ' '.join(args[:args.index('/')])
     vals = args[args.index('/')+1:]
@@ -70,6 +73,23 @@ async def dnd_get(ctx, args):
             await ctx.send("`%s`: *not defined*" % val)
         else:
             await ctx.send("`%s => %s`" % (real_val, str(data[real_val])))
+
+
+@bot.command()
+async def ban(ctx, args):
+    '''"bans" a user.'''
+    converter = MemberConverter()
+    user = await converter.convert(ctx, args)
+    banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
+    userbanroles = []
+    for x in user.roles:
+        if x.id in banroleids:
+            userbanroles.append(x)
+    x = userbanroles[-1]
+    if x != 3:
+        await user.add_roles(banroleids.index(x) + 1)
+    else:
+        await ctx.send("That user is already the highest banned level.")
 
 
 bot.run(open("token").read())
