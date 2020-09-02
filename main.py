@@ -34,6 +34,6 @@ async def ping(ctx):
 async def open(ctx, args):
     """Open the pod bay doors, HAL."""
     if "pod bay doors" in args.lower():
-        ctx.send("I'm sorry dave, I'm afraid I can't do that.")
+        await ctx.send("I'm sorry dave, I'm afraid I can't do that.")
 
 bot.run(open("token").read())
