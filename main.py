@@ -77,7 +77,7 @@ async def dnd_get(ctx, args):
 
 @bot.command()
 async def ban(ctx, args):
-    '''"bans" a user.'''
+    """'Bans' a user."""
     converter = MemberConverter()
     user = await converter.convert(ctx, args)
     banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
