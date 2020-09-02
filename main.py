@@ -55,25 +55,6 @@ async def roll(ctx, args):
     await ctx.send("Result: "+str(total)+"\n***CRITICAL SUCCESS!***"*crits+"\n***CRITICAL FAILURE!***"*critf)
 
 
-@bot.command()
-async def dnd_get(ctx, args):
-    """Gets something from the D%D 5e API."""
-    endpoint, *args = args.split()
-    name = ' '.join(args[:args.index('/')])
-    vals = args[args.index('/')+1:]
-    of_that_type = requests.get("https://www.dnd5eapi.co/api/"+endpoint).json()
-    real_name = process.extractOne(name, of_that_type['results'])[0]
-    await ctx.send("Data for `%s`: " % real_name['name'])
-    url = real_name['url']
-    data = requests.get("https://www.dnd5eapi.co"+url).json()
-    props = list(data.keys())
-    for val in vals:
-        real_val = process.extractOne(val, props)[0]
-        if not real_val:
-            await ctx.send("`%s`: *not defined*" % val)
-        else:
-            await ctx.send("`%s => %s`" % (real_val, str(data[real_val])))
-
 
 @bot.command()
 async def ban(ctx, args):
