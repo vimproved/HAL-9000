@@ -84,6 +84,7 @@ async def ban(ctx, args):
     elif x != 742129191277035590:
         y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
         await user.add_roles(y)
+        await user.remove_roles([await converter2.convert(ctx, str(banroleids[banroleids.index(z)])) for z in range(0,banroleids.index(x) + 1)])
         await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
     else:
         await ctx.send("User " + args + " has all the banned roles already.")
