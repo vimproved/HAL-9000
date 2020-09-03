@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import MemberConverter
 from discord.ext.commands import TextChannelConverter
 from discord.ext.commands import RoleConverter
+from discord.ext.commands import MessageConverter
 import discord
 import random
 import pickle
@@ -13,10 +14,11 @@ description = "HAL-9000, the shoddily coded bot made by two teenagers for their 
 bot = commands.Bot(command_prefix='//', description=description)
 
 
-async def response(user, channel):
-    lastmessage = await fetch_message(channel.last_message_id)
+async def response(ctx, user, channel):
+    converter = MessageConverter()
+    lastmessage = await converter.convert(channel.last_message_id)
     while lastmessage.author != user:
-        lastmessage = await discord.fetch_message(channel.last_message_id)
+        lastmessage = await converter.convert(ctx, channel.last_message_id)
     return(str(lastmessage))
 
 
