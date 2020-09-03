@@ -68,9 +68,12 @@ async def ban(ctx, args):
     user = await converter.convert(ctx, args)
     banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
     userbanroles = []
-    for x in user.roles:
-        if x.id in banroleids:
-            userbanroles.append(x.id)
+    for bancycle in banroleids:
+        for x in user.roles:
+            if x.id == bancycle:
+                userbanroles.append(x.id)
+        if (not bancycle in user.roles):
+            break
     if len(userbanroles) != 0:
         x = userbanroles[0]
     else:
