@@ -11,9 +11,6 @@ description = "HAL-9000, the shoddily coded bot made by two teenagers for their 
 bot = commands.Bot(command_prefix='//', description=description)
 
 
-@bot.event
-async def on_command_error(ctx, exception):
-    await ctx.send("I'm sorry, but I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
 
 @bot.event
@@ -64,15 +61,20 @@ async def roll(ctx, args):
 async def ban(ctx, args):
     """'Bans' a user."""
     converter = MemberConverter()
+    converter2 = RoleConverter()
     user = await converter.convert(ctx, args)
     banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
     userbanroles = []
     for x in user.roles:
         if x.id in banroleids:
             userbanroles.append(x.id)
-    x = userbanroles[-1]
-    if x != 3:
-        await user.add_roles(RoleConverter([banroleids.index(x) + 1]))
+    if len(userbanroles) != 0:
+        x = userbanroles[-1]
+    else:
+        x = 0
+    if x != 742129191277035590:
+        y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
+        await user.add_roles(y)
     else:
         await ctx.send("That user is already the highest banned level.")
 
