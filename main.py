@@ -72,7 +72,7 @@ async def ban(ctx, args):
         for x in user.roles:
             if x.id == bancycle:
                 userbanroles.append(x.id)
-        if (not bancycle in [bruh.id for bruh in user.roles]):
+        if (not bancycle in userbanroles):
             break
     if len(userbanroles) != 0:
         x = userbanroles[0]
@@ -87,7 +87,7 @@ async def ban(ctx, args):
     elif x != 742129191277035590:
         y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
         await user.add_roles(y)
-        [await user.remove_roles(thisshouldntbeplural) for thisshouldntbeplural in ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0,banroleids.index(x))])]
+        [await user.remove_roles(thisshouldntbeplural) for thisshouldntbeplural in ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0,banroleids.index(x)+1)])]
         await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
     else:
         await ctx.send("User " + args + " has all the banned roles already.")
