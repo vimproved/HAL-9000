@@ -72,7 +72,7 @@ async def ban(ctx, args):
         for x in user.roles:
             if x.id == bancycle:
                 userbanroles.append(x.id)
-        if (not bancycle in user.roles):
+        if (not bancycle in [bruh.id for bruh in user.roles]):
             break
     if len(userbanroles) != 0:
         x = userbanroles[0]
