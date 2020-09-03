@@ -86,7 +86,7 @@ async def ban(ctx, args):
         await user.add_roles(y)
         await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
     else:
-        await ban(ctx, user)
+        await ban(ctx, str(user))
         await ctx.send("User " + args + " hath been yeeted.")
 
 
