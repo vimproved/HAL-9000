@@ -1,14 +1,24 @@
 from datetime import datetime
 from discord.ext import commands
 from discord.ext.commands import MemberConverter
+from discord.ext.commands import TextChannelConverter
 from discord.ext.commands import RoleConverter
 import discord
 import random
+import pickle
 import requests
 from fuzzywuzzy import process
 
 description = "HAL-9000, the shoddily coded bot made by two teenagers for their shitty server."
 bot = commands.Bot(command_prefix='//', description=description)
+
+
+async def response(user, channel):
+    lastmessage = await fetch_message(channel.last_message_id)
+    while lastmessage.author != user:
+        lastmessage = await discord.fetch_message(channel.last_message_id)
+    return(str(lastmessage))
+
 
 
 @bot.event
@@ -95,5 +105,31 @@ async def ban(ctx, args):
                 await ctx.send("User " + args.split()[cycl] + " has all the banned roles already.")
     else:
         await ctx.send("You do not have permission to use this command")
+
+
+@bot.command()
+async def botlog(ctx, args):
+    if args == "config ":
+        converter = TextChannelConverter()
+        msgauth1 = ctx.author
+        await ctx.send("What channel would you like log messages to be posted in?")
+        answer = await response(ctx.author, ctx.channel)
+        botlogchannel = await converter.convert(answer)
+        guildchannellist = pickle.load(open("guildchannellist", "rb"))
+        guildchannellist.update({ctx.guild.id   : botlogchannel})
+        pickle.dump(guildchannellist, open("guildchannellist", "wb"))
+        await ctx.send('Would you like to configure demotion/promotion logging?')
+        if answer.tolowercase == "yes" or "y":
+            guildrolelist2=[]
+            guildrolelist = pickle.load(open("guildrolelist", "rb"))
+            await ctx.send("Cool! How many ranks do you have?")
+            answer = await response(ctx.author, ctx.channel)
+            for x in range (0,int(answer.role.id)+1):
+                await ctx.send("What is your ")
+                answer = await response(ctx.author, ctx.channel)
+                guildrolelist2.append(answer)
+                guildrolelist.update({ctx.guild.id: guildrolelist2})
+                pickle.dump(guildrolelist, open("guildrolelist", "wb"))
+
 
 bot.run(open("token").read())
