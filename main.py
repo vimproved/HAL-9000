@@ -66,7 +66,7 @@ async def ban(ctx, args):
     converter = MemberConverter()
     converter2 = RoleConverter()
     banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
-    for cycl in args.split():
+    for cycl in range(0,len(args.split())):
         user = await converter.convert(ctx, args[cycl])
         userbanroles = []
         for bancycle in banroleids:
