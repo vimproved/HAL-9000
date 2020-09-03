@@ -10,6 +10,10 @@ from fuzzywuzzy import process
 description = "HAL-9000, the shoddily coded bot made by two teenagers for their shitty server."
 bot = commands.Bot(command_prefix='//', description=description)
 
+def can_ban():
+    def predicate(ctx):
+        return any([aghbo.permissions.manage_roles for aghbo in ctx.author.roles])
+    return commands.check(predicate)
 
 @bot.event
 async def on_command_error(ctx, exception):
@@ -63,35 +67,38 @@ async def roll(ctx, args):
 @bot.command()
 async def ban(ctx, args):
     """'Bans' a user."""
-    converter = MemberConverter()
-    converter2 = RoleConverter()
-    banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
-    for cycl in args.split():
-        user = await converter.convert(ctx, args[cycl])
-        userbanroles = []
-        for bancycle in banroleids:
-            for x in user.roles:
-                if x.id == bancycle:
-                    userbanroles.append(x.id)
-            if (not bancycle in userbanroles):
-                break
-        if len(userbanroles) != 0:
-            x = userbanroles[-1]
-        else:
-            x = 0
-        print(userbanroles)
-        print(x)
-        if x == 0:
-            y = await converter2.convert(ctx, "738456842707140700")
-            await user.add_roles(y)
-            await ctx.send("Ban role " + str(y) + " successfully added to user " + args[cycl])
-        elif x != 742129191277035590:
-            y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
-            await user.add_roles(y)
-            [await user.remove_roles(thisshouldntbeplural) for thisshouldntbeplural in ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0,banroleids.index(x)+1)])]
-            await ctx.send("Ban role " + str(y) + " successfully added to user " + args[cycl])
-        else:
-            await ctx.send("User " + args[cycl] + " has all the banned roles already.")
+    if (any([aghbo.permissions.manage_roles for aghbo in ctx.author.roles])):
+        converter = MemberConverter()
+        converter2 = RoleConverter()
+        banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
+        for cycl in args.split():
+            user = await converter.convert(ctx, args[cycl])
+            userbanroles = []
+            for bancycle in banroleids:
+                for x in user.roles:
+                    if x.id == bancycle:
+                        userbanroles.append(x.id)
+                if (not bancycle in userbanroles):
+                    break
+            if len(userbanroles) != 0:
+                x = userbanroles[-1]
+            else:
+                x = 0
+            print(userbanroles)
+            print(x)
+            if x == 0:
+                y = await converter2.convert(ctx, "738456842707140700")
+                await user.add_roles(y)
+                await ctx.send("Ban role " + str(y) + " successfully added to user " + args[cycl])
+            elif x != 742129191277035590:
+                y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
+                await user.add_roles(y)
+                [await user.remove_roles(thisshouldntbeplural) for thisshouldntbeplural in ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0,banroleids.index(x)+1)])]
+                await ctx.send("Ban role " + str(y) + " successfully added to user " + args[cycl])
+            else:
+                await ctx.send("User " + args[cycl] + " has all the banned roles already.")
+    else:
+        await ctx.send("You do not have permission for this.")
 
 
 bot.run(open("token").read())
