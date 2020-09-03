@@ -86,7 +86,8 @@ async def ban(ctx, args):
         await user.add_roles(y)
         await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
     else:
-        await ctx.send("That user is already the highest banned level.")
+        await user.ban()
+        await ctx.send("User " + args + " hath been yeeted.)
 
 
 bot.run(open("token").read())
