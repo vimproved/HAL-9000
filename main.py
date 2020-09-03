@@ -67,7 +67,7 @@ async def ban(ctx, args):
     converter2 = RoleConverter()
     banroleids = [738456842707140700, 742128809129803806, 742128992286670910, 742129191277035590]
     for cycl in range(0,len(args.split())):
-        user = await converter.convert(ctx, args[cycl])
+        user = await converter.convert(ctx, args.split()[cycl])
         userbanroles = []
         for bancycle in banroleids:
             for x in user.roles:
@@ -84,14 +84,14 @@ async def ban(ctx, args):
         if x == 0:
             y = await converter2.convert(ctx, "738456842707140700")
             await user.add_roles(y)
-            await ctx.send("Ban role " + str(y) + " successfully added to user " + args[cycl])
+            await ctx.send("Ban role " + str(y) + " successfully added to user " + args.split()[cycl])
         elif x != 742129191277035590:
             y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
             await user.add_roles(y)
             [await user.remove_roles(thisshouldntbeplural) for thisshouldntbeplural in ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0,banroleids.index(x)+1)])]
-            await ctx.send("Ban role " + str(y) + " successfully added to user " + args[cycl])
+            await ctx.send("Ban role " + str(y) + " successfully added to user " + args.split()[cycl])
         else:
-            await ctx.send("User " + args[cycl] + " has all the banned roles already.")
+            await ctx.send("User " + args.split()[cycl] + " has all the banned roles already.")
 
 
 bot.run(open("token").read())
