@@ -74,6 +74,7 @@ async def ban(ctx, args):
     if len(userbanroles) != 0:
         x = userbanroles[-1]
     else:
+        x = 0
     if x != 742129191277035590:
         y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
         await user.add_roles(y)
