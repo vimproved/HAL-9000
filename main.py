@@ -75,7 +75,7 @@ async def ban(ctx, args):
         if (not bancycle in userbanroles):
             break
     if len(userbanroles) != 0:
-        x = userbanroles[0]
+        x = userbanroles[-1]
     else:
         x = 0
     print(userbanroles)
