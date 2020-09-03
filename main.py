@@ -115,7 +115,7 @@ async def botlog(ctx, args):
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
-        answer = await response(ctx.author, ctx.channel)
+        answer = await response(ctx, ctx.author, ctx.channel)
         botlogchannel = await converter.convert(answer)
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({ctx.guild.id   : botlogchannel})
@@ -125,10 +125,10 @@ async def botlog(ctx, args):
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await ctx.send("Cool! How many ranks do you have?")
-            answer = await response(ctx.author, ctx.channel)
+            answer = await response(ctx, ctx.author, ctx.channel)
             for x in range (0,int(answer.role.id)+1):
                 await ctx.send("What is your ")
-                answer = await response(ctx.author, ctx.channel)
+                answer = await response(ctx, ctx.author, ctx.channel)
                 guildrolelist2.append(answer)
                 guildrolelist.update({ctx.guild.id: guildrolelist2})
                 pickle.dump(guildrolelist, open("guildrolelist", "wb"))
