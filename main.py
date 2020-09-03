@@ -1,6 +1,7 @@
 from datetime import datetime
 from discord.ext import commands
 from discord.ext.commands import MemberConverter
+from discord.ext.commands import RoleConverter
 import discord
 import random
 import requests
@@ -66,7 +67,7 @@ async def ban(ctx, args):
             userbanroles.append(x.id)
     x = userbanroles[-1]
     if x != 3:
-        await user.add_roles(banroleids.index(x) + 1)
+        await user.add_roles(RoleConverter([banroleids.index(x) + 1]))
     else:
         await ctx.send("That user is already the highest banned level.")
 
