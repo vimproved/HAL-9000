@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='//', description=description)
 
 @bot.event
 async def on_command_error(ctx, exception):
-    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + exception + "`")
+    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
 
 @bot.event
@@ -72,12 +72,19 @@ async def ban(ctx, args):
         if x.id in banroleids:
             userbanroles.append(x.id)
     if len(userbanroles) != 0:
-        x = userbanroles[-1]
+        x = userbanroles[0]
     else:
         x = 0
-    if x != 742129191277035590:
+    print(userbanroles)
+    print(x)
+    if x == 0:
+        y = await converter2.convert(ctx, "738456842707140700")
+        await user.add_roles(y)
+        await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
+    elif x != 742129191277035590:
         y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
         await user.add_roles(y)
+        await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
     else:
         await ctx.send("That user is already the highest banned level.")
 
