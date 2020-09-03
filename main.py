@@ -34,6 +34,11 @@ async def on_ready():
 
 
 @bot.command()
+async def debug(ctx, args):
+    print(args)
+
+
+@bot.command()
 async def time(ctx):
     """Command for displaying time. Ignores arguments."""
     await ctx.send(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
