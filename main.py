@@ -11,6 +11,9 @@ description = "HAL-9000, the shoddily coded bot made by two teenagers for their 
 bot = commands.Bot(command_prefix='//', description=description)
 
 
+@bot.event
+async def on_command_error(ctx, exception):
+    ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + exception + "`")
 
 
 @bot.event
@@ -71,7 +74,6 @@ async def ban(ctx, args):
     if len(userbanroles) != 0:
         x = userbanroles[-1]
     else:
-        x = 0
     if x != 742129191277035590:
         y = await converter2.convert(ctx, str(banroleids[banroleids.index(x) + 1]))
         await user.add_roles(y)
