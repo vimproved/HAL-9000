@@ -109,7 +109,7 @@ async def ban(ctx, args):
 
 @bot.command()
 async def botlog(ctx, args):
-    if args == "config ":
+    if args == "config":
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
