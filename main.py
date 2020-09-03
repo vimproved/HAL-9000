@@ -1,5 +1,4 @@
 from datetime import datetime
-from discord.ext.commands import MemberConverter
 from discord.ext import commands
 import discord
 import random
