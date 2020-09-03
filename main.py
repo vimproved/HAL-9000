@@ -17,9 +17,8 @@ bot = commands.Bot(command_prefix='//', description=description)
 async def response(ctx, user, channel):
     converter = MessageConverter()
     lastmessage = await converter.convert(ctx, str(channel.last_message_id))
-    while lastmessage.author != user:
+    while str(lastmessage.author) != str(user):
         lastmessage = await converter.convert(ctx, str(channel.last_message_id))
-        print(lastmessage.author + " " + user)
     return(str(lastmessage))
 
 
