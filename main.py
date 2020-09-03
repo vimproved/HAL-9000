@@ -1,5 +1,6 @@
 from datetime import datetime
 from discord.ext import commands
+from discord.ext.commands import MemberConverter
 import discord
 import random
 import requests
@@ -62,7 +63,7 @@ async def ban(ctx, args):
     userbanroles = []
     for x in user.roles:
         if x.id in banroleids:
-            userbanroles.append(x)
+            userbanroles.append(x.id)
     x = userbanroles[-1]
     if x != 3:
         await user.add_roles(banroleids.index(x) + 1)
