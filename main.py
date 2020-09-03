@@ -87,7 +87,7 @@ async def ban(ctx, args):
         await ctx.send("Ban role " + str(y) + " successfully added to user " + args)
     else:
         await user.ban(user)
-        await ctx.send("User " + args + " hath been yeeted.)
+        await ctx.send("User " + args + " hath been yeeted.")
 
 
 bot.run(open("token").read())
