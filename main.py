@@ -1,14 +1,13 @@
 from datetime import datetime
-from discord.ext import MemberConverter
+from discord.ext.commands import MemberConverter
 from discord.ext import commands
 import discord
 import random
 import requests
 from fuzzywuzzy import process
 
-
 description = "HAL-9000, the shoddily coded bot made by two teenagers for their shitty server."
-bot = commands.Bot(command_prefix = '//', description = description)
+bot = commands.Bot(command_prefix='//', description=description)
 
 
 @bot.event
@@ -52,8 +51,7 @@ async def roll(ctx, args):
             crits += rolls.count(20)
             critf += rolls.count(1)
         total += sum(rolls)
-    await ctx.send("Result: "+str(total)+"\n***CRITICAL SUCCESS!***"*crits+"\n***CRITICAL FAILURE!***"*critf)
-
+    await ctx.send("Result: " + str(total) + "\n***CRITICAL SUCCESS!***" * crits + "\n***CRITICAL FAILURE!***" * critf)
 
 
 @bot.command()
