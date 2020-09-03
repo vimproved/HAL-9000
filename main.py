@@ -19,6 +19,7 @@ async def response(ctx, user, channel):
     lastmessage = await converter.convert(ctx, str(channel.last_message_id))
     while lastmessage.author != user:
         lastmessage = await converter.convert(ctx, str(channel.last_message_id))
+        print(lastmessage.author + " " + user)
     return(str(lastmessage))
 
 
