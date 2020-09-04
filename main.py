@@ -5,6 +5,7 @@ from discord.ext.commands import TextChannelConverter
 from discord.ext.commands import RoleConverter
 from discord.ext.commands import MessageConverter
 import discord
+import time
 import random
 import pickle
 import requests
@@ -19,6 +20,9 @@ async def response(ctx, user, channel):
     lastmessage = await converter.convert(ctx, str(channel.last_message_id))
     while str(lastmessage.author) != str(user):
         lastmessage = await converter.convert(ctx, str(channel.last_message_id))
+        time.sleep(0.05)
+        print(str(lastmessage.author))
+        print(str(user))
     return(str(lastmessage))
 
 
