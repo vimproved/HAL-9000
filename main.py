@@ -156,5 +156,20 @@ async def copypasta(ctx, args):
     if args == "gamergirl":
         await ctx.send("A girl.... AND a gamer? Whoa mama! Hummina hummina hummina bazooooooooing! *eyes pop out* AROOOOOOOOGA! *jaw drops tongue rolls out* WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF *tongue bursts out of the outh uncontrollably leaking face and everything in reach* WURBLWUBRLBWURblrwurblwurlbrwubrlwburlwbruwrlblwublr *tiny cupid shoots an arrow through heart* Ahhhhhhhhhhh me lady... *heart in the shape of a heart starts beating so hard you can see it through shirt* ba-bum ba-bum ba-bum ba-bum ba-bum *milk truck crashes into a bakery store in the background spiling white liquid and dough on the streets* BABY WANTS TO FUCK *inhales from the gas tank* honka honka honka honka *masturabtes furiously* ohhhh my gooooodd~")
 
+@bot.command()
+async def weebalert(ctx):
+    for x in range(0, 10):
+        await ctx.send(":rotating_light: WEEB ALERT :rotating_light:")
+
+
+@bot.command()
+async def horny(ctx):
+    await ctx.send("https://media.discordapp.net/attachments/536731263764267009/752009497681068062/Screen_Shot_2020-04-28_at_12.png?width=1273&height=684")
+
+
+@bot.command()
+async def catra(ctx):
+    await ctx.send(random.choice("https://cdn.discordapp.com/attachments/717043951835676755/752009926284673054/Catra.png", "https://www.denofgeek.com/wp-content/uploads/2018/11/she-ra-and-the-princesses-of-power-catra-funny.png?fit=2722%2C1530", "https://ca-times.brightspotcdn.com/dims4/default/bb11dc1/2147483647/strip/true/crop/2231x1255+1+0/resize/1200x675!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb0%2F84%2F5fb4e42148588ce0cfb87a1cd6c7%2Fcatra-and-scorpia.jpg", "https://vignette.wikia.nocookie.net/shera-and-the-princesses-of-power/images/6/6d/Shorthairedcatra2.png/revision/latest?cb=20200518034224", "we stan catra"))
+
 
 bot.run(open("token").read())
