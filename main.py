@@ -39,6 +39,7 @@ async def on_ready():
 
 @bot.command()
 async def debug(ctx, args):
+    '''debug, ignore'''
     print(args)
 
 
@@ -120,6 +121,7 @@ async def ban(ctx, args):
 
 @bot.command()
 async def botlog(ctx, args):
+    """Commands related to the botlogging system."""
     if args == "config":
         converter = TextChannelConverter()
         msgauth1 = ctx.author
@@ -144,7 +146,7 @@ async def botlog(ctx, args):
 
 @bot.command()
 async def copypasta(ctx, args):
-    '''cum chalice'''
+    """cum chalice"""
     if args == "navyseal":
         await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper in the entire US armed forces. You are nothing to me but just another target. I will wipe you the fuck out with precision the likes of which has never been seen before on this Earth, mark my fucking words. You think you can get away with saying that shit to me over the Internet? Think again, fucker. As we speak I am contacting my secret network of spies across the USA and your IP is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your life. You're fucking dead, kid. I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that's just with my bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have known what unholy retribution your little \"clever\" comment was about to bring down upon you, maybe you would have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.")
     if args == "attackhelicopter":
@@ -158,18 +160,28 @@ async def copypasta(ctx, args):
 
 @bot.command()
 async def weebalert(ctx):
+    '''weebery detected'''
     for x in range(0, 10):
         await ctx.send(":rotating_light: WEEB ALERT :rotating_light:")
 
 
 @bot.command()
 async def horny(ctx):
+    '''for when someone is a bit too frisky'''
     await ctx.send("https://media.discordapp.net/attachments/536731263764267009/752009497681068062/Screen_Shot_2020-04-28_at_12.png?width=1273&height=684")
 
 
 @bot.command()
 async def catra(ctx):
+    '''we stan the best catgirl'''
     await ctx.send(random.choice(["https://cdn.discordapp.com/attachments/717043951835676755/752009926284673054/Catra.png", "https://www.denofgeek.com/wp-content/uploads/2018/11/she-ra-and-the-princesses-of-power-catra-funny.png?fit=2722%2C1530", "https://ca-times.brightspotcdn.com/dims4/default/bb11dc1/2147483647/strip/true/crop/2231x1255+1+0/resize/1200x675!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb0%2F84%2F5fb4e42148588ce0cfb87a1cd6c7%2Fcatra-and-scorpia.jpg", "https://vignette.wikia.nocookie.net/shera-and-the-princesses-of-power/images/6/6d/Shorthairedcatra2.png/revision/latest?cb=20200518034224", "we stan catra"]))
+
+
+@bot.command()
+async def alert(ctx, args):
+    '''for when you need to send a message'''
+    for x in range(0, 10):
+        await ctx.send(":rotating_light: " + args.upper() + " ALERT :rotating_light:")
 
 
 bot.run(open("token").read())
