@@ -181,7 +181,7 @@ async def catra(ctx):
 async def alert(ctx, args):
     '''for when you need to send a message'''
     for x in range(0, 10):
-        await ctx.send(":rotating_light: " + args.upper() + " ALERT :rotating_light:")
+        await ctx.send(":rotating_light: ***BWOOP BWOOP*** :rotating_light: " + args.upper() + " ALERT :rotating_light: ***BWOOP BWOOP*** :rotating_light:")
 
 
 bot.run(open("token").read())
