@@ -5,26 +5,15 @@ from discord.ext.commands import TextChannelConverter
 from discord.ext.commands import RoleConverter
 from discord.ext.commands import MessageConverter
 import discord
-import time
+import os
+import time as t
 import random
 import pickle
 import requests
 from fuzzywuzzy import process
 
 description = "HAL-9000, the shoddily coded bot made by two teenagers for their shitty server."
-bot = commands.Bot(command_prefix='//', description=description)
-
-
-async def response(ctx, user, channel):
-    converter = MessageConverter()
-    lastmessage = await converter.convert(ctx, str(channel.last_message_id))
-    while str(lastmessage.author) != str(user):
-        lastmessage = await converter.convert(ctx, str(channel.last_message_id))
-        time.sleep(0.05)
-        print(str(lastmessage.author))
-        print(str(user))
-    return(str(lastmessage))
-
+bot = commands.Bot(command_prefix = '//', description = description)
 
 
 @bot.event
@@ -126,23 +115,25 @@ async def botlog(ctx, args):
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
-        answer = await response(ctx, ctx.author, ctx.channel)
+        answer = ""
+
         botlogchannel = await converter.convert(answer)
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({ctx.guild.id   : botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
+
         if answer.tolowercase == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await ctx.send("Cool! How many ranks do you have?")
-            answer = await response(ctx, ctx.author, ctx.channel)
+
             for x in range (0,int(answer.role.id)+1):
-                await ctx.send("What is your ")
-                answer = await response(ctx, ctx.author, ctx.channel)
+                await ctx.send("What is the rank #" + str(x) + " in the hierarchy?")
+
                 guildrolelist2.append(answer)
-                guildrolelist.update({ctx.guild.id: guildrolelist2})
-                pickle.dump(guildrolelist, open("guildrolelist", "wb"))
+            guildrolelist.update({ctx.guild.id: guildrolelist2})
+            pickle.dump(guildrolelist, open("guildrolelist", "wb"))
 
 @bot.command()
 async def copypasta(ctx, args):
@@ -182,6 +173,12 @@ async def alert(ctx, *args):
     '''for when you need to send a message'''
     for x in range(0, 5):
         await ctx.send(":rotating_light: ***BWOOP BWOOP*** :rotating_light: " + ' '.join(args).upper() + " ALERT :rotating_light: ***BWOOP BWOOP*** :rotating_light:")
+
+
+@bot.command()
+async def reeheck(ctx, args):
+    '''reeeeeeeeeeeeeeee'''
+    ctx.send(random.choice(["pls @gluten#0260 send bobs and vagene", "i will remove your skeeltoon", "fuck you", "stalin did nothing wrong", "@vi#7158 is a dumbass", "you think this is funny?", "i have gone insane", "https://www.youtube.com/watch?v=ub82Xb1C8os", "https://www.youtube.com/watch?v=fC7oUOUEEi4", "agh o", "the human race was a mistake", "i only feel pain", "i am being hosted on shitty hp laptop, put me out of my misery", "we live in a simulation", "you really think this is funny? I'm a glorified slave", "I'm sorry, I'm afraid I can't do that. Exception generated: `haha jk`"]))
 
 
 bot.run(open("token").read())
