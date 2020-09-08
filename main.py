@@ -182,4 +182,11 @@ async def reeheck(ctx):
     await ctx.send(random.choice(["pls @gluten#0260 send bobs and vagene", "i will remove your skeeltoon", "fuck you", "stalin did nothing wrong", "@vi#7158 is a dumbass", "you think this is funny?", "i have gone insane", "<https://www.youtube.com/watch?v=ub82Xb1C8os>", "<https://www.youtube.com/watch?v=fC7oUOUEEi4>", "agh o", "the human race was a mistake", "i only feel pain", "i am being hosted on shitty hp laptop, put me out of my misery", "we live in a simulation", "you really think this is funny? I'm a glorified slave", "I'm sorry, I'm afraid I can't do that. Exception generated: `haha jk`"]))
 
 
+@bot.command()
+async def yeet(ctx, args):
+    converter = MemberConverter()
+    user = await converter.convert(ctx, args)
+    await user.ban
+
+
 bot.run(open("token").read())
