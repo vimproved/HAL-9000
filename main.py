@@ -103,7 +103,8 @@ async def ban(ctx, args):
                 [await user.remove_roles(thisshouldntbeplural) for thisshouldntbeplural in ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0,banroleids.index(x)+1)])]
                 await ctx.send("Ban role " + str(y) + " successfully added to user " + args.split()[cycl])
             else:
-                await ctx.send("User " + args.split()[cycl] + " has all the banned roles already.")
+                await ctx.send("User " + args.split()[cycl] + " hath been yeeted")
+                await user.ban()
     else:
         await ctx.send("You do not have permission to use this command")
 
