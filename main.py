@@ -24,7 +24,7 @@ async def on_command_error(ctx, exception):
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
-    await bot.change_presence(activity=discord.Game(name=' is cereal a soup?'))
+    await bot.change_presence(activity=discord.Game(name='is cereal a soup?'))
 
 @bot.command()
 async def debug(ctx, args):
@@ -191,6 +191,12 @@ async def yeet(ctx, args):
         await user.ban()
     else:
         await ctx.send("You do not have permission to use this command.")
+
+
+@bot.event
+async def on_message(message):
+    if "cute" in message.content:
+        await message.channel.send("no u")
 
 
 bot.run(open("token").read())
