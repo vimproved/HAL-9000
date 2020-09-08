@@ -24,7 +24,7 @@ async def on_command_error(ctx, exception):
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
-    await client.change_presence(activity=discord.Game(name='//help'))
+    await bot.change_presence(activity=discord.Game(name='//help'))
 
 @bot.command()
 async def debug(ctx, args):
