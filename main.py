@@ -193,10 +193,4 @@ async def yeet(ctx, args):
         await ctx.send("You do not have permission to use this command.")
 
 
-@bot.event
-async def on_message(message):
-    if "cute" in message.content:
-        await message.channel.send("no u")
-
-
 bot.run(open("token").read())
