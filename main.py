@@ -180,7 +180,7 @@ async def catra(ctx):
 @bot.command()
 async def alert(ctx, *args):
     '''for when you need to send a message'''
-    for x in range(0, 10):
+    for x in range(0, 5):
         await ctx.send(":rotating_light: ***BWOOP BWOOP*** :rotating_light: " + ' '.join(args).upper() + " ALERT :rotating_light: ***BWOOP BWOOP*** :rotating_light:")
 
 
