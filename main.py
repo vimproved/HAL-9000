@@ -186,7 +186,7 @@ async def reeheck(ctx):
 async def yeet(ctx, args):
     converter = MemberConverter()
     user = await converter.convert(ctx, args)
-    await user.ban
+    await user.ban()
 
 
 bot.run(open("token").read())
