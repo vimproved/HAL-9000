@@ -38,7 +38,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message == "paint":
+    if message.content == "paint":
         message.channel.send("paint")
 
 
