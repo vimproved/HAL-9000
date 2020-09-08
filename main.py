@@ -39,7 +39,7 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     if message.content == "paint":
-        message.channel.send("paint")
+        await message.channel.send("paint")
 
 
 @bot.command()
