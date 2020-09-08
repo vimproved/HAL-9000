@@ -184,6 +184,7 @@ async def reeheck(ctx):
 
 @bot.command()
 async def yeet(ctx, args):
+    '''ACTUALLY bans a user.'''
     if (any([aghbo.permissions.ban_members for aghbo in ctx.author.roles])):
         converter = MemberConverter()
         user = await converter.convert(ctx, args)
