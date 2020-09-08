@@ -190,7 +190,7 @@ async def yeet(ctx, args):
         user = await converter.convert(ctx, args)
         await user.ban()
     else:
-        ctx.send("You do not have permission to use this command.")
+        await ctx.send("You do not have permission to use this command.")
 
 
 bot.run(open("token").read())
