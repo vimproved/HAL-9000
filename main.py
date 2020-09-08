@@ -184,9 +184,12 @@ async def reeheck(ctx):
 
 @bot.command()
 async def yeet(ctx, args):
-    converter = MemberConverter()
-    user = await converter.convert(ctx, args)
-    await user.ban()
+    if (any([aghbo.permissions.ban_users for aghbo in ctx.author.roles])):
+        converter = MemberConverter()
+        user = await converter.convert(ctx, args)
+        await user.ban()
+    else:
+        ctx.send("You do not have permission to use this command.")
 
 
 bot.run(open("token").read())
