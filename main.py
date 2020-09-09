@@ -151,6 +151,8 @@ async def copypasta(ctx, args):
         await ctx.send("A girl.... AND a gamer? Whoa mama! Hummina hummina hummina bazooooooooing! *eyes pop out* AROOOOOOOOGA! *jaw drops tongue rolls out* WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF *tongue bursts out of the outh uncontrollably leaking face and everything in reach* WURBLWUBRLBWURblrwurblwurlbrwubrlwburlwbruwrlblwublr *tiny cupid shoots an arrow through heart* Ahhhhhhhhhhh me lady... *heart in the shape of a heart starts beating so hard you can see it through shirt* ba-bum ba-bum ba-bum ba-bum ba-bum *milk truck crashes into a bakery store in the background spiling white liquid and dough on the streets* BABY WANTS TO FUCK *inhales from the gas tank* honka honka honka honka *masturabtes furiously* ohhhh my gooooodd~")
     if args == "mcultimate":
         await ctx.send("Unpopular opinion but I don’t actually think Nestor, Cal, and Techno are gonna win tomorrow. I’ve challenged them with an immediate disadvantage of being a team of 3 in a team of 4 event on 1.12... that’s gonna be really hard no matter how good they might be")
+    if args == "election":
+        await ctx.send("Unpopular opinion but I don’t actually think Trump are gonna win next month. I’ve challenged him with an immediate disadvantage of being a dumbass... that’s gonna be really hard no matter how deceptive he might be")
 
 @bot.command()
 async def weebalert(ctx):
