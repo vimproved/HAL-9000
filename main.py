@@ -24,9 +24,9 @@ async def response(ctx):
     return(response.content)
 
 
-#@bot.event
-#async def on_command_error(ctx, exception):
-#    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
+@bot.event
+async def on_command_error(ctx, exception):
+    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
 
 @bot.event
