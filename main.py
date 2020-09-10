@@ -112,31 +112,37 @@ async def ban(ctx, args):
 
 @bot.command()
 async def botlog(ctx, args):
-    async def response(ctx):
-        '''Debug command. Allows user to respong with a message.'''
-        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
-        while response.author != ctx.author:
-            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
-        return (response.content)
     """Commands related to the botlogging system."""
     if args == "config":
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
-        answer = await response(ctx)
+        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        while response.author != ctx.author:
+            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        answer = response.content
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({ctx.guild.id: answer})
         pickle.dump(dict(guildchannellist), open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
-        answer = await response(ctx)
+        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        while response.author != ctx.author:
+            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        answer = response.content
         if answer.lower() == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await ctx.send("Cool! How many ranks do you have?")
-            answer = await response(ctx)
+            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            while response.author != ctx.author:
+                response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            answer = response.content
             for x in range (0, int(answer)):
                 await ctx.send("What is the rank #" + str(x + 1) + " in the hierarchy?")
-                answer = await response(ctx)
+                response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+                while response.author != ctx.author:
+                    response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+                answer = response.content
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))
