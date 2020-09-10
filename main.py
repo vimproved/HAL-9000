@@ -39,7 +39,7 @@ async def on_ready():
 async def stop(ctx):
     '''Stops the bot.'''
     await ctx.send("Bot stopped.")
-    os.exit
+    os.exit()
 
 
 @bot.command()
