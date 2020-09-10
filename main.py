@@ -34,6 +34,13 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
     await bot.change_presence(activity=discord.Game(name='is cereal a soup?'))
 
+
+@bot.command()
+async def stop():
+    await ctx.send("Bot stopped.")
+    os.exit
+
+
 @bot.command()
 async def debug(ctx, args):
     '''debug, ignore'''
