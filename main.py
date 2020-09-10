@@ -149,6 +149,11 @@ async def botlog(ctx, args):
             await ctx.send("Configuration done!")
         else:
             await ctx.send("Configuration exited.")
+    if args == "read":
+        guildchannellist = pickle.load(open("guildchannellist", "rb"))
+        guildrolelist = pickle.load(open("guildrolelist", "rb"))
+        await ctx.send("Channel: " + str(guildchannellist.get(ctx.guild.id)) + "\n Admin Roles: " + str(guildrolelist.get(ctx.guild.id)))
+
 
 @bot.command()
 async def copypasta(ctx, args):
@@ -209,6 +214,14 @@ async def yeet(ctx, args):
         await user.ban()
     else:
         await ctx.send("You do not have permission to use this command.")
+
+
+@bot.command()
+async def poll(ctx, args):
+    converter = TextChannelConverter()
+    await ctx.send("Poll created!")
+    polls = await converter.convert(ctx, "537900498028855306")
+    polls.send("@everyone ***NEW POLL***\nMOTION: " + args[0] + "\nDESCRIPTION: " + args[1] + "\n:yes:: Yes\n:no:: No")
 
 
 bot.run(open("token").read())
