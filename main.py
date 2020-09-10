@@ -27,10 +27,11 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name='is cereal a soup?'))
 
 
+
 @bot.command()
-async def debug(ctx, args):
+async def echo(ctx, args):
     '''debug, ignore'''
-    print(args)
+    ctx.send(args)
 
 
 @bot.command()
