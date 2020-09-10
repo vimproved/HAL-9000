@@ -142,7 +142,7 @@ async def botlog(ctx, args):
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))
-            ctx.send("Configuration done!")
+            await ctx.send("Configuration done!")
 
 @bot.command()
 async def copypasta(ctx, args):
