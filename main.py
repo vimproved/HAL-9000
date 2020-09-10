@@ -16,14 +16,6 @@ description = "HAL-9000, the shoddily coded bot made by two teenagers for their 
 bot = commands.Bot(command_prefix = '//', description = description)
 
 
-async def response(ctx):
-    '''Debug command. Allows user to respong with a message.'''
-    response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
-    while response.author != ctx.author:
-        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
-    return(response.content)
-
-
 @bot.event
 async def on_command_error(ctx, exception):
     await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
@@ -120,6 +112,12 @@ async def ban(ctx, args):
 
 @bot.command()
 async def botlog(ctx, args):
+    async def response(ctx):
+        '''Debug command. Allows user to respong with a message.'''
+        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        while response.author != ctx.author:
+            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        return (response.content)
     """Commands related to the botlogging system."""
     if args == "config":
         converter = TextChannelConverter()
@@ -143,6 +141,8 @@ async def botlog(ctx, args):
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))
             await ctx.send("Configuration done!")
+        else:
+            await ctx.send("Configuration exited.")
 
 @bot.command()
 async def copypasta(ctx, args):
