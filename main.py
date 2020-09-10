@@ -125,7 +125,7 @@ async def botlog(ctx, args):
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
         answer = await response(ctx)
-        botlogchannel = await converter.convert(answer)
+        botlogchannel = await converter.convert(ctx, answer)
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({ctx.guild.id   : botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
