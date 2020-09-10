@@ -16,6 +16,14 @@ description = "HAL-9000, the shoddily coded bot made by two teenagers for their 
 bot = commands.Bot(command_prefix = '//', description = description)
 
 
+async def response(ctx):
+    '''Debug command. Allows user to respong with a message.'''
+    response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+    while response.author != ctx.author:
+        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+    return(response.content)
+
+
 @bot.event
 async def on_command_error(ctx, exception):
     await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
@@ -116,22 +124,21 @@ async def botlog(ctx, args):
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
-        answer = ""
-
+        answer = await response(ctx)
         botlogchannel = await converter.convert(answer)
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildchannellist.update({ctx.guild.id   : botlogchannel})
         pickle.dump(guildchannellist, open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
-
+        answer = await response(ctx)
         if answer.tolowercase == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await ctx.send("Cool! How many ranks do you have?")
-
+            answer = await response(ctx)
             for x in range (0,int(answer.role.id)+1):
                 await ctx.send("What is the rank #" + str(x) + " in the hierarchy?")
-
+                answer = await response(ctx)
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))
