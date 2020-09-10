@@ -218,6 +218,7 @@ async def yeet(ctx, args):
 
 @bot.command()
 async def poll(ctx, args):
+    '''Creates a poll in #polls'''
     converter = TextChannelConverter()
     await ctx.send("Poll created!")
     polls = await converter.convert(ctx, "537900498028855306")
