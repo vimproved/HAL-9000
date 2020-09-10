@@ -24,22 +24,15 @@ async def response(ctx):
     return(response.content)
 
 
-@bot.event
-async def on_command_error(ctx, exception):
-    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
+#@bot.event
+#async def on_command_error(ctx, exception):
+#    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
 
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
     await bot.change_presence(activity=discord.Game(name='is cereal a soup?'))
-
-
-@bot.command()
-async def stop(ctx):
-    '''Stops the bot.'''
-    await ctx.send("Bot stopped.")
-    os.exit()
 
 
 @bot.command()
@@ -133,23 +126,23 @@ async def botlog(ctx, args):
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
         answer = await response(ctx)
-        botlogchannel = await converter.convert(ctx, answer)
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
-        guildchannellist.update({ctx.guild.id   : botlogchannel})
-        pickle.dump(guildchannellist, open("guildchannellist", "wb"))
+        guildchannellist.update({ctx.guild.id: answer})
+        pickle.dump(dict(guildchannellist), open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
         answer = await response(ctx)
-        if answer.tolowercase == "yes" or "y":
+        if answer.lower() == "yes" or "y":
             guildrolelist2=[]
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await ctx.send("Cool! How many ranks do you have?")
             answer = await response(ctx)
-            for x in range (0,int(answer.role.id)+1):
-                await ctx.send("What is the rank #" + str(x) + " in the hierarchy?")
+            for x in range (0, int(answer)):
+                await ctx.send("What is the rank #" + str(x + 1) + " in the hierarchy?")
                 answer = await response(ctx)
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))
+            ctx.send("Configuration done!")
 
 @bot.command()
 async def copypasta(ctx, args):
