@@ -122,7 +122,10 @@ async def botlog(ctx, args):
         while response.author != ctx.author:
             response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
         answer = response.content
-        guildchannellist = pickle.load(open("guildchannellist", "rb"))
+        try:
+            guildchannellist = pickle.load(open("guildchannellist", "rb"))
+        except Exception:
+            guildchannellist = {}
         guildchannellist.update({ctx.guild.id: answer})
         pickle.dump(dict(guildchannellist), open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
@@ -132,7 +135,10 @@ async def botlog(ctx, args):
         answer = response.content
         if answer.lower() == "yes" or "y":
             guildrolelist2=[]
-            guildrolelist = pickle.load(open("guildrolelist", "rb"))
+            try:
+                guildrolelist = pickle.load(open("guildrolelist", "rb"))
+            except Exception:
+                guildchannellist = {}
             await ctx.send("Cool! How many ranks do you have?")
             response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
             while response.author != ctx.author:
