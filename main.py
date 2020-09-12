@@ -133,7 +133,7 @@ async def botlog(ctx, args):
             try:
                 guildrolelist = pickle.load(open("guildrolelist", "rb"))
             except Exception:
-                guildchannellist = {}
+                guildrolelist = {}
             await ctx.send("Cool! How many ranks do you have?")
             response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
             while response.author != ctx.author:
