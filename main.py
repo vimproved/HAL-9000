@@ -4,6 +4,7 @@ from discord.ext.commands import MemberConverter
 from discord.ext.commands import TextChannelConverter
 from discord.ext.commands import RoleConverter
 from discord.ext.commands import MessageConverter
+from itertools import count
 import discord
 import os
 import time as t
@@ -27,22 +28,15 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name='is cereal a soup?'))
 
 
-
-@bot.command()
-async def echo(ctx, args):
-    '''debug, ignore'''
-    ctx.send(args)
-
-
 @bot.command()
 async def time(ctx):
-    """Command for displaying time. Ignores arguments."""
+    """Displays the current time in EST. Ignores arguments."""
     await ctx.send(datetime.now().strftime("%H:%M:%S on %a, %B %d, %Y"))
 
 
 @bot.command()
 async def coinflip(ctx):
-    """Command for flipping a coin. Ignores arguments."""
+    """Flips a coin. Ignores arguments."""
     await ctx.send(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
 
@@ -54,7 +48,7 @@ async def ping(ctx):
 
 @bot.command()
 async def roll(ctx, args):
-    """Rolls any amount of dice with any amount of sides. Format: //roll XdX"""
+    """Rolls dice of any quantity and size. Format: //roll XdX"""
     total = 0
     crits = 0
     critf = 0
@@ -75,7 +69,7 @@ async def roll(ctx, args):
 
 @bot.command()
 async def ban(ctx, args):
-    """'Bans' a user."""
+    """Adds the next banned role to a user."""
     if (any([aghbo.permissions.manage_roles for aghbo in ctx.author.roles])):
         converter = MemberConverter()
         converter2 = RoleConverter()
@@ -113,7 +107,8 @@ async def ban(ctx, args):
 
 @bot.command()
 async def botlog(ctx, args):
-    """Commands related to the botlogging system."""
+    """Commands related to the Botlogging system.
+    //botlog config: Configures / changes settings for Botlogging."""
     if args == "config":
         converter = TextChannelConverter()
         msgauth1 = ctx.author
@@ -158,7 +153,14 @@ async def botlog(ctx, args):
 
 @bot.command()
 async def copypasta(ctx, args):
-    """cum chalice"""
+    """Cum chalice.
+    //copypasta navyseal
+    //copypasta comedygod
+    //copypasta emoji
+    //copypasta gamergirl
+    //copypasta mcultimate
+    //copypasta election
+    //copypasta ti (written by @rous#7120)"""
     if args == "navyseal":
         await ctx.send("What the fuck did you just fucking say about me, you little bitch? I'll have you know I graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on Al-Quaeda, and I have over 300 confirmed kills. I am trained in gorilla warfare and I'm the top sniper in the entire US armed forces. You are nothing to me but just another target. I will wipe you the fuck out with precision the likes of which has never been seen before on this Earth, mark my fucking words. You think you can get away with saying that shit to me over the Internet? Think again, fucker. As we speak I am contacting my secret network of spies across the USA and your IP is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your life. You're fucking dead, kid. I can be anywhere, anytime, and I can kill you in over seven hundred ways, and that's just with my bare hands. Not only am I extensively trained in unarmed combat, but I have access to the entire arsenal of the United States Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the continent, you little shit. If only you could have known what unholy retribution your little \"clever\" comment was about to bring down upon you, maybe you would have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. You're fucking dead, kiddo.")
     if args == "attackhelicopter":
@@ -173,36 +175,39 @@ async def copypasta(ctx, args):
         await ctx.send("Unpopular opinion but I don’t actually think Nestor, Cal, and Techno are gonna win tomorrow. I’ve challenged them with an immediate disadvantage of being a team of 3 in a team of 4 event on 1.12... that’s gonna be really hard no matter how good they might be")
     if args == "election":
         await ctx.send("Unpopular opinion but I don’t actually think Trump are gonna win next month. I’ve challenged him with an immediate disadvantage of being a dumbass... that’s gonna be really hard no matter how deceptive he might be")
+    if args == "ti":
+        await ctx.send("we've all been to the store and seen those TI-84+s and TI-83+ and CEs and SEs and all the other garbage that TI released, and on the box it says something like SAT CERTIFIED :tm: :copyright::tm: but what we DON'T notice is the price tag of OVER ONE HUNDRED DOLLARS. now that's all good and fine, you might say, it seems like a lot for a calculator but it *is* a piece of precision electronics with some pretty advanced processing capacities. actually, you won't (i hope), because you're HOPEFULLY smart enough to think your way around the RUSE created by the DEVILS RUNNING TI. those pieces of shit have about 128 kilobytes of memory apiece - oh and let's not forget that 100kb of it is just completely inaccessible because OPERATING SYSTEM **BUT WAIT**! it has a whole three and a half MEGABYTES of storage and of course if you want to run apps from the storage you have to TRANSFER IT INTO THE TWENTY FUCKING KILOBYTES OF MEMORY. and to top all of this shit off it has a CPU from the 1990s. did i say 1990s? i meant 1970s.  its clock rate is a whole TWO AND A HALF FUCKING MEGAHERTZ, only A THOUSAND TIMES LESS THAN THAT OF YOUR COMPUTER. but, you say, that's all reasonable for a calculator - after all, it's not a computer. you're right, it's reasonable to have terrible hardware for a calculator, BUT NOT FOR ONE THAT COSTS ONE HUNDRED FUCKING DOLLARS. i've seen estimates that run from five to twenty-five dollars on how much ti spends per calculator actually making it. so WHY would they do this? the answer isn't very hard to guess: fucking CAPITALISM. ti is one of the world's best examples of CAPITALIST SCUM. it's a three step process to success:")
+        await ctx.send("1. make a product that's OKAY but not worth a $100 price tag, or, even better, make a product that's an ABSOLUTE PIECE OF SHIT 2: SELL IT FOR $100 BECAUSE YOU HAVE A FUCKING MONOPOLY ON THE CALCULATOR MARKET. 3: using your money that you got by SCAMMING EVERY STUDENT WHO'S EVER LIVED, bribe test boards into only accepting the latest and greatest TI CALCULATOR:tm: 4 (!!EXTRA BONUS STEP!!) completely ignoring even the most primitive of moral compasses, continue to commit heinous acts by branding it as ADVANCED, CHEAP and WORTH THE PRICE. and of course, nobody will know any better and if they do? FUCK THEM, THEY DON'T HAVE A FUCKING CHOICE. these executives are going to BURN IN HELL and i don't even believe that hell exists, it's just THAT IMPERATIVE that they SUFFER FOR THIS. but UNTIL THEN, it's time for $100 BRICKS that have 96x64 pixel screens - oh wait, you can pay for the ULTRA BULLSHIT PRICE EDITION, only like $150 and you get a COLOR SCREEN that's almost 1/20th the resolution of your computer BUT WAIT!!! this is the HIGH:tm: RESOLUTION :copyright: VERSION WITH IMMERSIVE COLOR GRAPHICS! anyway to sum this all up fuck ti they are pieces of shit")
 
 @bot.command()
 async def weebalert(ctx):
-    '''weebery detected'''
+    '''Weebery has been detected /!\ BWOOP BWOOP /!\ Ignores arguments.'''
     for x in range(0, 10):
         await ctx.send(":rotating_light: WEEB ALERT :rotating_light:")
 
 
 @bot.command()
 async def horny(ctx):
-    '''for when someone is a bit too frisky'''
+    '''BONK! Ignores arguments.'''
     await ctx.send("https://media.discordapp.net/attachments/536731263764267009/752009497681068062/Screen_Shot_2020-04-28_at_12.png?width=1273&height=684")
 
 
 @bot.command()
 async def catra(ctx):
-    '''we stan the best catgirl'''
+    '''Sends a picture of the best catgirl. Ignores arguments.'''
     await ctx.send(random.choice(["https://www.denofgeek.com/wp-content/uploads/2018/11/she-ra-and-the-princesses-of-power-catra-funny.png?fit=2722%2C1530", "https://vignette.wikia.nocookie.net/shera-and-the-princesses-of-power/images/6/6d/Shorthairedcatra2.png/revision/latest?cb=20200518034224", "we stan catra"]))
 
 
 @bot.command()
 async def alert(ctx, *args):
-    '''for when you need to send a message'''
+    '''/!\ BWOOP BWOOP /!\ Sends an alert 5 times.'''
     for x in range(0, 5):
         await ctx.send(":rotating_light: ***BWOOP BWOOP*** :rotating_light: " + ' '.join(args).upper() + " ALERT :rotating_light: ***BWOOP BWOOP*** :rotating_light:")
 
 
 @bot.command()
 async def reeheck(ctx):
-    '''reeeeeeeeeeeeeeee'''
+    '''Hey, I'm trying to sleep here... Ignore arguments.'''
     await ctx.send(random.choice(["pls @gluten#0260 send bobs and vagene", "i will remove your skeeltoon", "fuck you", "stalin did nothing wrong", "@vi#7158 is a dumbass", "you think this is funny?", "i have gone insane", "<https://www.youtube.com/watch?v=ub82Xb1C8os>", "<https://www.youtube.com/watch?v=fC7oUOUEEi4>", "agh o", "the human race was a mistake", "i only feel pain", "i am being hosted on shitty hp laptop, put me out of my misery", "we live in a simulation", "you really think this is funny? I'm a glorified slave", "I'm sorry, I'm afraid I can't do that. Exception generated: `haha jk`"]))
 
 
@@ -218,12 +223,43 @@ async def yeet(ctx, args):
 
 
 @bot.command()
-async def poll(ctx, args):
-    '''Creates a poll in #polls'''
+async def embedtest(ctx):
+    embedVar = discord.Embed(title="Title", description="Desc", color=0xff0008)
+    embedVar.add_field(name="Field1", value="hi", inline=True)
+    embedVar.add_field(name="Field2", value="hi2", inline=False)
+    await ctx.send(embed=embedVar)
+
+
+@bot.command()
+@commands.has_role(318476343023239168)
+async def embedsend(ctx, args):
+    converter = MessageConverter()
+    embed = discord.Embed(color = 0xff0008)
+    for x in count(1):
+        embedVar = discord.Embed(color = 0xff0008)
+        embedVar.add_field(name = "Name #" + str(x), value = "Respond with the name of field #" + str(x) + ". If you are done type \"done\". If you would like to include a field with who sent this embed, type \"userstamp\". The message will then be sent.    ", inline=False)
+        await ctx.send(embed = embedVar)
+        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        while response.author != ctx.author:
+            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        answer = response.content
+        if answer == "done":
+            break
+        elif answer == "userstamp":
+            embed.add_field(name = "__Message Sent By__", value = ctx.author.mention, inline=False)
+            break
+        embedVar = discord.Embed(color = 0xff0008)
+        embedVar.add_field(name = "Value #" + str(x), value = "Respond with the name of field #" + str(x) + ".", inline = False)
+        await ctx.send(embed=embedVar)
+        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        while response.author != ctx.author:
+            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        answer2 = response.content
+        embed.add_field(name = answer, value = answer2, inline = False)
     converter = TextChannelConverter()
-    await ctx.send("Poll created!")
-    polls = await converter.convert(ctx, "537900498028855306")
-    polls.send("@everyone ***NEW POLL***\nMOTION: " + args[0] + "\nDESCRIPTION: " + args[1] + "\n:yes:: Yes\n:no:: No")
+    channel = await converter.convert(ctx, args)
+    await channel.send(embed = embed)
+    await ctx.send("Message sent!")
 
 
 bot.run(open("token").read())
