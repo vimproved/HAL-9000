@@ -238,7 +238,7 @@ async def embedtest(ctx):
 
 @bot.command()
 @commands.has_role(318476343023239168)
-async def embedsend(ctx, args):
+async def embedsend(ctx, *args):
     converter = MessageConverter()
     embed = discord.Embed(color = 0xff0008)
     for x in count(1):
@@ -263,8 +263,16 @@ async def embedsend(ctx, args):
         answer2 = response.content
         embed.add_field(name = answer, value = answer2, inline = False)
     converter = TextChannelConverter()
-    channel = await converter.convert(ctx, args)
-    await channel.send(embed = embed)
+    channel = await converter.convert(ctx, args[0])
+    try:
+        if args[1] == "everyone":
+            await channel.send("@everyone\n", embed=embed)
+        elif args[1] == "here":
+            await channel.send("@here\n", embed=embed)
+        else:
+            await channel.send("@" + args[1] + "\n", embed = embed)
+    except Exception:
+        await channel.send(embed = embed)
     await ctx.send("Message sent!")
 
 
