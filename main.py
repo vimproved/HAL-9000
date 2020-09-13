@@ -271,7 +271,8 @@ async def embedsend(ctx, *args):
         elif args[1] == "here":
             await channel.send("@here\n", embed=embed)
         else:
-            await channel.send((converter2.convert(ctx, args[1])).mention + "\n", embed = embed)
+            rolemention = await converter2.convert(ctx, args[1])
+            await channel.send(rolemention.mention + "\n", embed = embed)
     except Exception as e:
         await channel.send(embed = embed)
         await ctx.send("Note: exception was generated in attempt to send embed. Exception: " + str(e))
