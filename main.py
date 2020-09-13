@@ -263,6 +263,7 @@ async def embedsend(ctx, *args):
         answer2 = response.content
         embed.add_field(name = answer, value = answer2, inline = False)
     converter = TextChannelConverter()
+    converter2 = RoleConverter()
     channel = await converter.convert(ctx, args[0])
     try:
         if args[1] == "everyone":
@@ -270,7 +271,7 @@ async def embedsend(ctx, *args):
         elif args[1] == "here":
             await channel.send("@here\n", embed=embed)
         else:
-            await channel.send("@" + args[1] + " \n", embed = embed)
+            await channel.send(converter2.convert(ctx, args[1]).mention + "\n", embed = embed)
     except Exception:
         await channel.send(embed = embed)
     await ctx.send("Message sent!")
