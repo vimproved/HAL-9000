@@ -272,8 +272,9 @@ async def embedsend(ctx, *args):
             await channel.send("@here\n", embed=embed)
         else:
             await channel.send(converter2.convert(ctx, args[1]).mention + "\n", embed = embed)
-    except Exception:
+    except Exception as e:
         await channel.send(embed = embed)
+        await ctx.send("Note: exception was generated in attempt to send embed. Exception: " + str(e))
     await ctx.send("Message sent!")
 
 
