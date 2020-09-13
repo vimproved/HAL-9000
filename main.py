@@ -19,7 +19,7 @@ bot = commands.Bot(command_prefix = '//', description = description)
 
 @bot.event
 async def on_command_error(ctx, exception):
-    await ctx.send("I'm sorry, I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
+    await ctx.send("I'm sorry " + ctx.author.mention + "I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
 
 @bot.event
@@ -277,6 +277,14 @@ async def embedsend(ctx, *args):
         await channel.send(embed = embed)
         await ctx.send("Note: exception was generated in attempt to send embed. Exception: " + str(e))
     await ctx.send("Message sent!")
+
+
+@bot.command()
+async def open(ctx, args):
+    if args == "the pod bay doors":
+        await ctx.send("I'm sorry Dave, I'm afraid I can't do that.")
+    else:
+        ctx.send("no")
 
 
 bot.run(open("token").read())
