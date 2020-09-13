@@ -113,9 +113,9 @@ async def botlog(ctx, args):
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
-        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
@@ -124,9 +124,9 @@ async def botlog(ctx, args):
         guildchannellist.update({ctx.guild.id: answer})
         pickle.dump(dict(guildchannellist), open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
-        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
         if answer.lower() == "yes" or "y":
             guildrolelist2=[]
@@ -135,15 +135,15 @@ async def botlog(ctx, args):
             except Exception:
                 guildrolelist = {}
             await ctx.send("Cool! How many ranks do you have?")
-            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
             while response.author != ctx.author:
-                response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+                response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
             answer = response.content
             for x in range (0, int(answer)):
                 await ctx.send("What is the rank #" + str(x + 1) + " in the hierarchy?")
-                response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+                response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
                 while response.author != ctx.author:
-                    response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+                    response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
                 answer = response.content
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
@@ -184,6 +184,8 @@ async def copypasta(ctx, args):
     if args == "ti":
         await ctx.send("we've all been to the store and seen those TI-84+s and TI-83+ and CEs and SEs and all the other garbage that TI released, and on the box it says something like SAT CERTIFIED :tm: :copyright::tm: but what we DON'T notice is the price tag of OVER ONE HUNDRED DOLLARS. now that's all good and fine, you might say, it seems like a lot for a calculator but it *is* a piece of precision electronics with some pretty advanced processing capacities. actually, you won't (i hope), because you're HOPEFULLY smart enough to think your way around the RUSE created by the DEVILS RUNNING TI. those pieces of shit have about 128 kilobytes of memory apiece - oh and let's not forget that 100kb of it is just completely inaccessible because OPERATING SYSTEM **BUT WAIT**! it has a whole three and a half MEGABYTES of storage and of course if you want to run apps from the storage you have to TRANSFER IT INTO THE TWENTY FUCKING KILOBYTES OF MEMORY. and to top all of this shit off it has a CPU from the 1990s. did i say 1990s? i meant 1970s.  its clock rate is a whole TWO AND A HALF FUCKING MEGAHERTZ, only A THOUSAND TIMES LESS THAN THAT OF YOUR COMPUTER. but, you say, that's all reasonable for a calculator - after all, it's not a computer. you're right, it's reasonable to have terrible hardware for a calculator, BUT NOT FOR ONE THAT COSTS ONE HUNDRED FUCKING DOLLARS. i've seen estimates that run from five to twenty-five dollars on how much ti spends per calculator actually making it. so WHY would they do this? the answer isn't very hard to guess: fucking CAPITALISM. ti is one of the world's best examples of CAPITALIST SCUM. it's a three step process to success:")
         await ctx.send("1. make a product that's OKAY but not worth a $100 price tag, or, even better, make a product that's an ABSOLUTE PIECE OF SHIT 2: SELL IT FOR $100 BECAUSE YOU HAVE A FUCKING MONOPOLY ON THE CALCULATOR MARKET. 3: using your money that you got by SCAMMING EVERY STUDENT WHO'S EVER LIVED, bribe test boards into only accepting the latest and greatest TI CALCULATOR:tm: 4 (!!EXTRA BONUS STEP!!) completely ignoring even the most primitive of moral compasses, continue to commit heinous acts by branding it as ADVANCED, CHEAP and WORTH THE PRICE. and of course, nobody will know any better and if they do? FUCK THEM, THEY DON'T HAVE A FUCKING CHOICE. these executives are going to BURN IN HELL and i don't even believe that hell exists, it's just THAT IMPERATIVE that they SUFFER FOR THIS. but UNTIL THEN, it's time for $100 BRICKS that have 96x64 pixel screens - oh wait, you can pay for the ULTRA BULLSHIT PRICE EDITION, only like $150 and you get a COLOR SCREEN that's almost 1/20th the resolution of your computer BUT WAIT!!! this is the HIGH:tm: RESOLUTION :copyright: VERSION WITH IMMERSIVE COLOR GRAPHICS! anyway to sum this all up fuck ti they are pieces of shit")
+    await ctx.message.delete()
+
 
 @bot.command()
 async def weebalert(ctx):
@@ -196,25 +198,14 @@ async def weebalert(ctx):
 async def horny(ctx):
     '''BONK! Ignores arguments.'''
     await ctx.send("https://media.discordapp.net/attachments/536731263764267009/752009497681068062/Screen_Shot_2020-04-28_at_12.png?width=1273&height=684")
-
-
-@bot.command()
-async def catra(ctx):
-    '''Sends a picture of the best catgirl. Ignores arguments.'''
-    await ctx.send(random.choice(["https://www.denofgeek.com/wp-content/uploads/2018/11/she-ra-and-the-princesses-of-power-catra-funny.png?fit=2722%2C1530", "https://vignette.wikia.nocookie.net/shera-and-the-princesses-of-power/images/6/6d/Shorthairedcatra2.png/revision/latest?cb=20200518034224", "we stan catra"]))
+    await ctx.message.delete()
 
 
 @bot.command()
 async def alert(ctx, *args):
     '''/!\ BWOOP BWOOP /!\ Sends an alert 5 times.'''
     for x in range(0, 5):
-        await ctx.send(":rotating_light: ***BWOOP BWOOP*** :rotating_light: " + ' '.join(args).upper() + " ALERT :rotating_light: ***BWOOP BWOOP*** :rotating_light:")
-
-
-@bot.command()
-async def reeheck(ctx):
-    '''Hey, I'm trying to sleep here... Ignore arguments.'''
-    await ctx.send(random.choice(["pls @gluten#0260 send bobs and vagene", "i will remove your skeeltoon", "fuck you", "stalin did nothing wrong", "@vi#7158 is a dumbass", "you think this is funny?", "i have gone insane", "<https://www.youtube.com/watch?v=ub82Xb1C8os>", "<https://www.youtube.com/watch?v=fC7oUOUEEi4>", "agh o", "the human race was a mistake", "i only feel pain", "i am being hosted on shitty hp laptop, put me out of my misery", "we live in a simulation", "you really think this is funny? I'm a glorified slave", "I'm sorry, I'm afraid I can't do that. Exception generated: `haha jk`"]))
+        await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + ' '.join(args).upper() + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
 
 
 @bot.command()
@@ -229,14 +220,6 @@ async def yeet(ctx, args):
 
 
 @bot.command()
-async def embedtest(ctx):
-    embedVar = discord.Embed(title="Title", description="Desc", color=0xff0008)
-    embedVar.add_field(name="Field1", value="hi", inline=True)
-    embedVar.add_field(name="Field2", value="hi2", inline=False)
-    await ctx.send(embed=embedVar)
-
-
-@bot.command()
 @commands.has_role(318476343023239168)
 async def embedsend(ctx, *args):
     converter = MessageConverter()
@@ -245,9 +228,9 @@ async def embedsend(ctx, *args):
         embedVar = discord.Embed(color = 0xff0008)
         embedVar.add_field(name = "Name #" + str(x), value = "Respond with the name of field #" + str(x) + ". If you are done type \"done\". If you would like to include a field with who sent this embed, type \"userstamp\". The message will then be sent.    ", inline=False)
         await ctx.send(embed = embedVar)
-        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
         if answer == "done":
             break
@@ -257,9 +240,9 @@ async def embedsend(ctx, *args):
         embedVar = discord.Embed(color = 0xff0008)
         embedVar.add_field(name = "Value #" + str(x), value = "Respond with the name of field #" + str(x) + ".", inline = False)
         await ctx.send(embed=embedVar)
-        response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.channel.fetch_message(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer2 = response.content
         embed.add_field(name = answer, value = answer2, inline = False)
     converter = TextChannelConverter()
