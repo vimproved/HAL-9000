@@ -270,7 +270,7 @@ async def embedsend(ctx, *args):
         elif args[1] == "here":
             await channel.send("@here\n", embed=embed)
         else:
-            await channel.send("@" + args[1] + "\n", embed = embed)
+            await channel.send("@" + args[1] + " \n", embed = embed)
     except Exception:
         await channel.send(embed = embed)
     await ctx.send("Message sent!")
