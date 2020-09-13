@@ -279,12 +279,4 @@ async def embedsend(ctx, *args):
     await ctx.send("Message sent!")
 
 
-@bot.command()
-async def open(ctx, args):
-    if args == "the pod bay doors":
-        await ctx.send("I'm sorry Dave, I'm afraid I can't do that.")
-    else:
-        ctx.send("no")
-
-
 bot.run(open("token").read())
