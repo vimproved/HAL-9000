@@ -113,9 +113,9 @@ async def botlog(ctx, args):
         converter = TextChannelConverter()
         msgauth1 = ctx.author
         await ctx.send("What channel would you like log messages to be posted in?")
-        response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
@@ -124,9 +124,9 @@ async def botlog(ctx, args):
         guildchannellist.update({ctx.guild.id: answer})
         pickle.dump(dict(guildchannellist), open("guildchannellist", "wb"))
         await ctx.send('Would you like to configure demotion/promotion logging?')
-        response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
         if answer.lower() == "yes" or "y":
             guildrolelist2=[]
@@ -135,15 +135,15 @@ async def botlog(ctx, args):
             except Exception:
                 guildrolelist = {}
             await ctx.send("Cool! How many ranks do you have?")
-            response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
             while response.author != ctx.author:
-                response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+                response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
             answer = response.content
             for x in range (0, int(answer)):
                 await ctx.send("What is the rank #" + str(x + 1) + " in the hierarchy?")
-                response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+                response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
                 while response.author != ctx.author:
-                    response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+                    response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
                 answer = response.content
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
@@ -228,9 +228,9 @@ async def embedsend(ctx, *args):
         embedVar = discord.Embed(color = 0xff0008)
         embedVar.add_field(name = "Name #" + str(x), value = "Respond with the name of field #" + str(x) + ". If you are done type \"done\". If you would like to include a field with who sent this embed, type \"userstamp\". The message will then be sent.    ", inline=False)
         await ctx.send(embed = embedVar)
-        response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
         if answer == "done":
             break
@@ -240,9 +240,9 @@ async def embedsend(ctx, *args):
         embedVar = discord.Embed(color = 0xff0008)
         embedVar.add_field(name = "Value #" + str(x), value = "Respond with the name of field #" + str(x) + ".", inline = False)
         await ctx.send(embed=embedVar)
-        response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+        response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
-            response = await ctx.fetch_message_fast(ctx.channel.last_message_id)
+            response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer2 = response.content
         embed.add_field(name = answer, value = answer2, inline = False)
     converter = TextChannelConverter()
