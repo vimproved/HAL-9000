@@ -19,7 +19,7 @@ bot = commands.Bot(command_prefix = '//', description = description)
 
 @bot.event
 async def on_command_error(ctx, exception):
-    await ctx.send("I'm sorry " + ctx.author.mention + "I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
+    await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
 
 @bot.event
