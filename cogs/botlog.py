@@ -3,6 +3,7 @@ import pickle
 
 
 def setup(bot):
+    bot.remove_command("help")
     bot.add_cog(Botlog(bot))
 
 

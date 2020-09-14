@@ -41,8 +41,8 @@ class HAL(commands.Bot):
             try:
                 self.load_extension(cog)
                 print("Cog loaded.")
-            except Exception:
-                print("Failed to load cog.")
+            except Exception as e:
+                print("Failed to load cog. Reason: " + str(e))
 
 
 
