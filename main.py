@@ -11,8 +11,8 @@ class HAL(commands.Bot):
         self.loaded_cogs = ["cogs.botlog", "cogs.util", "cogs.mod", "cogs.fun", "cogs.rngesus"]
         self.startup()
 
-    async def on_command_error(self, ctx, exception):
-        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
+#    async def on_command_error(self, ctx, exception):
+#        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that. Exception generated: `" + str(exception) + "`")
 
     async def on_ready(self):
         print("HAL-9000")
