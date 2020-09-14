@@ -16,6 +16,24 @@ class Utility(commands.Cog):
     def setup(self):
         pass
 
+    async def help(self, ctx, args):
+        try:
+            args = self.bot.get_cog(args)
+            embed_var = discord.Embed(color=0xff0008)
+            embed_var.add_field(name="__" + args.qualified_name + "__",
+                                value=args.description, inline=False)
+        except Exception:
+            args = self.bot.get_command(args)
+            embed_var = discord.Embed(color=0xff0008)
+            embed_var.add_field(name="__//" + args.name + "__",
+                                value=args.description, inline=False)
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="__Help Menu__",  value="This is the help menu. Do //help (commands) for information "
+                                                         "on a single command. Do //help (category) for information "
+                                                         "on a single category.", inline=False)
+        for cog in self.bot.cogs.values():
+            embed_var.add_field(name=cog.qualified_name, value=cog.description)
+
     @commands.command()
     async def ping(self, ctx):
         """Pings the bot. Ignores arguments."""

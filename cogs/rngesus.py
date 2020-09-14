@@ -39,3 +39,8 @@ class RNGesus(commands.Cog):
             total += sum(rolls)
         await ctx.send(
             "Result: " + str(total) + "\n***CRITICAL SUCCESS!***" * crits + "\n***CRITICAL FAILURE!***" * critf)
+
+    @commands.command()
+    async def choose(self, ctx, *args):
+        """Chooses between multiple things if you can't decide yourself."""
+        await ctx.send(random.choice(args))
