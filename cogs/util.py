@@ -16,6 +16,7 @@ class Utility(commands.Cog):
     def setup(self):
         pass
 
+    @commands.command
     async def help(self, ctx, args):
         try:
             args = self.bot.get_cog(args)
