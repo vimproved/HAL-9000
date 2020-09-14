@@ -7,6 +7,7 @@ def setup(bot):
 
 
 class Mod(commands.Cog):
+    """Commands for server moderation."""
     def __init__(self, bot):
         self.bot = bot
 

@@ -7,6 +7,7 @@ def setup(bot):
 
 
 class RNGesus(commands.Cog):
+    """Commands that generate random results."""
     def __init__(self, bot):
         self.bot = bot
 

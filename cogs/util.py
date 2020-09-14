@@ -9,6 +9,7 @@ def setup(bot):
 
 
 class Utility(commands.Cog):
+    """Utility commands."""
     def __init__(self, bot):
         self.bot = bot
 
