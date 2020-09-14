@@ -18,22 +18,25 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def help(self, ctx, args=""):
-        try:
+        if args in self.bot.cogs.keys():
             args = self.bot.get_cog(args)
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="__" + args.qualified_name + "__",
                                 value=args.description, inline=False)
-        except Exception:
+            for command in args.get_commands():
+                embed_var.add_field(name="//" + command.name, value=command.help, inline=False)
+        elif self.bot.get_command(args) in self.bot.commands:
             args = self.bot.get_command(args)
             embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="__//" + args.name + "__",
-                                value=args.description, inline=False)
-        embed_var = discord.Embed(color=0xff0008)
-        embed_var.add_field(name="__Help Menu__",  value="This is the help menu. Do //help (commands) for information "
-                                                         "on a single command. Do //help (category) for information "
-                                                         "on a single category.", inline=False)
-        for cog in self.bot.cogs.values():
-            embed_var.add_field(name=cog.qualified_name, value=cog.description)
+            embed_var.add_field(name="__//" + args.name + "__", value=args.help, inline=False)
+        else:
+            embed_var = discord.Embed(color=0xff0008)
+            embed_var.add_field(name="__Help Menu__",  value="This is the help menu. Do //help (command) for "
+                                                             "information on a single command. Do //help (category) "
+                                                             "for information on a single category.", inline=False)
+            for cog in self.bot.cogs.values():
+                embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
+        await ctx.send(embed=embed_var)
 
     @commands.command()
     async def ping(self, ctx):
