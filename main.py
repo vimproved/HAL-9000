@@ -3,8 +3,8 @@ import discord
 
 
 class HAL(commands.Bot):
-    def __init__(self, command_prefix, description, **options):
-        super().__init__(command_prefix, description, **options)
+    def __init__(self, command_prefix, **options):
+        super().__init__(command_prefix, **options)
         self.command_prefix = "//"
         self.description = "A multipurpose bot made by vi#7158 and rous#7120"
         self.token = open("token").read()
