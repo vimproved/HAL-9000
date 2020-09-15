@@ -24,6 +24,8 @@ class Botlog(commands.Cog):
         while response.author != ctx.author:
             response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
+        answer = await tcconvert.convert(ctx, answer)
+        answer = answer.id
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
         except EOFError:
@@ -51,6 +53,8 @@ class Botlog(commands.Cog):
                 response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
                 while response.author != ctx.author:
                     response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
+                answer = await rconvert.convert(ctx, response.content)
+                answer = answer.id
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))

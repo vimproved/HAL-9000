@@ -1,4 +1,5 @@
 from discord.ext import commands
+from discord.ext.commands import TextChannelConverter
 import discord
 import pickle
 
@@ -48,7 +49,7 @@ class HAL(commands.Bot):
     async def on_member_join(self, member):
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
-            logchannel = guildchannellist(member.guild.id)
+
         except EOFError:
             logchannel = member.guild.system_channel
         await logchannel.send(member.mention + " joined the server :), welcome!")
