@@ -155,5 +155,5 @@ class Fun(commands.Cog):
     async def alert(self, ctx, *args):
         """!BWOOP BWOOP! Sends an alert 5 times."""
         for x in range(0, 5):
-            await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + ' '.join(
+            await ctx.send(f":rotating_light: ***bwoop bwoop*** :rotating_light: " + ' '.join(
                 args).upper() + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
