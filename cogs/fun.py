@@ -154,6 +154,6 @@ class Fun(commands.Cog):
     @commands.command()
     async def alert(self, ctx, *args):
         """!BWOOP BWOOP! Sends an alert 5 times."""
+        alert_text = eval('"' + ' '.join(args).upper() + '"') # let's be honest here, what could go wrong
         for x in range(0, 5):
-            await ctx.send(f":rotating_light: ***bwoop bwoop*** :rotating_light: " + ' '.join(
-                args).upper() + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
+            await ctx.send(f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
