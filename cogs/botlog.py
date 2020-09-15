@@ -1,5 +1,6 @@
 from discord.ext import commands
 import pickle
+from discord.ext.commands import RoleConverter, TextChannelConverter
 
 
 def setup(bot):
@@ -16,11 +17,14 @@ class Botlog(commands.Cog):
     @commands.command()
     async def config(self, ctx):
         """Configures botlogger."""
+        rconvert = RoleConverter()
+        tcconvert = TextChannelConverter()
         await ctx.send("What channel would you like log messages to be posted in?")
         response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         while response.author != ctx.author:
             response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
         answer = response.content
+        answer = await tcconvert.convert(ctx, answer)
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
         except EOFError:
@@ -48,7 +52,7 @@ class Botlog(commands.Cog):
                 response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
                 while response.author != ctx.author:
                     response = await ctx.channel.fetch_message_fast(ctx.channel.last_message_id)
-                answer = response.content
+                answer = await rconvert.convert(ctx, response.content)
                 guildrolelist2.append(answer)
             guildrolelist.update({ctx.guild.id: guildrolelist2})
             pickle.dump(guildrolelist, open("guildrolelist", "wb"))
