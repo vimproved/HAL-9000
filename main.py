@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord
+import pickle
 
 
 class HAL(commands.Bot):
@@ -37,13 +38,28 @@ class HAL(commands.Bot):
     def startup(self):
         print("Loading cogs...")
         for cog in self.loaded_cogs:
-            print("loading %s", cog)
+            print("Loading", cog)
             try:
                 self.load_extension(cog)
                 print("Cog loaded.")
             except Exception as e:
                 print("Failed to load cog. Reason: " + str(e))
 
+    async def on_member_join(self, member):
+        try:
+            guildchannellist = pickle.load(open("guildchannellist", "rb"))
+            logchannel = guildchannellist(member.guild.id)
+        except EOFError:
+            logchannel = member.guild.system_channel
+        await logchannel.send(member.mention + " joined the server :), welcome!")
+
+    async def on_member_leave(self, member):
+        try:
+            guildchannellist = pickle.load(open("guildchannellist", "rb"))
+            logchannel = guildchannellist(member.guild.id)
+        except EOFError:
+            logchannel = member.guild.system_channel
+        await logchannel.send(member.mention + " left the server :(, we'll miss you!")
 
 
 bot = HAL("//")
