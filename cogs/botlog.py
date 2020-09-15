@@ -56,6 +56,7 @@ class Botlog(commands.Cog):
         else:
             await ctx.send("Configuration exited.")
 
+    @commands.command()
     async def read(self, ctx):
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         guildrolelist = pickle.load(open("guildrolelist", "rb"))
