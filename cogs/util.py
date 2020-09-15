@@ -15,6 +15,7 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def help(self, ctx, args=""):
+        args = args.lower()
         if args in self.bot.cogs.keys():
             args = self.bot.get_cog(args)
             embed_var = discord.Embed(color=0xff0008)
