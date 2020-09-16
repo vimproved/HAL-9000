@@ -1,4 +1,5 @@
 from discord.ext import commands
+import requests
 
 
 def setup(bot):
@@ -12,6 +13,14 @@ class Fun(commands.Cog):
 
     def setup(self):
         pass
+
+    @commands.command()
+    async def dadjoke(self, ctx, args="random"):
+        if args.lower() == "random":
+            dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
+        else:
+            dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1}, headers={"Accept": "text/plain"})
+        await ctx.send(dadjoke.text)
 
     @commands.command()
     async def copypasta(self, ctx, args):
