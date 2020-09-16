@@ -15,12 +15,15 @@ class Fun(commands.Cog):
         pass
 
     @commands.command()
-    async def dadjoke(self, ctx, args="random"):
-        if args.lower() == "random":
-            dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
-        else:
-            dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1}, headers={"Accept": "text/plain"})
-        await ctx.send(dadjoke.content.decode('utf-8'))
+    try:
+        async def dadjoke(self, ctx, args="random"):
+            if args.lower() == "random":
+                dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
+            else:
+                dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1}, headers={"Accept": "text/plain"})
+            await ctx.send(dadjoke.content.decode('utf-8'))
+    except Exception:
+        await ctx.send("Search returned no results.")
 
     @commands.command()
     async def copypasta(self, ctx, args):
