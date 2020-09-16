@@ -47,8 +47,8 @@ class Mod(commands.Cog):
                      ([await converter2.convert(ctx, str(banroleids[z])) for z in range(0, banroleids.index(x) + 1)])]
                     await ctx.send("Ban role " + str(y) + " successfully added to user " + args.split()[cycl])
                 else:
-                    await ctx.send("User " + args.split()[cycl] + " hath been yeeted")
                     await user.ban()
+                    await ctx.send("User " + args.split()[cycl] + " hath been yeeted")
         else:
             await ctx.send("You do not have permission to use this command")
 
