@@ -16,6 +16,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
+        """Searches icanhazdadjoke.com for a dadjoke. Put no args for a random joke."""
         try:
             if args.lower() == "random":
                 dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
