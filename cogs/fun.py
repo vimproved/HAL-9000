@@ -24,7 +24,8 @@ class Fun(commands.Cog):
                 dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1}, headers={"Accept": "text/plain"})
             await ctx.send(dadjoke.content.decode('utf-8'))
         except Exception:
-            await ctx.send("Sorry, but the dad that makes the jokes can't come up with anything for that term. Try another one!")
+            await ctx.send("Sorry, but the dad that makes the jokes can't come up with anything for that term. Try "
+                           "another one!")
 
     @commands.command()
     async def copypasta(self, ctx, args):
