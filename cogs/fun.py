@@ -19,8 +19,8 @@ class Fun(commands.Cog):
         if args.lower() == "random":
             dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
         else:
-            dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1}, headers={"Accept": "text/plain"})
-        await ctx.send(dadjoke.text)
+            dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1z   }, headers={"Accept": "text/plain"})
+        await ctx.send(dadjoke.decode('utf-8'))
 
     @commands.command()
     async def copypasta(self, ctx, args):
