@@ -184,6 +184,9 @@ class Utility(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     @commands.command()
     async def bulkdelete(self, ctx, args):
+        deletionlist=[]
         async for message in ctx.channel.history(limit=int(args)+1):
-            await message.delete()
+            deletionlist.append(message)
+        for yeet in deletionlist:
+            await yeet.delete()
         await ctx.send("Deleted " + args + " messages.")
