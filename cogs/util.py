@@ -180,3 +180,11 @@ class Utility(commands.Cog):
                 guildrolelist.get(ctx.guild.id)))
         else:
             raise Exception("Argument not found. Do //help Botlog for command help.")
+
+    @commands.has_permissions("Manage_Messages")
+    @commands.command()
+    async def bulkdelete(self, ctx, args):
+        for x in range(0, int(args)):
+            lastmessage = discord.Client.get_message(last_message_id)
+            await lastmessage.delete()
+        await ctx.send("Deleted " + args + " messages.")
