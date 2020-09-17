@@ -69,11 +69,11 @@ class HAL(commands.Bot):
         guildchannellist = pickle.load(open("guildchannellist", "rb"))
         logchannel = discord.Client.get_channel(self, guildchannellist.get(after.guild.id))
         if len(before.roles) > len(after.roles):
-            smaller = len(after.roles)
-            bigger = len(before.roles)
+            smaller = after.roles
+            bigger = before.roles
         elif len(after.roles) > len(before.roles):
-            smaller = len(before.roles)
-            bigger = len(after.roles)
+            smaller = before.roles
+            bigger = after.roles
         else:
             return
         difference = list(set(bigger) - set(smaller))
