@@ -3,6 +3,7 @@ from discord.ext.commands import MemberConverter, RoleConverter
 
 
 def setup(bot):
+    bot.remove_command("help")
     bot.add_cog(Mod(bot))
 
 
