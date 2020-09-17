@@ -187,5 +187,5 @@ class Utility(commands.Cog):
         deletionlist=[]
         async for message in ctx.channel.history(limit=int(args)+1):
             deletionlist.append(message)
-        await ctx.channel.delete(deletionlist)
+        await discord.Client.delete(deletionlist)
         await ctx.send("Deleted " + args + " messages.")
