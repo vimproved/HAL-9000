@@ -185,6 +185,6 @@ class Utility(commands.Cog):
     @commands.command()
     async def bulkdelete(self, ctx, args):
         for x in range(0, int(args)):
-            lastmessage = discord.Client.get_message(last_message_id)
+            lastmessage = discord.Client.get_message(ctx.channel.last_message_id)
             await lastmessage.delete()
         await ctx.send("Deleted " + args + " messages.")
