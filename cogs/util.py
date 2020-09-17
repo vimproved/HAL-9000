@@ -53,11 +53,13 @@ class Utility(commands.Cog):
                      "type \"userstamp\". The message will then be sent.    ",
                                 inline=False)
             await ctx.send(embed=embed_var)
-            async for message in ctx.channel.history(limit=1):
-                response = message
-            while response.author != ctx.author:
-                async for message in ctx.channel.history(limit=1):
-                    response = message
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > ctx.created_at:
+                        response = message
+                        responsefound = True
+                        break
             answer = response.content
             if answer == "done":
                 break
@@ -68,11 +70,13 @@ class Utility(commands.Cog):
             embed_var.add_field(name="Value #" + str(x), value="Respond with the name of field #" + str(x) + ".",
                                 inline=False)
             await ctx.send(embed=embed_var)
-            async for message in ctx.channel.history(limit=1):
-                response = message
-            while response.author != ctx.author:
-                async for message in ctx.channel.history(limit=1):
-                    response = message
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > ctx.message.created_at:
+                        response = message
+                        responsefound = True
+                        break
             answer2 = response.content
             embed.add_field(name=answer, value=answer2, inline=False)
         converter = TextChannelConverter()
