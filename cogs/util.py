@@ -181,7 +181,7 @@ class Utility(commands.Cog):
         else:
             raise Exception("Argument not found. Do //help Botlog for command help.")
 
-    @commands.has_permissions("Manage_Messages")
+    @commands.has_permissions(manage_messages=True)
     @commands.command()
     async def bulkdelete(self, ctx, args):
         for x in range(0, int(args)):
