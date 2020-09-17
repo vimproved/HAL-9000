@@ -56,7 +56,7 @@ class Utility(commands.Cog):
             responsefound = False
             while not responsefound:
                 async for message in ctx.channel.history(limit=10):
-                    if message.author == ctx.author and message.created_at > ctx.created_at:
+                    if message.author == ctx.author and message.created_at > ctx.message.created_at:
                         response = message
                         responsefound = True
                         break
