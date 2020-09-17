@@ -24,19 +24,19 @@ class Utility(commands.Cog):
             args = self.bot.get_cog(args)
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="__" + args.qualified_name + "__",
-                                value=args.description, inline=False)
+                                value=args.description + "\n", inline=False)
             for command in args.get_commands():
-                embed_var.add_field(name="//" + command.name, value=command.help, inline=False)
+                embed_var.add_field(name="//" + command.name, value=command.help + "\n", inline=False)
         elif self.bot.get_command(args) in self.bot.commands:
             args = self.bot.get_command(args)
             embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="__//" + args.name + "__", value=args.help, inline=False)
+            embed_var.add_field(name="__//" + args.name + "__", value=args.help + "\n", inline=False)
         else:
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="__Help Menu__",  value="HAL-9000 is a multipurpose discord bot made by vi#7158 "
-                                                             "and rous#7120.\nThis is the help menu. Do //help ("
-                                                             "command) for information on a single command. Do //help "
-                                                             "(category) for information on a single category.", inline=False)
+                                                             "and rous#7120.\nThis is the help menu. Do `//help <"
+                                                             "command>` for information on a single command. Do `//help"
+                                                             "<category>` for information on a single category.\n", inline=False)
             for cog in self.bot.cogs.values():
                 embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
         await ctx.send(embed=embed_var)
@@ -85,7 +85,7 @@ class Utility(commands.Cog):
                         responsefound = True
                         break
             answer2 = response.content
-            embed.add_field(name=answer, value=answer2, inline=False)
+            embed.add_field(name=answer, value=answer2 + "\n", inline=False)
         converter = TextChannelConverter()
         converter2 = RoleConverter()
         channel = await converter.convert(ctx, args[0])
@@ -104,11 +104,11 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def botlog(self, ctx, args):
+        """Commands relating to the botlog system.
+        ```//botlog config: Configures botlogger.
+        //botlog read: Sends current botlog settings.```
+        Admin only."""
         if args == "config":
-            """Commands relating to the botlog system.
-            ```//botlog config: Configures botlogger.
-            //botlog read: Sends current botlog settings.```
-            Admin only."""
             rconvert = RoleConverter()
             tcconvert = TextChannelConverter()
             q = await ctx.send("What channel would you like log messages to be posted in?")
