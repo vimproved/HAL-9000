@@ -13,7 +13,7 @@ class HAL(commands.Bot):
         self.startup()
 
     async def on_command_error(self, ctx, exception):
-        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that. " + str(exception))
+        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that." + str(exception).lstrip("Command raised an exception: Exception:"))
 
     async def on_ready(self):
         print("HAL-9000")
