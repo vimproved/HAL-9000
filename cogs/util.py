@@ -58,6 +58,7 @@ class Utility(commands.Cog):
             channel = await converter.convert(ctx, args[0])
         except Exception:
             await ctx.send("Please input a channel.")
+            return
         embed = discord.Embed(color=0xff0008)
         for x in count(1):
             embed_var = discord.Embed(color=0xff0008)
