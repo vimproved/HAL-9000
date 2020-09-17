@@ -16,7 +16,8 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
-        """Searches https://icanhazdadjoke.com for a dadjoke. Put no args for a random joke."""
+        """Searches https://icanhazdadjoke.com for a dadjoke. Put no args for a random joke.
+        //dadjoke <joke>"""
         try:
             if args.lower() == "random":
                 dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
@@ -166,7 +167,8 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def alert(self, ctx, *args):
-        """!BWOOP BWOOP! Sends an alert 5 times."""
+        """!BWOOP BWOOP! Sends an alert 5 times.
+        //alert <text>"""
         alert_text = eval('"' + ' '.join(args).upper() + '"') # let's be honest here, what could go wrong
         for x in range(0, 5):
             await ctx.send(f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
