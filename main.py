@@ -65,6 +65,37 @@ class HAL(commands.Bot):
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
         await logchannel.send(embed=embed_var)
 
+    async def on_member_update(self, before, after):
+        guildchannellist = pickle.load(open("guildchannellist", "rb"))
+        logchannel = discord.Client.get_channel(self, guildchannellist.get(after.guild.id))
+        if len(before.roles) > len(after.roles):
+            smaller = len(after.roles)
+            bigger = len(before.roles)
+        elif len(after.roles) > len(before.roles):
+            smaller = len(before.roles)
+            bigger = len(after.roles)
+        else:
+            return
+        difference = list(set(bigger) - set(smaller))
+        guildrolelist = pickle.load(open("guildrolelist", "rb"))
+        guildrolelist = guildrolelist.get(after.guild.id)
+        for x in guildrolelist:
+            x = after.guild.get_role(x)
+            if x in difference:
+                if len(before.roles) > len(after.roles):
+                    try:
+                        afterrole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)-1))).name
+                    except Exception:
+                        afterrole = "user"
+                    await logchannel.send(after.mention + " has been demoted from *" + x.name + "* to *" + afterrole.name + ".")
+                elif len(after.roles) > len(before.roles):
+                    try:
+                        beforerole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)+1))).name
+                    except Exception:
+                        beforerole = "user"
+                    await logchannel.send(
+                        await logchannel.send(after.mention + " has been demoted from *" + x.name + "* to *" + beforerole + "."))
+
 
 bot = HAL("//")
 bot.run()
