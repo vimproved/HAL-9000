@@ -51,6 +51,8 @@ class HAL(commands.Bot):
             logchannel = discord.Client.get_channel(self, guildchannellist.get(member.guild.id))
         except EOFError:
             logchannel = member.guild.system_channel
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="__Ahoy There!__", value=member.mention + " joined the server! Make sure to read #readme!")
         await logchannel.send(member.mention + " joined the server :), welcome!")
 
     async def on_member_remove(self, member):
@@ -59,6 +61,8 @@ class HAL(commands.Bot):
             logchannel = discord.Client.get_channel(self, guildchannellist.get(member.guild.id))
         except EOFError:
             logchannel = member.guild.system_channel
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
         await logchannel.send(member.mention + " left the server :(, we'll miss you!")
 
 
