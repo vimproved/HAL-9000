@@ -93,7 +93,7 @@ class HAL(commands.Bot):
                         beforerole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)+1))).name
                     except Exception:
                         beforerole = "user"
-                        await logchannel.send(after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*."))
+                        await logchannel.send(after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*.")
 
 
 bot = HAL("//")
