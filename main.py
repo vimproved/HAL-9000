@@ -87,6 +87,7 @@ class HAL(commands.Bot):
                         afterrole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)-1))).name
                     except Exception:
                         afterrole = "user"
+                    embed_var= discord.Embed(color=0xff0008)
                     embed_var.add_field(name="__Demotion.__",
                                         value=after.mention + " has been demoted from *" + x.name + "* to *" + afterrole + "*.")
                     await logchannel.send(ember=embed_var)
@@ -95,7 +96,7 @@ class HAL(commands.Bot):
                         beforerole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)+1))).name
                     except Exception:
                         beforerole = "user"
-                        embed_var = discord.Embed(color=0xff0008)
+                    embed_var = discord.Embed(color=0xff0008)
                     embed_var.add_field(name="__Promotion!__",
                                         value=after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*.")
                     await logchannel.send(embed=embed_var)
