@@ -18,7 +18,7 @@ class Mod(commands.Cog):
     @commands.command()
     async def ban(self, ctx, args):
         """Adds the next banned role to a user.
-        //ban <user>
+        ```//ban <user>```
         Admin only."""
         if any([aghbo.permissions.manage_roles for aghbo in ctx.author.roles]):
             converter = MemberConverter()
@@ -58,7 +58,7 @@ class Mod(commands.Cog):
     @commands.command()
     async def yeet(self, ctx, args):
         '''ACTUALLY bans a user.
-        //yeet <user>
+        ```//yeet <user>```
         Admin only.'''
         if (any([aghbo.permissions.ban_members for aghbo in ctx.author.roles])):
             converter = MemberConverter()

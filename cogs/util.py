@@ -17,8 +17,8 @@ class Utility(commands.Cog):
     @commands.command()
     async def help(self, ctx, args=""):
         """Help command.
-        //help <command>: Help for a single command
-        //help <category>: Help for all the commands in a category."""
+        ```//help <command>: Help for a single command
+        //help <category>: Help for all the commands in a category.```"""
         args
         if args in self.bot.cogs.keys():
             args = self.bot.get_cog(args)
@@ -50,7 +50,7 @@ class Utility(commands.Cog):
     @commands.has_role(318476343023239168)
     async def embedsend(self, ctx, *args):
         """Sends an embed message of choice in a channel of choice.
-        //embedsend <channel>
+        ```//embedsend <channel>```
         Admin only."""
         embed = discord.Embed(color=0xff0008)
         for x in count(1):
@@ -106,8 +106,8 @@ class Utility(commands.Cog):
     async def botlog(self, ctx, args):
         if args == "config":
             """Commands relating to the botlog system.
-            //botlog config: Configures botlogger.
-            //botlog read: Sends current botlog settings.
+            ```//botlog config: Configures botlogger.
+            //botlog read: Sends current botlog settings.```
             Admin only."""
             rconvert = RoleConverter()
             tcconvert = TextChannelConverter()

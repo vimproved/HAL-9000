@@ -22,7 +22,7 @@ class RNGesus(commands.Cog):
     @commands.command()
     async def roll(self, ctx, args):
         """Rolls dice of any quantity and size.
-        //roll XdX"""
+        ```//roll XdX```"""
         total = 0
         crits = 0
         critf = 0
@@ -44,5 +44,5 @@ class RNGesus(commands.Cog):
     @commands.command()
     async def choose(self, ctx, *args):
         """Chooses between multiple things if you can't decide yourself.
-        //choose <args>"""
+        ```//choose <args>```"""
         await ctx.send(random.choice(args))
