@@ -48,15 +48,15 @@ class HAL(commands.Bot):
     async def on_member_join(self, member):
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
-            logchannel = discord.Client.get_channel(guildchannellist(member.guild.id))
+            logchannel = discord.Client.get_channel(self, guildchannellist.get(member.guild.id))
         except EOFError:
             logchannel = member.guild.system_channel
         await logchannel.send(member.mention + " joined the server :), welcome!")
 
-    async def on_member_leave(self, member):
+    async def on_member_remove(self, member):
         try:
             guildchannellist = pickle.load(open("guildchannellist", "rb"))
-            logchannel = discord.Client.get_channel(guildchannellist(member.guild.id))
+            logchannel = discord.Client.get_channel(self, guildchannellist.get(member.guild.id))
         except EOFError:
             logchannel = member.guild.system_channel
         await logchannel.send(member.mention + " left the server :(, we'll miss you!")

@@ -19,7 +19,6 @@ class Utility(commands.Cog):
         """Help command.
         ```//help <command>: Help for a single command
         //help <category>: Help for all the commands in a category.```"""
-        args
         if args in self.bot.cogs.keys():
             args = self.bot.get_cog(args)
             embed_var = discord.Embed(color=0xff0008)
@@ -33,10 +32,12 @@ class Utility(commands.Cog):
             embed_var.add_field(name="__//" + args.name + "__", value=args.help + "\n", inline=False)
         else:
             embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="__Help Menu__",  value="HAL-9000 is a multipurpose discord bot made by vi#7158 "
-                                                             "and rous#7120.\nThis is the help menu. Do `//help <"
-                                                             "command>` for information on a single command. Do `//help"
-                                                             "<category>` for information on a single category.\n", inline=False)
+            embed_var.add_field(name="__Help Menu__",
+                                value="HAL-9000 is a multipurpose discord bot made by vi#7158 "
+                                "and rous#7120.\nThis is the help menu. Do `//help <"
+                                "command>` for information on a single command. Do `//help"
+                                "<category>` for information on a single category.\n",
+                                inline=False)
             for cog in self.bot.cogs.values():
                 embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
         await ctx.send(embed=embed_var)
@@ -101,7 +102,7 @@ class Utility(commands.Cog):
             else:
                 rolemention = await converter2.convert(ctx, args[1])
                 await channel.send(rolemention.mention + "\n", embed=embed)
-        except Exception as e:
+        except Exception:
             await channel.send(embed=embed)
         await ctx.send("Message sent!")
 
