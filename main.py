@@ -78,24 +78,27 @@ class HAL(commands.Bot):
             return
         difference = list(set(bigger) - set(smaller))
         guildrolelist = pickle.load(open("guildrolelist", "rb"))
-        guildrolelist = guildrolelist.get(after.guild.id)
-        for x in guildrolelist:
+        egg = guildrolelist.get(after.guild.id)
+        guildrolelist=[]
+        for x in egg:
             x = after.guild.get_role(x)
+            guildrolelist.append(x)
+        for x in guildrolelist:
             if x in difference:
                 if len(before.roles) > len(after.roles):
-                    try:
-                        afterrole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)+1))).name
-                    except Exception:
-                        afterrole = "user"
-                    embed_var= discord.Embed(color=0xff0008)
+                    #try:
+                    afterrole = (after.guild.get_role(guildrolelist[guildrolelist.index(x)+1])).name
+                    #except Exception:
+                        #afterrole = "user"
+                    embed_var = discord.Embed(color=0xff0008)
                     embed_var.add_field(name="__Demotion.__",
                                         value=after.mention + " has been demoted from *" + x.name + "* to *" + afterrole + "*.")
                     await logchannel.send(embed=embed_var)
                 elif len(after.roles) > len(before.roles):
-                    try:
-                        beforerole = (after.guild.get_role(guildrolelist(guildrolelist.index(x)-1))).name
-                    except Exception:
-                        beforerole = "user"
+                    #try:
+                    beforerole = (after.guild.get_role(guildrolelist[guildrolelist.index(x)-1])).name
+                    #except Exception:
+                        #beforerole = "user"
                     embed_var = discord.Embed(color=0xff0008)
                     embed_var.add_field(name="__Promotion!__",
                                         value=after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*.")
