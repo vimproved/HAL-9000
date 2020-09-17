@@ -96,9 +96,9 @@ class HAL(commands.Bot):
                     except Exception:
                         beforerole = "user"
                         embed_var = discord.Embed(color=0xff0008)
-                        embed_var.add_field(name="__Promotion!__",
-                                            value=after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*.")
-                        await logchannel.send(embed=embed_var)
+                    embed_var.add_field(name="__Promotion!__",
+                                        value=after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*.")
+                    await logchannel.send(embed=embed_var)
 
 
 bot = HAL("//")
