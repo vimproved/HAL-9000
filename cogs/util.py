@@ -52,6 +52,12 @@ class Utility(commands.Cog):
         """Sends an embed message of choice in a channel of choice.
         ```//embedsend <channel>```
         Admin only."""
+        converter = TextChannelConverter()
+        converter2 = RoleConverter()
+        try:
+            channel = await converter.convert(ctx, args[0])
+        except Exception:
+            await ctx.send("Please input a channel.")
         embed = discord.Embed(color=0xff0008)
         for x in count(1):
             embed_var = discord.Embed(color=0xff0008)
@@ -86,9 +92,6 @@ class Utility(commands.Cog):
                         break
             answer2 = response.content
             embed.add_field(name=answer, value=answer2 + "\n", inline=False)
-        converter = TextChannelConverter()
-        converter2 = RoleConverter()
-        channel = await converter.convert(ctx, args[0])
         try:
             if args[1] == "everyone":
                 await channel.send("@everyone\n", embed=embed)
