@@ -103,7 +103,6 @@ class Utility(commands.Cog):
                 await channel.send(rolemention.mention + "\n", embed=embed)
         except Exception as e:
             await channel.send(embed=embed)
-            await ctx.send("Note: exception was generated in attempt to send embed. Exception: " + str(e))
         await ctx.send("Message sent!")
 
     @commands.command()
