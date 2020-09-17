@@ -53,7 +53,7 @@ class HAL(commands.Bot):
             logchannel = member.guild.system_channel
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__Ahoy There!__", value=member.mention + " joined the server! Make sure to read #readme!")
-        await logchannel.send(member.mention + " joined the server :), welcome!")
+        await logchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
         try:
@@ -63,7 +63,7 @@ class HAL(commands.Bot):
             logchannel = member.guild.system_channel
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
-        await logchannel.send(member.mention + " left the server :(, we'll miss you!")
+        await logchannel.send(embed=embed_var)
 
 
 bot = HAL("//")
