@@ -82,6 +82,9 @@ class Mod(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     @commands.command()
     async def rgive(self, ctx, *args):
+        """Gives a user / users a role.
+        //rgive everyone gives every member a role.
+        Admin only."""
         converter = MemberConverter()
         converter2 = RoleConverter
         if args[0] == "everyone" or args[0] == "@everyone":
@@ -94,4 +97,4 @@ class Mod(commands.Cog):
                 users.append(user)
         role = await converter2.convert(ctx, args[-1])
         for user in users:
-            await user.add_roles(role)
+            await user.add_roles(role, reason="Assigned by " + ctx.author.name + ".")
