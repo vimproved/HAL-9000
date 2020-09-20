@@ -84,7 +84,7 @@ class Mod(commands.Cog):
     async def rgive(self, ctx, *args):
         """Gives a user / users a role.
         ```//rgive everyone``` gives every member a role.
-        Admin only."""
+        Requires Manage Roles."""
         converter = MemberConverter()
         converter2 = RoleConverter()
         if args[0] == "everyone" or args[0] == "@everyone":
