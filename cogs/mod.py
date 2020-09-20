@@ -96,5 +96,7 @@ class Mod(commands.Cog):
                 user = await converter.convert(ctx, user)
                 users.append(user)
         role = await converter2.convert(ctx, args[-1])
+        await ctx.send("Giving roles...")
         for user in users:
             await user.add_roles(role, reason="Assigned by " + ctx.author.name + ".")
+        await ctx.send("Done!")
