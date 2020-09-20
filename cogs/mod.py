@@ -86,7 +86,7 @@ class Mod(commands.Cog):
         ```//rgive everyone``` gives every member a role.
         Admin only."""
         converter = MemberConverter()
-        converter2 = RoleConverter
+        converter2 = RoleConverter()
         if args[0] == "everyone" or args[0] == "@everyone":
             users = ctx.guild.members
         else:
