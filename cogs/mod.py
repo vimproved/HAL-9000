@@ -94,4 +94,4 @@ class Mod(commands.Cog):
                 users.append(user)
         role = await converter2.convert(ctx, args[-1])
         for user in users:
-            await user.add_roles(role, reason="Assigned by " + ctx.author.name + ".")
+            await user.add_roles(role)
