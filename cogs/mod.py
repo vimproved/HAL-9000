@@ -83,7 +83,7 @@ class Mod(commands.Cog):
     @commands.command()
     async def rgive(self, ctx, *args):
         """Gives a user / users a role.
-        //rgive everyone gives every member a role.
+        ```//rgive everyone``` gives every member a role.
         Admin only."""
         converter = MemberConverter()
         converter2 = RoleConverter
