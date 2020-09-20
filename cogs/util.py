@@ -36,7 +36,7 @@ class Utility(commands.Cog):
                                 value="HAL-9000 is a multipurpose discord bot made by vi#7158 "
                                 "and rous#7120.\nThis is the help menu. Do `//help <"
                                 "command>` for information on a single command. Do `//help"
-                                "<category>` for information on a single category.\n",
+                                " <category>` for information on a single category.\n",
                                 inline=False)
             for cog in self.bot.cogs.values():
                 embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
