@@ -1,6 +1,12 @@
 from discord.ext import commands
+from datetime import datetime
 import discord
 import pickle
+try:
+    globalconfig = pickle.load(open("config", "rb"))
+except EOFError:
+    print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
+          "has occurred.")
 
 
 class HAL(commands.Bot):
@@ -13,7 +19,10 @@ class HAL(commands.Bot):
         self.startup()
 
     async def on_command_error(self, ctx, exception):
-        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that. " + str(exception).lstrip("Command raised an exception: Exception:"))
+        config = globalconfig(ctx.guild.id)
+        logchannel = config["logchannel"]
+        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that.")
+        await logchannel.send("Log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
 
     async def on_ready(self):
         print("HAL-9000")
@@ -46,63 +55,18 @@ class HAL(commands.Bot):
                 print("Failed to load cog. Reason: " + str(e))
 
     async def on_member_join(self, member):
-        try:
-            guildchannellist = pickle.load(open("guildchannellist", "rb"))
-            logchannel = discord.Client.get_channel(self, guildchannellist.get(member.guild.id))
-        except EOFError:
-            logchannel = member.guild.system_channel
+        config = globalconfig[member.guild]
+        systemchannel = config["systemchannel"]
         embed_var = discord.Embed(color=0xff0008)
-        embed_var.add_field(name="__Ahoy There!__", value=member.mention + " joined the server! Make sure to read #readme!")
-        await logchannel.send(embed=embed_var)
+        embed_var.add_field(name="__Ahoy There!__", value=member.mention + "joined the server! Make sure to read #readme!")
+        await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
-        try:
-            guildchannellist = pickle.load(open("guildchannellist", "rb"))
-            logchannel = discord.Client.get_channel(self, guildchannellist.get(member.guild.id))
-        except EOFError:
-            logchannel = member.guild.system_channel
+        config = globalconfig[member.guild]
+        systemchannel = config["systemchannel"]
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
-        await logchannel.send(embed=embed_var)
-
-    async def on_member_update(self, before, after):
-        guildchannellist = pickle.load(open("guildchannellist", "rb"))
-        logchannel = discord.Client.get_channel(self, guildchannellist.get(after.guild.id))
-        if len(before.roles) > len(after.roles):
-            smaller = after.roles
-            bigger = before.roles
-        elif len(after.roles) > len(before.roles):
-            smaller = before.roles
-            bigger = after.roles
-        else:
-            return
-        difference = list(set(bigger) - set(smaller))
-        guildrolelist = pickle.load(open("guildrolelist", "rb"))
-        egg = guildrolelist.get(after.guild.id)
-        guildrolelist=[]
-        for x in egg:
-            x = after.guild.get_role(x)
-            guildrolelist.append(x)
-        for x in guildrolelist:
-            if x in difference:
-                if len(before.roles) > len(after.roles):
-                    try:
-                        afterrole = (after.guild.get_role(guildrolelist[guildrolelist.index(x)+1])).name
-                    except Exception:
-                        afterrole = "user"
-                    embed_var = discord.Embed(color=0xff0008)
-                    embed_var.add_field(name="__Demotion.__",
-                                        value=after.mention + " has been demoted from *" + x.name + "* to *" + afterrole + "*.")
-                    await logchannel.send(embed=embed_var)
-                elif len(after.roles) > len(before.roles):
-                    try:
-                        beforerole = (after.guild.get_role(guildrolelist[guildrolelist.index(x)-1])).name
-                    except Exception:
-                        beforerole = "user"
-                    embed_var = discord.Embed(color=0xff0008)
-                    embed_var.add_field(name="__Promotion!__",
-                                        value=after.mention + " has been promoted from *" + beforerole + "* to *" + x.name + "*.")
-                    await logchannel.send(embed=embed_var)
+        await systemchannel.send(embed=embed_var)
 
 
 bot = HAL("//")
