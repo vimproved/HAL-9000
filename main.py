@@ -2,11 +2,13 @@ from discord.ext import commands
 from datetime import datetime
 import discord
 import pickle
+
 try:
     globalconfig = pickle.load(open("config", "rb"))
 except EOFError:
     print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
           "has occurred.")
+    globalconfig = {}
 
 
 class HAL(commands.Bot):
@@ -19,10 +21,13 @@ class HAL(commands.Bot):
         self.startup()
 
     async def on_command_error(self, ctx, exception):
-        config = globalconfig(ctx.guild.id)
-        logchannel = config["logchannel"]
         await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that.")
-        await logchannel.send("Log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
+        try:
+            config = globalconfig[ctx.guild.id]
+            logchannel = discord.Client.get_channel(self, config["logchannel"])
+            await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
+        except KeyError:
+            await ctx.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
 
     async def on_ready(self):
         print("HAL-9000")
@@ -55,19 +60,29 @@ class HAL(commands.Bot):
                 print("Failed to load cog. Reason: " + str(e))
 
     async def on_member_join(self, member):
-        config = globalconfig[member.guild]
-        systemchannel = config["systemchannel"]
+        config = globalconfig[member.guild.id]
+        systemchannel = discord.Client.get_channel(config["systemchannel"])
         embed_var = discord.Embed(color=0xff0008)
-        embed_var.add_field(name="__Ahoy There!__", value=member.mention + "joined the server! Make sure to read #readme!")
+        embed_var.add_field(name="__Ahoy There!__",
+                            value=member.mention + "joined the server! Make sure to read #readme!")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
-        config = globalconfig[member.guild]
-        systemchannel = config["systemchannel"]
+        config = globalconfig[member.guild.id]
+        systemchannel = discord.Client.get_channel(config["systemchannel"])
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
         await systemchannel.send(embed=embed_var)
 
 
 bot = HAL("//")
+
+
+@commands.is_owner()
+@bot.command()
+async def stop(ctx):
+    await ctx.send("Shutting down bot.")
+    await bot.logout()
+
+
 bot.run()

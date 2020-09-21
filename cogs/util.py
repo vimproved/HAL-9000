@@ -42,6 +42,53 @@ class Utility(commands.Cog):
                 embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
         await ctx.send(embed=embed_var)
 
+    @commands.has_permissions(administrator=True)
+    @commands.command()
+    async def config(self, ctx, args):
+        """Configures the local server settings of HAL.
+        `//botlog systemchannel`: Configures the channel that HAL sends server updates in.
+        Admin only."""
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError or KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[ctx.guild]
+        except KeyError:
+            config = {}
+        if args == "systemchannel":
+            q = await ctx.send("Please enter the channel you would like HAL to send server updates in.")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            systemchannel = await TextChannelConverter().convert(ctx, response.content)
+            config.update({"systemchannel": systemchannel.id})
+            print(config)
+            globalconfig.update({ctx.guild.id: config})
+            print(globalconfig)
+            pickle.dump(globalconfig, open("config", "wb"))
+            await ctx.send("System channel set to " + response.content)
+        elif args == "logchannel":
+            q = await ctx.send("Please enter the channel you would like HAL to send moderation logs and errors in.")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            logchannel = await TextChannelConverter().convert(ctx, response.content)
+            config.update({"logchannel": logchannel.id})
+            print(config)
+            globalconfig.update({ctx.guild.id: config})
+            print(globalconfig)
+            pickle.dump(globalconfig, open("config", "wb"))
+            await ctx.send("Log channel set to" + response.content)
+
     @commands.command()
     async def ping(self, ctx):
         """Pings the bot. Ignores arguments."""
@@ -178,5 +225,7 @@ class Utility(commands.Cog):
             guildrolelist = pickle.load(open("guildrolelist", "rb"))
             await ctx.send("Channel: " + str(guildchannellist.get(ctx.guild.id)) + "\n Admin Roles: " + str(
                 guildrolelist.get(ctx.guild.id)))
-        else:
-            raise Exception("Argument not found. Do //help Botlog for command help.")
+
+    @commands.command()
+    async def invite(self, ctx):
+        await ctx.send("https://discord.com/api/oauth2/authorize?client_id=717042126776434728&permissions=8&scope=bot")

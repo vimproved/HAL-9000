@@ -56,17 +56,15 @@ class Mod(commands.Cog):
         else:
             await ctx.send("You do not have permission to use this command")
 
+    @commands.has_permissions(administrator = True)
     @commands.command()
     async def yeet(self, ctx, args):
         '''ACTUALLY bans a user.
         ```//yeet <user>```
         Admin only.'''
-        if (any([aghbo.permissions.ban_members for aghbo in ctx.author.roles])):
-            converter = MemberConverter()
-            user = await converter.convert(ctx, args)
-            await user.ban()
-        else:
-            await ctx.send("You do not have permission to use this command.")
+        user = await MemberConverter().convert(ctx, args)
+        await user.ban()
+        await ctx.send(user.mention + " has been banned.")
 
     @commands.has_permissions(manage_messages=True)
     @commands.command()
@@ -101,9 +99,3 @@ class Mod(commands.Cog):
         for user in users:
             await user.add_roles(role, reason="Assigned by " + ctx.author.name + ".")
         await ctx.send("Done!")
-
-    @commands.has_permissions(Administrator=True)
-    @commands.command()
-    async def stop(self, ctx):
-        ctx.send("Shutting down bot.")
-        await discord.Client.close()
