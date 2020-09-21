@@ -1,5 +1,6 @@
 from discord.ext import commands
 from discord.ext.commands import MemberConverter, RoleConverter
+import discord
 
 
 def setup(bot):
@@ -100,3 +101,9 @@ class Mod(commands.Cog):
         for user in users:
             await user.add_roles(role, reason="Assigned by " + ctx.author.name + ".")
         await ctx.send("Done!")
+
+    @commands.has_permissions(Administrator=True)
+    @commands.command()
+    async def stop(self, ctx):
+        ctx.send("Shutting down bot.")
+        await discord.Client.close()
