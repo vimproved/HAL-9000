@@ -3,7 +3,6 @@ from discord.ext.commands import TextChannelConverter, RoleConverter
 from itertools import count
 import discord
 import pickle
-#THIS IS A RANDOM COMMENT SO I CHANGED SOMETHING OK COOL
 
 def setup(bot):
     bot.add_cog(Utility(bot))
@@ -53,7 +52,7 @@ class Utility(commands.Cog):
         except EOFError or KeyError:
             globalconfig = {}
         try:
-            config = globalconfig[ctx.guild]
+            config = globalconfig[ctx.guild.id]
         except KeyError:
             config = {}
         if args == "systemchannel":
@@ -67,9 +66,7 @@ class Utility(commands.Cog):
                         break
             systemchannel = await TextChannelConverter().convert(ctx, response.content)
             config.update({"systemchannel": systemchannel.id})
-            print(config)
             globalconfig.update({ctx.guild.id: config})
-            print(globalconfig)
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("System channel set to " + response.content)
         elif args == "logchannel":
@@ -83,9 +80,7 @@ class Utility(commands.Cog):
                         break
             logchannel = await TextChannelConverter().convert(ctx, response.content)
             config.update({"logchannel": logchannel.id})
-            print(config)
             globalconfig.update({ctx.guild.id: config})
-            print(globalconfig)
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Log channel set to" + response.content)
 
