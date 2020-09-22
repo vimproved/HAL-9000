@@ -71,6 +71,11 @@ class HAL(commands.Bot):
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
         await systemchannel.send(embed=embed_var)
 
+    async def on_message_delete(self, message):
+        config = globalconfig[message.guild.id]
+        logchannel = discord.utils.get(message.guild.text_channels, id=config["logchannel"])
+        await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
+
 
 bot = HAL("//")
 
