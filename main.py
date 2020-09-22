@@ -22,12 +22,9 @@ class HAL(commands.Bot):
 
     async def on_command_error(self, ctx, exception):
         await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that.")
-        try:
-            config = globalconfig[ctx.guild.id]
-            logchannel = discord.Client.get_channel(self, config["logchannel"])
-            await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
-        except KeyError:
-            await ctx.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
+        config = globalconfig[ctx.guild.id]
+        logchannel = discord.Client.get_channel(self, config["logchannel"])
+        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
 
     async def on_ready(self):
         print("HAL-9000")
