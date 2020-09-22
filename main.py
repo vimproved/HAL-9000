@@ -61,7 +61,7 @@ class HAL(commands.Bot):
 
     async def on_member_join(self, member):
         config = globalconfig[member.guild.id]
-        systemchannel = discord.utils.get(member.guild.text_channel, id=config["systemchannel"])
+        systemchannel = discord.utils.get(member.guild.text_channels, id=config["systemchannel"])
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__Ahoy There!__",
                             value=member.mention + "joined the server! Make sure to read #readme!")
