@@ -152,3 +152,8 @@ class Utility(commands.Cog):
     async def invite(self, ctx):
         """Sends an oath2 link for HAL."""
         await ctx.send("https://discord.com/api/oauth2/authorize?client_id=717042126776434728&permissions=8&scope=bot")
+
+    @commands.command()
+    async def repo(self, ctx):
+        """Sends the link to the GitHub repo for HAL."""
+        await ctx.send("https://github.com/Paradigmmmm/HAL-9000")
