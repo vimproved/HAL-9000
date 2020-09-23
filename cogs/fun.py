@@ -30,7 +30,7 @@ class Fun(commands.Cog):
     @commands.command()
     async def stk69420agho(self, ctx, args):
         """please remove this command thank you very much"""
-        await ctx.send("CLOWN: '‮'")
+        await ctx.send("CLOWN: '‮' hello world i am a clown TEST COMMAND69")
     
     @commands.command()
     async def copypasta(self, ctx, args):
