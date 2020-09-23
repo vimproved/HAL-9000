@@ -15,12 +15,12 @@ class Mod(commands.Cog):
     def setup(self):
         pass
 
-    @commands.has_permissions(ban_users=True)
+    @commands.has_permissions(ban_members=True)
     @commands.command()
     async def ban(self, ctx, args):
         """Bans a user.
-        ```//ban <user>```
-        Admin only."""
+        Requires ban users.
+        ```//ban <user>```"""
         user = await MemberConverter().convert(ctx, args)
         await user.ban()
         await ctx.send(user.mention + " has been banned.")
@@ -28,9 +28,9 @@ class Mod(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     @commands.command()
     async def bulkdelete(self, ctx, args):
-        """Deleted messages in bulk.
-        ```//bulkdelete <# of messages>```
-        Requires Manage Messages."""
+        """Deletes messages in bulk.
+        Requires manage messages.
+        ```//bulkdelete <# of messages>```"""
         deletionlist = []
         async for message in ctx.channel.history(limit=int(args) + 1):
             deletionlist.append(message)
@@ -41,8 +41,9 @@ class Mod(commands.Cog):
     @commands.command()
     async def rgive(self, ctx, *args):
         """Gives a user / users a role.
-        `//rgive everyone`: Gives every member a role.
-        Requires Manage Roles."""
+        Requires Manage Roles.
+        ```//rgive <user(s)> <role>
+        //rgive everyone <role>```"""
         converter = MemberConverter()
         converter2 = RoleConverter()
         if args[0] == "everyone" or args[0] == "@everyone":

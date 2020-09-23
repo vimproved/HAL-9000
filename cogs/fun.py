@@ -17,7 +17,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
-        """Searches https://icanhazdadjoke.com for a dadjoke. Put no args for a random joke.
+        """Searches https://icanhazdadjoke.com for a dadjoke. Put no args or "random" for a random joke.
         ```//dadjoke <joke>```"""
         try:
             if args.lower() == "random":

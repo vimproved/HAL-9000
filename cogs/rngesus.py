@@ -22,7 +22,7 @@ class RNGesus(commands.Cog):
     @commands.command()
     async def roll(self, ctx, args):
         """Rolls dice of any quantity and size.
-        ```//roll XdX```"""
+        ```//roll <XdX>```"""
         total = 0
         crits = 0
         critf = 0

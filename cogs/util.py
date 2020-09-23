@@ -45,8 +45,9 @@ class Utility(commands.Cog):
     @commands.command()
     async def config(self, ctx, args):
         """Configures the local server settings of HAL.
-        `//botlog systemchannel`: Configures the channel that HAL sends server updates in.
-        Admin only."""
+        Requires administrator.
+        ```//config logchannel
+        //config systemchannel```"""
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -89,12 +90,12 @@ class Utility(commands.Cog):
         """Pings the bot. Ignores arguments."""
         await ctx.send("Pong! :ping_pong:")
 
+    @commands.has_permissions(administrator=True)
     @commands.command()
-    @commands.has_role(318476343023239168)
     async def embedsend(self, ctx, *args):
         """Sends an embed message of choice in a channel of choice.
-        ```//embedsend <channel>```
-        Admin only."""
+        Requires administrator.
+        ```//embedsend <channel>```"""
         converter = TextChannelConverter()
         converter2 = RoleConverter()
         try:
@@ -150,10 +151,10 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def invite(self, ctx):
-        """Sends an oath2 link for HAL."""
+        """Sends an oath2 link for HAL. Ignores arguments."""
         await ctx.send("https://discord.com/api/oauth2/authorize?client_id=717042126776434728&permissions=8&scope=bot")
 
     @commands.command()
     async def repo(self, ctx):
-        """Sends the link to the GitHub repo for HAL."""
+        """Sends the link to the GitHub repo for HAL. Ignores arguments."""
         await ctx.send("https://github.com/Paradigmmmm/HAL-9000")
