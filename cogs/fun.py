@@ -27,10 +27,6 @@ class Fun(commands.Cog):
             await ctx.send(dadjoke.content.decode('utf-8'))
         except Exception:
             await ctx.send("Hi " + args + ", I'm dad!")
-    @commands.command()
-    async def stk69420agho(self, ctx, args):
-        """please remove this command thank you very much"""
-        await ctx.send("testing ‮aaadafatesting)")a
     
     @commands.command()
     async def copypasta(self, ctx, args):
