@@ -29,7 +29,7 @@ class HAL(commands.Bot):
     async def on_ready(self):
         print("HAL-9000")
         print("HAL is ready!")
-        await bot.change_presence(activity=discord.Game(name='is cereal a soup?'))
+        await bot.change_presence(activity=discord.Game(name='//help'))
 
     async def on_connect(self):
         print("HAL is connected!")
