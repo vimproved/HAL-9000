@@ -17,7 +17,7 @@ class HAL(commands.Bot):
         self.command_prefix = "//"
         self.description = "A multipurpose bot made by vi#7158 and rous#7120"
         self.token = open("token").read()
-        self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun", "cogs.rngesus"]
+        self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun", "cogs.random"]
         self.startup()
 
     async def on_command_error(self, ctx, exception):

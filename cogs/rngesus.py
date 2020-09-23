@@ -3,10 +3,10 @@ import random
 
 
 def setup(bot):
-    bot.add_cog(RNGesus(bot))
+    bot.add_cog(Random(bot))
 
 
-class RNGesus(commands.Cog):
+class Random(commands.Cog):
     """Commands that generate random results."""
     def __init__(self, bot):
         self.bot = bot
