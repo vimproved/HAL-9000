@@ -25,7 +25,8 @@ class Mod(commands.Cog):
         Requires administrator.
         ```//config logchannel
         //config systemchannel
-        //config copypasta```"""
+        //config copypasta
+        //config read```"""
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -82,6 +83,15 @@ class Mod(commands.Cog):
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Copypasta enabled set to " + str(enabled).lower() + ".")
+        elif args == "read":
+            message = ""
+            for x in config.keys():
+                try:
+                    value = (await TextChannelConverter().convert(ctx, str(config[x]))).mention
+                except Exception:
+                    value = str(config[x])
+                message = message + "\n" + str(x) + ": " + value
+            await ctx.send(message)
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
