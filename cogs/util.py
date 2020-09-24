@@ -18,8 +18,16 @@ class Utility(commands.Cog):
         """Help command.
         ```//help <command>: Help for a single command
         //help <category>: Help for all the commands in a category.```"""
-        if args in self.bot.cogs.keys():
-            args = self.bot.get_cog(args)
+        nameslower = []
+        names = []
+        for x in self.bot.cogs.keys():
+            nameslower.append(x.lower())
+            names.append(x)
+        if args.lower() in nameslower:
+            try:
+                args = self.bot.get_cog(names[nameslower.index(args)])
+            except Exception:
+                args = self.bot.get_cog(args)
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="__" + args.qualified_name + "__",
                                 value=args.description + "\n", inline=False)
