@@ -44,7 +44,7 @@ class Mod(commands.Cog):
                         responsefound = True
                         break
             systemchannel = await TextChannelConverter().convert(ctx, response.content)
-            config.update({"systemchannel": str(systemchannel.id)})
+            config.update({"systemchannel": systemchannel.id})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("System channel set to " + response.content)
@@ -58,7 +58,7 @@ class Mod(commands.Cog):
                         responsefound = True
                         break
             logchannel = await TextChannelConverter().convert(ctx, response.content)
-            config.update({"logchannel": str(logchannel.id)})
+            config.update({"logchannel": logchannel.id})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Log channel set to" + response.content)
@@ -81,7 +81,7 @@ class Mod(commands.Cog):
             config.update({"copypastaenabled": enabled})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("Copypasta enabled set to " + str(enabled).lower())
+            await ctx.send("Copypasta enabled set to " + str(enabled).lower() + ".")
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
