@@ -3,13 +3,6 @@ from datetime import datetime
 import discord
 import pickle
 
-try:
-    globalconfig = pickle.load(open("config", "rb"))
-except EOFError:
-    print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
-          "has occurred.")
-    globalconfig = {}
-
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
@@ -21,9 +14,16 @@ class HAL(commands.Bot):
         self.startup()
 
     async def on_command_error(self, ctx, exception):
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError:
+            print(
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
+                "has occurred.")
+            globalconfig = {}
         await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that.")
         config = globalconfig[ctx.guild.id]
-        logchannel = discord.Client.get_channel(self, config["logchannel"])
+        logchannel = self.get_channel(int(config['logchannel']))
         await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
 
     async def on_ready(self):
@@ -57,23 +57,44 @@ class HAL(commands.Bot):
                 print("Failed to load cog. Reason: " + str(e))
 
     async def on_member_join(self, member):
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError:
+            print(
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
+                "has occurred.")
+            globalconfig = {}
         config = globalconfig[member.guild.id]
-        systemchannel = discord.utils.get(member.guild.text_channels, id=config["systemchannel"])
+        systemchannel = self.get_channel(int(config['systemchannel']))
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__Ahoy There!__",
                             value=member.mention + "joined the server! Make sure to read #readme!")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError:
+            print(
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
+                "has occurred.")
+            globalconfig = {}
         config = globalconfig[member.guild.id]
-        systemchannel = discord.utils.get(member.guild.text_channels, id=config["systemchannel"])
+        systemchannel = self.get_channel(int(config['systemchannel']))
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
         await systemchannel.send(embed=embed_var)
 
     async def on_message_delete(self, message):
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError:
+            print(
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
+                "has occurred.")
+            globalconfig = {}
         config = globalconfig[message.guild.id]
-        logchannel = discord.utils.get(message.guild.text_channels, id=config["logchannel"])
+        logchannel = self.get_channel(int(config['logchannel']))
         await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
 
 

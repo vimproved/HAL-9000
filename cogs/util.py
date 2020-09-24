@@ -66,7 +66,7 @@ class Utility(commands.Cog):
                         responsefound = True
                         break
             systemchannel = await TextChannelConverter().convert(ctx, response.content)
-            config.update({"systemchannel": systemchannel.id})
+            config.update({"systemchannel": str(systemchannel.id)})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("System channel set to " + response.content)
@@ -80,7 +80,7 @@ class Utility(commands.Cog):
                         responsefound = True
                         break
             logchannel = await TextChannelConverter().convert(ctx, response.content)
-            config.update({"logchannel": logchannel.id})
+            config.update({"logchannel": str(logchannel.id)})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Log channel set to" + response.content)
