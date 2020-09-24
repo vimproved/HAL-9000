@@ -24,7 +24,8 @@ class Mod(commands.Cog):
         """Configures the local server settings of HAL.
         Requires administrator.
         ```//config logchannel
-        //config systemchannel```"""
+        //config systemchannel
+        //config copypasta```"""
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -70,9 +71,9 @@ class Mod(commands.Cog):
                         response = message
                         responsefound = True
                         break
-            if response == "yes":
+            if response.content == "yes":
                 enabled = True
-            elif response == "no":
+            elif response.content == "no":
                 enabled = False
             else:
                 await ctx.send ("That is not a valid response")
@@ -80,7 +81,7 @@ class Mod(commands.Cog):
             config.update({"copypastaenabled": enabled})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("Copypasta enabled set tp " + str(enabled))
+            await ctx.send("Copypasta enabled set to " + str(enabled).lower())
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
