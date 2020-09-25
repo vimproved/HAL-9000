@@ -7,7 +7,6 @@ import pickle
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
-        self.command_prefix = "//"
         self.description = "A multipurpose bot made by vi#7158 and rous#7120"
         self.token = open("token").read()
         self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun", "cogs.random"]
@@ -98,10 +97,7 @@ class HAL(commands.Bot):
         await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
 
 
-if (open("token").read()).endswith("I"):
-    bot = HAL("?")
-else:
-    bot = HAL("//")
+bot = HAL("//")
 
 
 @commands.is_owner()
