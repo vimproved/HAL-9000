@@ -98,7 +98,10 @@ class HAL(commands.Bot):
         await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
 
 
-bot = HAL("//")
+if (open("token").read()).endswith("I"):
+    bot = HAL("?")
+else:
+    bot = HAL("//")
 
 
 @commands.is_owner()
