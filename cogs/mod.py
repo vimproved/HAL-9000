@@ -1,8 +1,9 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter, RoleConverter, TextChannelConverter
 import pickle
 import discord
 from itertools import count
+import time
 
 
 def setup(bot):
@@ -14,9 +15,32 @@ class Mod(commands.Cog):
     """Commands for server moderation."""
     def __init__(self, bot):
         self.bot = bot
+        self.update_mutes.start()
 
     def setup(self):
         pass
+
+    @tasks.loop(seconds=30)
+    async def update_mutes(self):
+        print(time.time())
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError or KeyError:
+            globalconfig = {}
+        for x in self.bot.guilds:
+            config = globalconfig[x.id]
+            mutes = config["mutes"]
+            for y in mutes.keys():
+                y = x.get_member(y)
+                mutefinished = mutes[y.id]
+                if time.time() > mutefinished:
+                    muterole = x.get_role(config["muterole"])
+                    await y.remove_roles(muterole)
+                    mutes.pop(y.id)
+                    config.update({"mutes": mutes})
+                    globalconfig.update({y.guild.id: config})
+                    pickle.dump(globalconfig, open("config", "wb"))
+                    print("Mute removed from user " + str(y) + " in guild " + str(x.id) + ".")
 
     @commands.has_permissions(administrator=True)
     @commands.command()
@@ -92,6 +116,24 @@ class Mod(commands.Cog):
                     value = str(config[x])
                 message = message + "\n" + str(x) + ": " + value
             await ctx.send(message)
+        elif args == "muterole":
+            q = await ctx.send("What would you like the new muted role to be?")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = response.content
+            try:
+                muterole = await RoleConverter().convert(ctx, answer)
+                config.update({"muterole": muterole.id})
+                globalconfig.update({ctx.guild.id: config})
+                pickle.dump(globalconfig, open("config", "wb"))
+                await ctx.send("Set muted role to " + muterole.name + ".")
+            except Exception:
+                await ctx.send("Role not found.")
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
@@ -102,6 +144,57 @@ class Mod(commands.Cog):
         user = await MemberConverter().convert(ctx, args)
         await user.ban()
         await ctx.send(user.mention + " has been banned.")
+
+    @commands.has_permissions(manage_roles=True)
+    @commands.command()
+    async def mute(self, ctx, *args):
+        """Mutes a user for a certain amount of time.
+        Requires manage roles.
+        ```//mute <user> <number> <units>"""
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError or KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[ctx.guild.id]
+        except KeyError:
+            config = {}
+        try:
+            user = await MemberConverter().convert(ctx, args[0])
+        except Exception:
+            await ctx.send("User not found.")
+            return
+        try:
+            length = int(args[1])
+        except Exception:
+            await ctx.send("That is not a valid time.")
+            return
+        try:
+            muterole = await RoleConverter().convert(ctx, str(config["muterole"]))
+        except KeyError:
+            await ctx.send("No muted role found. Use //config muterole to set one.")
+            return
+        try:
+            mutes = config["mutes"]
+        except KeyError:
+            mutes = {}
+        if args[2] == "minutes":
+            length = length * 60
+        elif args[2] == "seconds":
+            pass
+        elif args[2] == "hours":
+            length = length * 3600
+        elif args[2] == "days":
+            length = length * 86400
+        else:
+            await ctx.send("Invalid time unit.")
+        await user.add_roles(muterole)
+        mutes.update({user.id: time.time() + length})
+        config.update({"mutes": mutes})
+        globalconfig.update({ctx.guild.id: config})
+        await ctx.send("User muted.")
+        print(globalconfig)
+        pickle.dump(globalconfig, open("config", "wb"))
 
     @commands.has_permissions(manage_messages=True)
     @commands.command()

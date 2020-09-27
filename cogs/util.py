@@ -66,6 +66,9 @@ class Utility(commands.Cog):
     @commands.has_permissions(administrator=True)
     @commands.command()
     async def poll(self, ctx, *args):
+        """Creates a poll in a the specified channel and optionally pings a role.
+        Admin only.
+        ```//poll <channel> <role(optional)>```"""
         pollchannel = await TextChannelConverter().convert(ctx, args[0])
         embed = discord.Embed(color=0xff0008)
         embed.add_field(name="__Poll Creation__", value='What is the name of your poll?\nType "cancel" at any time to cancel poll creation.', inline=False)
