@@ -249,7 +249,7 @@ class Utility(commands.Cog):
                 text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex color: " + str(x.color)
             await ctx.send(text)
         elif args == "delete":
-            if not (ctx.author.guild_permissions()).manage_roles:
+            if not ctx.author.guild_permissions.manage_roles:
                 raise discord.Permissions
             try:
                 colors = config["colors"]
