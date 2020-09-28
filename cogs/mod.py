@@ -178,16 +178,16 @@ class Mod(commands.Cog):
             mutes = config["mutes"]
         except KeyError:
             mutes = {}
-        if args[2] == "minutes":
+        if args[2] == "minutes" or args[2] == "minute":
             length = length * 60
-        elif args[2] == "seconds":
+        elif args[2] == "seconds" or args[2] == "second":
             pass
-        elif args[2] == "hours":
+        elif args[2] == "hours" or args[2] == "hour":
             length = length * 3600
-        elif args[2] == "days":
+        elif args[2] == "days" or args[2] == "day":
             length = length * 86400
         else:
-            await ctx.send("Invalid time unit.")
+            await ctx.send("Invalid time unit. Using seconds.")
         await user.add_roles(muterole)
         mutes.update({user.id: time.time() + length})
         config.update({"mutes": mutes})

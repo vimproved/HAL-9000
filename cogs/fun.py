@@ -179,7 +179,7 @@ class Fun(commands.Cog):
         await ctx.send("go to #horny-jail")
         await ctx.send(
             "https://media.discordapp.net/attachments/536731263764267009/752009497681068062/Screen_Shot_2020-04"
-            "-28_at_12.png?width=1273&height=684")
+                "-28_at_12.png?width=1273&height=684")
         await ctx.message.delete()
 
     @commands.command()
