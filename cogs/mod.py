@@ -28,19 +28,29 @@ class Mod(commands.Cog):
         except EOFError or KeyError:
             globalconfig = {}
         for x in self.bot.guilds:
-            config = globalconfig[x.id]
-            mutes = config["mutes"]
+            try:
+                config = globalconfig[x.id]
+            except KeyError:
+                config = {}
+            try:
+                mutes = config["mutes"]
+            except KeyError:
+                mutes = {}
+            removemutes = []
             for y in mutes.keys():
                 y = x.get_member(y)
                 mutefinished = mutes[y.id]
                 if time.time() > mutefinished:
                     muterole = x.get_role(config["muterole"])
                     await y.remove_roles(muterole)
-                    mutes.pop(y.id)
-                    config.update({"mutes": mutes})
-                    globalconfig.update({y.guild.id: config})
-                    pickle.dump(globalconfig, open("config", "wb"))
-                    print("Mute removed from user " + str(y) + " in guild " + str(x.id) + ".")
+                    removemutes.append(y.id)
+            for z in removemutes:
+                mutes.pop(z)
+                member = x.get_member(z)
+                print("Mute removed from user " + str(member) + " in guild " + str(x.id) + ".")
+            config.update({"mutes": mutes})
+            globalconfig.update({x.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
 
     @commands.has_permissions(administrator=True)
     @commands.command()
@@ -193,7 +203,6 @@ class Mod(commands.Cog):
         config.update({"mutes": mutes})
         globalconfig.update({ctx.guild.id: config})
         await ctx.send("User muted.")
-        print(globalconfig)
         pickle.dump(globalconfig, open("config", "wb"))
 
     @commands.has_permissions(manage_messages=True)
