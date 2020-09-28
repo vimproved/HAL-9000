@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
-from discord.ext.commands import TextChannelConverter, EmojiConverter
+from discord.ext.commands import TextChannelConverter, RoleConverter
+import pickle
 
 
 def setup(bot):
@@ -170,3 +171,95 @@ class Utility(commands.Cog):
         poll = await pollchannel.send(thing, embed=embed)
         for x in options.keys():
             await poll.add_reaction(x)
+
+    @commands.command()
+    async def color(self, ctx, args):
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError or KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[ctx.guild.id]
+        except KeyError:
+            config = {}
+        if args == "add":
+            q = await ctx.send("What would you like the color to be (hex code)?")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = response.content
+            color = answer
+            if "#" in color:
+                color = color.replace("#", "")
+            try:
+                color = discord.Colour(int(color, 16))
+            except Exception:
+                await ctx.send("Invalid color.")
+                return
+            q = await ctx.send("What would you like the color name to be?")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = response.content
+            name = answer
+            try:
+                colorposition = config["colorposition"]
+            except KeyError:
+                await ctx.send("You haven't set up a position to move colors to in this server yet. Do //config colorposition to set up a position. For now I've created the role at the bottom of the list.")
+            try:
+                colorrole = await ctx.guild.create_role(name=name, colour=color, reason="Automated colour addition.")
+                await ctx.guild.edit_role_positions({colorrole: colorposition-1})
+                await ctx.send("Color created.")
+            except discord.Forbidden:
+                await ctx.send("HAL-9000 does not have the manage roles permission.")
+            except discord.InvalidArgument:
+                await ctx.send("Invalid args.")
+            except discord.HTTPException:
+                await ctx.send("An unexpected exception occurred. Try again later.")
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            colors.append(colorrole.id)
+            config.update({"colors": colors})
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
+        elif args == "list":
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            colorroles = []
+            for x in colors:
+                x = ctx.guild.get_role(x)
+                colorroles.append(x)
+            text = ""
+            for x in colorroles:
+                text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex color: " + str(x.color)
+            await ctx.send(text)
+        else:
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            try:
+                colorrole = await RoleConverter().convert(ctx, args)
+            except Exception:
+                await ctx.send("That is not a valid color.")
+                return
+            if colorrole.id not in colors:
+                await ctx.send("That is not a valid color.")
+                return
+            for x in ctx.author.roles:
+                if x.id in colors:
+                    await ctx.author.remove_roles(x)
+            await ctx.author.add_roles(colorrole)
+            await ctx.send("Color set to " + colorrole.name + "!")

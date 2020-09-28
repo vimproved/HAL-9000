@@ -146,6 +146,22 @@ class Mod(commands.Cog):
                 await ctx.send("Set muted role to " + muterole.name + ".")
             except Exception:
                 await ctx.send("Role not found.")
+        elif args == "colorposition":
+            q = await ctx.send("What position (from the bottom of the roles list, including @ everyone) would you like new colors to be inserted at?")
+            rolenumber = len(ctx.guild.roles)
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = int(response.content)
+            position = answer
+            config.update({"colorposition": position})
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
+            await ctx.send("Done!")
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
