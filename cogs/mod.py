@@ -162,6 +162,19 @@ class Mod(commands.Cog):
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Done!")
+        elif args == "wipe":
+            q = await ctx.send("What config element would you like to wipe?")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = response.content
+            config.pop(answer)
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
 
     @commands.has_permissions(ban_members=True)
     @commands.command()

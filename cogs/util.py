@@ -237,9 +237,11 @@ class Utility(commands.Cog):
                 colors = config["colors"]
             except KeyError:
                 colors = []
+            print(colors)
             colorroles = []
             for x in colors:
                 x = ctx.guild.get_role(x)
+                print(x)
                 colorroles.append(x)
             text = ""
             for x in colorroles:
@@ -264,10 +266,10 @@ class Utility(commands.Cog):
                 await answer.delete()
             except Exception:
                 await ctx.send("Exception in deleting color role. Deleted already? Invalid? Proceeding with removing role from configs.")
-            if args not in colors:
+            if answer not in colors:
                 await ctx.send("Invalid color.")
                 return
-            colors.remove(args)
+            colors.remove(answer)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
