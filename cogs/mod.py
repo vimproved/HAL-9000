@@ -36,7 +36,7 @@ class Mod(commands.Cog):
                 mutes = config["mutes"]
             except KeyError:
                 mutes = {}
-            logchannel = await x.get_channel(config["logchannel"])
+            logchannel = x.get_channel(config["logchannel"])
             removemutes = []
             for y in mutes.keys():
                 y = x.get_member(y)
@@ -49,7 +49,7 @@ class Mod(commands.Cog):
                 mutes.pop(z)
                 member = x.get_member(z)
                 print("Mute removed from user " + str(member) + " in guild " + str(x.id) + ".")
-                logchannel.send("Mute removed from user " + str(member) + " by auto-unmute.")
+                await logchannel.send("Mute removed from user " + str(member) + " by auto-unmute.")
             config.update({"mutes": mutes})
             globalconfig.update({x.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
