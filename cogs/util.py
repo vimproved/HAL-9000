@@ -245,6 +245,32 @@ class Utility(commands.Cog):
             for x in colorroles:
                 text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex color: " + str(x.color)
             await ctx.send(text)
+        elif args == "delete":
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            q = await ctx.send("What color would you like to delete?")
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = response.content
+            try:
+                answer = await RoleConverter().convert(ctx, answer)
+                await answer.delete()
+            except Exception:
+                await ctx.send("Exception in deleting color role. Deleted already? Invalid? Proceeding with removing role from configs.")
+            if args not in colors:
+                await ctx.send("Invalid color.")
+                return
+            colors.remove(args)
+            config.update({"colors": colors})
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
         else:
             try:
                 colors = config["colors"]
