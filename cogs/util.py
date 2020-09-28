@@ -279,9 +279,17 @@ class Utility(commands.Cog):
                 colors = config["colors"]
             except KeyError:
                 colors = []
-            try:
-                colorrole = await RoleConverter().convert(ctx, args)
-            except Exception:
+            colorsthing = []
+            colorsl = []
+            for colorrrr in colors:
+                colorsthing.append((ctx.guild.get_role(colorrrr)).name)
+                colorsl.append((ctx.guild.get_role(colorrrr)).name.lower())
+            if args.lower() in colorsl:
+                try:
+                    colorrole = await RoleConverter().convert(ctx, colorsthing[colorsl.index(args.lower())])
+                except Exception:
+                    colorrole = await RoleConverter().convert(ctx, args)
+            else:
                 await ctx.send("That is not a valid color.")
                 return
             if colorrole.id not in colors:
