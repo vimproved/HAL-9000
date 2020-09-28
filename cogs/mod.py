@@ -36,7 +36,7 @@ class Mod(commands.Cog):
                 mutes = config["mutes"]
             except KeyError:
                 mutes = {}
-            logchannel = x.get_channel(config["logchannel"])
+            logchannel = await x.get_channel(config["logchannel"])
             removemutes = []
             for y in mutes.keys():
                 y = x.get_member(y)
