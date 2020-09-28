@@ -184,6 +184,9 @@ class Utility(commands.Cog):
         except KeyError:
             config = {}
         if args == "add":
+            if not ctx.author.guild_permissions.manage_roles:
+                await ctx.send("Invalid permissions.")
+                return
             q = await ctx.send("What would you like the color to be (hex code)?")
             responsefound = False
             while not responsefound:
@@ -250,7 +253,8 @@ class Utility(commands.Cog):
             await ctx.send(text)
         elif args == "delete":
             if not ctx.author.guild_permissions.manage_roles:
-                raise discord.Permissions
+                await ctx.send("Invalid permissions.")
+                return
             try:
                 colors = config["colors"]
             except KeyError:
