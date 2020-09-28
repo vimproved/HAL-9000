@@ -173,7 +173,8 @@ class Utility(commands.Cog):
             await poll.add_reaction(x)
 
     @commands.command()
-    async def color(self, ctx, args):
+    async def color(self, ctx, *args):
+        args = ' '.join(args)
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
