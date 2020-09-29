@@ -22,7 +22,6 @@ class Mod(commands.Cog):
 
     @tasks.loop(seconds=30)
     async def update_mutes(self):
-        print(time.time())
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -36,6 +35,8 @@ class Mod(commands.Cog):
                 mutes = config["mutes"]
             except KeyError:
                 mutes = {}
+            print(config)
+            print(globalconfig)
             logchannel = x.get_channel(config["logchannel"])
             removemutes = []
             for y in mutes.keys():
