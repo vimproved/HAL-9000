@@ -300,6 +300,9 @@ class Utility(commands.Cog):
             answer = response.content
             colors.pop(int(answer))
             await ctx.send("Color removed.")
+            config.update({"colors": colors})
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
         else:
             try:
                 colors = config["colors"]
