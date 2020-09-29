@@ -280,6 +280,25 @@ class Utility(commands.Cog):
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
+        elif args == "forcedeletion":
+            if not ctx.author.guild_permissions.manage_roles:
+                await ctx.send("Invalid permissions.")
+                return
+            q = await ctx.send("Do you really want to do this? This will delete a role from the config file forcibly. Enter color # to continue.")
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer = response.content
+            colors.pop(int(answer)-1)
         else:
             try:
                 colors = config["colors"]
