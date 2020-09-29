@@ -147,7 +147,7 @@ class Mod(commands.Cog):
             except Exception:
                 await ctx.send("Role not found.")
         elif args == "colorposition":
-            q = await ctx.send("What position (from the bottom of the roles list, including @ everyone) would you like new colors to be inserted at?")
+            q = await ctx.send("What position (from the top of the roles list) would you like new colors to be inserted at?")
             rolenumber = len(ctx.guild.roles)
             responsefound = False
             while not responsefound:
@@ -157,6 +157,7 @@ class Mod(commands.Cog):
                         responsefound = True
                         break
             answer = int(response.content)
+            answer = (len(ctx.guild.roles) - answer) + 1
             position = answer
             config.update({"colorposition": position})
             globalconfig.update({ctx.guild.id: config})

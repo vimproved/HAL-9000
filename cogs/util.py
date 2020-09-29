@@ -220,7 +220,7 @@ class Utility(commands.Cog):
                 await ctx.send("You haven't set up a position to move colors to in this server yet. Do //config colorposition to set up a position. For now I've created the role at the bottom of the list.")
             try:
                 colorrole = await ctx.guild.create_role(name=name, colour=color, reason="Automated colour addition.")
-                await ctx.guild.edit_role_positions({colorrole: colorposition-1})
+                await ctx.guild.edit_role_positions({colorrole: colorposition})
                 await ctx.send("Color created.")
             except discord.Forbidden:
                 await ctx.send("HAL-9000 does not have the manage roles permission.")
