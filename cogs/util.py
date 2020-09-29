@@ -276,7 +276,7 @@ class Utility(commands.Cog):
             if answer not in colors:
                 await ctx.send("Invalid color.")
                 return
-            colors.remove(answer)
+            colors.remove(answer.id)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
