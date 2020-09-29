@@ -298,7 +298,8 @@ class Utility(commands.Cog):
                         responsefound = True
                         break
             answer = response.content
-            colors.pop(int(answer)-1)
+            colors.pop(int(answer))
+            await ctx.send("Color removed.")
         else:
             try:
                 colors = config["colors"]
