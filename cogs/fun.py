@@ -187,4 +187,5 @@ class Fun(commands.Cog):
         """!BWOOP BWOOP! Sends an alert 5 times.
         ```//alert <text>```"""
         alert_text = eval('"' + ' '.join(args).upper() + '"')
-        await ctx.send(f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
+        for n in range(5):
+            await ctx.send(f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:")
