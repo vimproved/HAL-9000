@@ -174,6 +174,12 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def color(self, ctx, *args):
+        """Commands relating to the color system.
+        ```//color list: Lists color names and hex codes.
+        //color <color name>: Sets your color.
+        //color add: Adds a color. Requires manage roles.
+        //color remove: Removes a color. Requires manage roles.
+        //color forcedelete: Forcibly deletes a color from the config list. Use only if something breaks. Requires manage roles."""
         args = ' '.join(args)
         try:
             globalconfig = pickle.load(open("config", "rb"))

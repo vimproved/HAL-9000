@@ -60,10 +60,11 @@ class Mod(commands.Cog):
     async def config(self, ctx, args):
         """Configures the local server settings of HAL.
         Requires administrator.
-        ```//config logchannel
-        //config systemchannel
-        //config copypasta
-        //config read```"""
+        ```//config logchannel: Sets the channel for HAL to send mod log messages in (HAL Errors, messasge deletions)
+        //config systemchannel: Sets the channel for HAL to send member joins/leaves in.
+        //config copypasta: Sets whether //copypasta is enabled for this server.
+        //config colorposition: Sets the role list position of new color roles.
+        //config read: Sends the config settings.```"""
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
