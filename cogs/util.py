@@ -179,7 +179,7 @@ class Utility(commands.Cog):
         //color <color name>: Sets your color.
         //color add: Adds a color. Requires manage roles.
         //color remove: Removes a color. Requires manage roles.
-        //color forcedelete: Forcibly deletes a color from the config list. Use only if something breaks. Requires manage roles."""
+        //color forcedelete: Forcibly deletes a color from the config list. Use only if something breaks. Requires manage roles.```"""
         args = ' '.join(args)
         try:
             globalconfig = pickle.load(open("config", "rb"))
