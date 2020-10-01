@@ -52,7 +52,7 @@ class Utility(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         """Pings the bot. Ignores arguments."""
-        await ctx.send("Pong! :ping_pong:")
+        await ctx.send(f"Pong in {int(round(self.bot.latency*1000, 1))} ms! :ping_pong:")
 
     @commands.command()
     async def invite(self, ctx):
