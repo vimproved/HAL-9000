@@ -174,6 +174,18 @@ class Fun(commands.Cog):
                     "a COLOR SCREEN that's almost 1/20th the resolution of your computer BUT WAIT!!! this is the "
                     "HIGH:tm: RESOLUTION :copyright: VERSION WITH IMMERSIVE COLOR GRAPHICS! anyway to sum this all up "
                     "fuck ti they are pieces of shit")
+            if args == "novysole":
+                await ctx.send(
+                    "As far as I know about my son, I received a letter from a famous naval station stating that I "
+                    "was involved with more than 300 people in a secret protest against Al Qaeda. My gorilla trained "
+                    "me to be the most powerful hunter and sniper in the United States Army. It does not matter to "
+                    "me, I will bring you here in person. You think you can see other people. Stupid, think again. In "
+                    "fact, I contacted the US Secret Service and tried to find an IP address in the best possible "
+                    "way. Storms wreak havoc on the little things that keep you alive. Honey, I can kill you 100 "
+                    "times at a time. Not only will I have more training in the unarmed war, but I will also have "
+                    "full access to the U.S. Army. I will use it to help. Shame on you on this continent. Knowing bad "
+                    "warnings will give you \"wisdom\" and guidance will help you move forward. But you can not, "
+                    "you can not and you have to pay and lose. I was threatened with drowning. I'm in love")
             await ctx.message.delete()
         else:
             await ctx.send("Copypastas are not enabled on this server.")
