@@ -55,7 +55,7 @@ class Utility(commands.Cog):
         """Pings the bot. Ignores arguments."""
         m = await ctx.send("Pong?")
         latency = m.created_at - ctx.message.created_at
-        await m.edit(content=f"Ping in {int(latency.microseconds/1000)} ms! :ping_pong:")
+        await m.edit(content=f"Pong in {int(latency.microseconds/1000)} ms! :ping_pong:")
 
     @commands.command()
     async def invite(self, ctx):
