@@ -22,7 +22,7 @@ class HAL(commands.Bot):
                 "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
                 "error has occurred.")
             globalconfig = {}
-        await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that.")
+        await ctx.send("An unhandled exception has occured. Please report this to @vi#7158.")
         config = globalconfig[ctx.guild.id]
         logchannel = self.get_channel(int(config['logchannel']))
         await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
