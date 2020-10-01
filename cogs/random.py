@@ -1,5 +1,6 @@
 from discord.ext import commands
 import random
+import itertools
 
 
 def setup(bot):
@@ -33,7 +34,7 @@ class Random(commands.Cog):
             num, sides = die.split('d')
             if num == '':
                 num = '1'
-            rolls = [random.randint(1, int(sides)) for n in range(int(num))]
+            rolls = [random.randint(1, int(sides)) for _ in itertools.repeat(None, num)]
             if sides == '20':
                 crits += rolls.count(20)
                 critf += rolls.count(1)

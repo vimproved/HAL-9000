@@ -19,13 +19,14 @@ class HAL(commands.Bot):
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
             print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
-                "has occurred.")
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
+                "error has occurred.")
             globalconfig = {}
         await ctx.send("I'm sorry " + ctx.author.mention + ", I'm afraid I can't do that.")
         config = globalconfig[ctx.guild.id]
         logchannel = self.get_channel(int(config['logchannel']))
-        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + ". Invoke message: " + ctx.message.jump_url)
+        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
+            type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
     async def on_ready(self):
         print("HAL-9000")
@@ -62,8 +63,8 @@ class HAL(commands.Bot):
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
             print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
-                "has occurred.")
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
+                "error has occurred.")
             globalconfig = {}
         config = globalconfig[member.guild.id]
         systemchannel = self.get_channel(int(config['systemchannel']))
@@ -77,8 +78,8 @@ class HAL(commands.Bot):
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
             print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
-                "has occurred.")
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
+                "error has occurred.")
             globalconfig = {}
         config = globalconfig[member.guild.id]
         systemchannel = self.get_channel(int(config['systemchannel']))
@@ -91,12 +92,13 @@ class HAL(commands.Bot):
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
             print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error "
-                "has occurred.")
+                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
+                "error has occurred.")
             globalconfig = {}
         config = globalconfig[message.guild.id]
         logchannel = self.get_channel(int(config['logchannel']))
-        await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
+        await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(
+            datetime.now()) + ". Contents: " + message.content)
 
 
 bot = HAL("//")

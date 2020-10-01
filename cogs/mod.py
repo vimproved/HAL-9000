@@ -73,47 +73,47 @@ class Mod(commands.Cog):
             config = {}
         if args == "systemchannel":
             q = await ctx.send("Please enter the channel you would like HAL to send server updates in.")
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
-            systemchannel = await TextChannelConverter().convert(ctx, response.content)
+            answer = response.content
+            systemchannel = await TextChannelConverter().convert(ctx, answer)
             config.update({"systemchannel": systemchannel.id})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("System channel set to " + response.content)
         elif args == "logchannel":
             q = await ctx.send("Please enter the channel you would like HAL to send moderation logs and errors in.")
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
-            logchannel = await TextChannelConverter().convert(ctx, response.content)
+            answer = response.content
+            logchannel = await TextChannelConverter().convert(ctx, answer)
             config.update({"logchannel": logchannel.id})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Log channel set to" + response.content)
         elif args == "copypasta":
             q = await ctx.send('Please enter "yes" or "no" to configure whether copypasta is enabled on this server.')
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
-            if response.content == "yes":
+            answer = response.content
+            if answer == "yes":
                 enabled = True
-            elif response.content == "no":
+            elif answer == "no":
                 enabled = False
             else:
-                await ctx.send ("That is not a valid response")
+                await ctx.send("That is not a valid response")
                 return
             config.update({"copypastaenabled": enabled})
             globalconfig.update({ctx.guild.id: config})
@@ -124,18 +124,17 @@ class Mod(commands.Cog):
             for x in config.keys():
                 try:
                     value = (await TextChannelConverter().convert(ctx, str(config[x]))).mention
-                except Exception:
+                except commands.errors.BadArgument:
                     value = str(config[x])
                 message = message + "\n" + str(x) + ": " + value
             await ctx.send(message)
         elif args == "muterole":
             q = await ctx.send("What would you like the new muted role to be?")
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = response.content
             try:
@@ -144,17 +143,16 @@ class Mod(commands.Cog):
                 globalconfig.update({ctx.guild.id: config})
                 pickle.dump(globalconfig, open("config", "wb"))
                 await ctx.send("Set muted role to " + muterole.name + ".")
-            except Exception:
+            except commands.errors.BadArgument:
                 await ctx.send("Role not found.")
         elif args == "colorposition":
-            q = await ctx.send("What position (from the top of the roles list) would you like new colors to be inserted at?")
-            rolenumber = len(ctx.guild.roles)
-            responsefound = False
-            while not responsefound:
+            q = await ctx.send("What position (from the top of the roles list) would you like new colors to be "
+                               "inserted at?")
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = int(response.content)
             answer = (len(ctx.guild.roles) - answer) + 1
@@ -165,12 +163,11 @@ class Mod(commands.Cog):
             await ctx.send("Done!")
         elif args == "wipe":
             q = await ctx.send("What config element would you like to wipe?")
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = response.content
             config.pop(answer)
@@ -203,12 +200,12 @@ class Mod(commands.Cog):
             config = {}
         try:
             user = await MemberConverter().convert(ctx, args[0])
-        except Exception:
+        except commands.errors.BadArgument:
             await ctx.send("User not found.")
             return
         try:
             length = int(args[1])
-        except Exception:
+        except ValueError:
             await ctx.send("That is not a valid time.")
             return
         try:
@@ -262,8 +259,8 @@ class Mod(commands.Cog):
             users = ctx.guild.members
         else:
             users = []
-            assignments = args.remove(args[-1])
-            for user in assignments:
+            list(args).remove(args[-1])
+            for user in args:
                 user = await converter.convert(ctx, user)
                 users.append(user)
         role = await converter2.convert(ctx, args[-1])
@@ -278,11 +275,22 @@ class Mod(commands.Cog):
         """Sends an embed message of choice in a channel of choice.
         Requires administrator.
         ```//embedsend <channel>```"""
+        try:
+            try:
+                rolemention = await RoleConverter().convert(ctx, args[1])
+                rmention = rolemention.mention
+            except commands.errors.BadArgument:
+                if args[1] == "everyone" or args[1] == "here":
+                    rmention = f"@{args[1]}"
+                else:
+                    await ctx.send("Invalid Role.")
+                    return
+        except IndexError:
+            rmention = ""
         converter = TextChannelConverter()
-        converter2 = RoleConverter()
         try:
             channel = await converter.convert(ctx, args[0])
-        except Exception:
+        except commands.errors.BadArgument:
             await ctx.send("Please input a channel.")
             return
         embed = discord.Embed(color=0xff0008)
@@ -293,12 +301,11 @@ class Mod(commands.Cog):
                      "type \"userstamp\". The message will then be sent.    ",
                                 inline=False)
             q = await ctx.send(embed=embed_var)
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = response.content
             if answer == "done":
@@ -319,14 +326,5 @@ class Mod(commands.Cog):
                         break
             answer2 = response.content
             embed.add_field(name=answer, value=answer2 + "\n", inline=False)
-        try:
-            if args[1] == "everyone":
-                await channel.send("@everyone\n", embed=embed)
-            elif args[1] == "here":
-                await channel.send("@here\n", embed=embed)
-            else:
-                rolemention = await converter2.convert(ctx, args[1])
-                await channel.send(rolemention.mention + "\n", embed=embed)
-        except Exception:
-            await channel.send(embed=embed)
+        await channel.send(rmention, embed=embed)
         await ctx.send("Message sent!")

@@ -2,7 +2,6 @@ from discord.ext import commands
 import discord
 from discord.ext.commands import TextChannelConverter, RoleConverter
 import pickle
-import datetime
 
 
 def setup(bot):
@@ -19,16 +18,13 @@ class Utility(commands.Cog):
         """Help command.
         ```//help <command>: Help for a single command
         //help <category>: Help for all the commands in a category.```"""
-        nameslower = []
+        names_lower = []
         names = []
         for x in self.bot.cogs.keys():
-            nameslower.append(x.lower())
+            names_lower.append(x.lower())
             names.append(x)
-        if args.lower() in nameslower:
-            try:
-                args = self.bot.get_cog(names[nameslower.index(args)])
-            except Exception:
-                args = self.bot.get_cog(args)
+        if args.lower() in names_lower:
+            args = self.bot.get_cog(names[names_lower.index(args.lower())])
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="__" + args.qualified_name + "__",
                                 value=args.description + "\n", inline=False)
@@ -52,7 +48,8 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        """Pings the bot. Ignores arguments."""
+        """Pings the bot and displays the time in milliseconds between your message being sent and the ping message
+        being sent. Ignores arguments. """
         m = await ctx.send("Pong?")
         latency = m.created_at - ctx.message.created_at
         await m.edit(content=f"Pong in {int(latency.microseconds/1000)} ms! :ping_pong:")
@@ -73,32 +70,34 @@ class Utility(commands.Cog):
         """Creates a poll in a the specified channel and optionally pings a role.
         Admin only.
         ```//poll <channel> <role(optional)>```"""
-        pollchannel = await TextChannelConverter().convert(ctx, args[0])
+        poll_channel = await TextChannelConverter().convert(ctx, args[0])
         embed = discord.Embed(color=0xff0008)
-        embed.add_field(name="__Poll Creation__", value='What is the name of your poll?\nType "cancel" at any time to cancel poll creation.', inline=False)
+        embed.add_field(name="__Poll Creation__", value='What is the name of your poll?\nType "cancel" at any time to '
+                                                        'cancel poll creation.', inline=False)
         q = await ctx.send(embed=embed)
-        responsefound = False
-        while not responsefound:
+        response = ""
+        while type(response) != discord.Message:
             async for message in ctx.channel.history(limit=10):
                 if message.author == ctx.author and message.created_at > q.created_at:
                     response = message
-                    responsefound = True
                     break
         answer = response.content
         if answer.lower() == "cancel":
+            await ctx.send("Poll cancelled.")
             return
         title = answer
         embed = discord.Embed(color=0xff0008)
         embed.add_field(name="__Poll Creation__",
-                        value='Type a brief description of your poll.\nType "cancel" at any time to cancel poll creation.',
+                        value='Type a brief description of your poll.\nType "cancel" at any time to cancel poll '
+                              'creation.',
                         inline=False)
         q = await ctx.send(embed=embed)
-        responsefound = False
-        while not responsefound:
+        response_found = False
+        while not response_found:
             async for message in ctx.channel.history(limit=10):
                 if message.author == ctx.author and message.created_at > q.created_at:
                     response = message
-                    responsefound = True
+                    response_found = True
                     break
         answer = response.content
         if answer.lower() == "cancel":
@@ -106,63 +105,70 @@ class Utility(commands.Cog):
         description = answer
         embed = discord.Embed(color=0xff0008)
         embed.add_field(name="__Poll Creation__",
-                        value='How many voting options would you like?.\nType "cancel" at any time to cancel poll creation.',
+                        value='How many voting options would you like?.\nType "cancel" at any time to cancel poll '
+                              'creation.',
                         inline=False)
         q = await ctx.send(embed=embed)
-        responsefound = False
-        while not responsefound:
+        response_found = False
+        while not response_found:
             async for message in ctx.channel.history(limit=10):
                 if message.author == ctx.author and message.created_at > q.created_at:
                     response = message
-                    responsefound = True
+                    response_found = True
                     break
         answer = response.content
-        numresps = answer
+        num_responses = answer
         if answer.lower() == "cancel":
+            await ctx.send("Poll cancelled.")
             return
         options = {}
-        for x in range(0, int(numresps)):
+        for x in range(0, int(num_responses)):
             embed = discord.Embed(color=0xff0008)
             embed.add_field(name="__Poll Creation__",
-                            value='Type the text for response #' + str(x+1) + '.\nType "cancel" at any time to cancel poll creation.',
+                            value='Type the text for response #' + str(x+1) + '.\nType "cancel" at any time to cancel '
+                                                                              'poll creation.',
                             inline=False)
             q = await ctx.send(embed=embed)
-            responsefound = False
-            while not responsefound:
+            response_found = False
+            while not response_found:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
+                        response_found = True
                         break
             answer = response.content
             if answer.lower() == "cancel":
+                await ctx.send("Poll cancelled.")
                 return
             text = answer
             embed = discord.Embed(color=0xff0008)
             embed.add_field(name="__Poll Creation__",
-                            value='Type the emoji for response #' + str(x+1) + '. MAKE SURE THAT THE EMOJI IS EITHER FROM THIS SERVER, OR A GLOBAL EMOJI.\nType "cancel" at any time to cancel poll creation.',
+                            value='Type the emoji for response #' + str(x+1) + '. MAKE SURE THAT THE EMOJI IS EITHER '
+                                                                               'FROM THIS SERVER, OR A GLOBAL '
+                                                                               'EMOJI.\nType "cancel" at any time to '
+                                                                               'cancel poll creation.',
                             inline=False)
             q = await ctx.send(embed=embed)
-            responsefound = False
-            while not responsefound:
+            response_found = False
+            while not response_found:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
+                        response_found = True
                         break
             answer = response.content
             emoji = answer
             options.update({emoji: text})
         await ctx.send("Sending poll message.")
-        respstr = ""
+        response_str = ""
         for x in options.keys():
-            respstr = respstr + "\n\n" + x + ": " + options[x]
+            response_str = response_str + "\n\n" + x + ": " + options[x]
         embed = discord.Embed(color=0xff0008)
         embed.add_field(name="*__POLL: " + title + "__*",
                         value='Description:\n' + description,
                         inline=False)
         embed.add_field(name="*Responses*",
-                        value=respstr,
+                        value=response_str,
                         inline=False)
         embed.add_field(name="*Created by:*",
                         value=ctx.author.mention,
@@ -171,18 +177,16 @@ class Utility(commands.Cog):
             thing = "@everyone"
         else:
             thing = args[1]
-        poll = await pollchannel.send(thing, embed=embed)
+        poll = await poll_channel.send(thing, embed=embed)
         for x in options.keys():
             await poll.add_reaction(x)
 
     @commands.command()
     async def color(self, ctx, *args):
-        """Commands relating to the color system.
-        ```//color list: Lists color names and hex codes.
-        //color <color name>: Sets your color.
-        //color add: Adds a color. Requires manage roles.
-        //color remove: Removes a color. Requires manage roles.
-        //color forcedelete: Forcibly deletes a color from the config list. Use only if something breaks. Requires manage roles.```"""
+        """Commands relating to the color system. ```//color list: Lists color names and hex codes. //color <color
+        name>: Sets your color. //color add: Adds a color. Requires manage roles. //color remove: Removes a color.
+        Requires manage roles. //color forcedelete: Forcibly deletes a color from the config list. Use only if
+        something breaks. Requires manage roles.``` """
         args = ' '.join(args)
         try:
             globalconfig = pickle.load(open("config", "rb"))
@@ -197,12 +201,11 @@ class Utility(commands.Cog):
                 await ctx.send("Invalid permissions.")
                 return
             q = await ctx.send("What would you like the color to be (hex code)?")
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = response.content
             color = answer
@@ -210,7 +213,7 @@ class Utility(commands.Cog):
                 color = color.replace("#", "")
             try:
                 color = discord.Colour(int(color, 16))
-            except Exception:
+            except ValueError:
                 await ctx.send("Invalid color.")
                 return
             q = await ctx.send("What would you like the color name to be?")
@@ -226,17 +229,23 @@ class Utility(commands.Cog):
             try:
                 colorposition = config["colorposition"]
             except KeyError:
-                await ctx.send("You haven't set up a position to move colors to in this server yet. Do //config colorposition to set up a position. For now I've created the role at the bottom of the list.")
+                await ctx.send("You haven't set up a position to move colors to in this server yet. Do //config "
+                               "colorposition to set up a position. For now I've created the role at the bottom of "
+                               "the list.")
+                colorposition = 1
             try:
                 colorrole = await ctx.guild.create_role(name=name, colour=color, reason="Automated colour addition.")
                 await ctx.guild.edit_role_positions({colorrole: colorposition})
                 await ctx.send("Color created.")
             except discord.Forbidden:
                 await ctx.send("HAL-9000 does not have the manage roles permission.")
+                return
             except discord.InvalidArgument:
                 await ctx.send("Invalid args.")
+                return
             except discord.HTTPException:
                 await ctx.send("An unexpected exception occurred. Try again later.")
+                return
             try:
                 colors = config["colors"]
             except KeyError:
@@ -258,7 +267,9 @@ class Utility(commands.Cog):
                 colorroles.append(x)
             text = ""
             for x in colorroles:
-                text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex color: " + str(x.color)
+                text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex " \
+                                                                                                          "color: " +\
+                       str(x.color)
             await ctx.send(text)
         elif args == "delete":
             if not ctx.author.guild_permissions.manage_roles:
@@ -269,42 +280,43 @@ class Utility(commands.Cog):
             except KeyError:
                 colors = []
             q = await ctx.send("What color would you like to delete?")
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = response.content
             try:
                 answer = await RoleConverter().convert(ctx, answer)
                 await answer.delete()
-            except Exception:
-                await ctx.send("Exception in deleting color role. Deleted already? Invalid? Proceeding with removing role from configs.")
+            except commands.errors.ConversionError:
+                await ctx.send("Exception in deleting role. Deleted already? Proceeding with deletion from config.")
+            except discord.Permissions:
+                await ctx.send("Invalid permissions to delete role. Proceeding with deletion from config.")
             if answer not in colors:
-                await ctx.send("Invalid color.")
+                await ctx.send("Invalid color in config list.")
                 return
             colors.remove(answer.id)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-        elif args == "forcedeletion":
+        elif args == "forcedelete":
             if not ctx.author.guild_permissions.manage_roles:
                 await ctx.send("Invalid permissions.")
                 return
-            q = await ctx.send("Do you really want to do this? This will delete a role from the config file forcibly. Enter color # to continue.")
+            q = await ctx.send("Do you really want to do this? This will delete a role from the config file forcibly. "
+                               "Enter color # to continue.")
             try:
                 colors = config["colors"]
             except KeyError:
                 colors = []
 
-            responsefound = False
-            while not responsefound:
+            response = ""
+            while type(response) != discord.Message:
                 async for message in ctx.channel.history(limit=10):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
-                        responsefound = True
                         break
             answer = response.content
             colors.pop(int(answer))
@@ -325,7 +337,7 @@ class Utility(commands.Cog):
             if args.lower() in colorsl:
                 try:
                     colorrole = await RoleConverter().convert(ctx, colorsthing[colorsl.index(args.lower())])
-                except Exception:
+                except ValueError:
                     colorrole = await RoleConverter().convert(ctx, args)
             else:
                 await ctx.send("That is not a valid color.")
