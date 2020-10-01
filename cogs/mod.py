@@ -328,3 +328,45 @@ class Mod(commands.Cog):
             embed.add_field(name=answer, value=answer2 + "\n", inline=False)
         await channel.send(rmention, embed=embed)
         await ctx.send("Message sent!")
+    @commands.command()
+    async def embededit(self, ctx, args):
+        try:
+            msg = await commands.MessageConverter().convert(ctx, args)
+        except commands.errors.BadArgument:
+            await ctx.send("Invalid message.")
+            return
+        embed = discord.Embed(color=0xff0008)
+        for x in count(1):
+            embed_var = discord.Embed(color=0xff0008)
+            embed_var.add_field(name="Name #" + str(x), value="Respond with the name of field #" + str(
+                x) + ". If you are done type \"done\". If you would like to include a field with who sent this embed, "
+                     "type \"userstamp\". The message will then be sent.    ",
+                                inline=False)
+            q = await ctx.send(embed=embed_var)
+            response = ""
+            while type(response) != discord.Message:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        break
+            answer = response.content
+            if answer == "done":
+                break
+            elif answer == "userstamp":
+                embed.add_field(name="__Message Sent By__", value=ctx.author.mention, inline=False)
+                break
+            embed_var = discord.Embed(color=0xff0008)
+            embed_var.add_field(name="Value #" + str(x), value="Respond with the name of field #" + str(x) + ".",
+                                inline=False)
+            q = await ctx.send(embed=embed_var)
+            responsefound = False
+            while not responsefound:
+                async for message in ctx.channel.history(limit=10):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        responsefound = True
+                        break
+            answer2 = response.content
+            embed.add_field(name=answer, value=answer2 + "\n", inline=False)
+        await msg.edit(embed=embed)
+        await ctx.send("Embed edited.")
