@@ -13,6 +13,8 @@ class HAL(commands.Bot):
         self.startup()
 
     async def on_command_error(self, ctx, exception):
+        if type(exception) is commands.errors.CommandNotFound:
+            return
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:

@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 from discord.ext.commands import TextChannelConverter, RoleConverter
 import pickle
+import datetime
 
 
 def setup(bot):
@@ -52,7 +53,9 @@ class Utility(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         """Pings the bot. Ignores arguments."""
-        await ctx.send(f"Pong in {int(round(self.bot.latency*1000, 1))} ms! :ping_pong:")
+        m = await ctx.send("Pong?")
+        latency = m.created_at - ctx.message.created_at
+        await m.edit(content=f"Ping in {int(latency.microseconds/1000)} ms! :ping_pong:")
 
     @commands.command()
     async def invite(self, ctx):

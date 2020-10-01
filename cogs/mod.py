@@ -35,8 +35,6 @@ class Mod(commands.Cog):
                 mutes = config["mutes"]
             except KeyError:
                 mutes = {}
-            print(config)
-            print(globalconfig)
             logchannel = x.get_channel(config["logchannel"])
             removemutes = []
             for y in mutes.keys():
