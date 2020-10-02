@@ -77,7 +77,7 @@ class Utility(commands.Cog):
         q = await ctx.send(embed=embed)
         response = ""
         while type(response) != discord.Message:
-            async for message in ctx.channel.history(limit=10):
+            async for message in ctx.channel.history(limit=5):
                 if message.author == ctx.author and message.created_at > q.created_at:
                     response = message
                     break
@@ -94,7 +94,7 @@ class Utility(commands.Cog):
         q = await ctx.send(embed=embed)
         response_found = False
         while not response_found:
-            async for message in ctx.channel.history(limit=10):
+            async for message in ctx.channel.history(limit=5):
                 if message.author == ctx.author and message.created_at > q.created_at:
                     response = message
                     response_found = True
@@ -111,7 +111,7 @@ class Utility(commands.Cog):
         q = await ctx.send(embed=embed)
         response_found = False
         while not response_found:
-            async for message in ctx.channel.history(limit=10):
+            async for message in ctx.channel.history(limit=5):
                 if message.author == ctx.author and message.created_at > q.created_at:
                     response = message
                     response_found = True
@@ -131,7 +131,7 @@ class Utility(commands.Cog):
             q = await ctx.send(embed=embed)
             response_found = False
             while not response_found:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         response_found = True
@@ -151,7 +151,7 @@ class Utility(commands.Cog):
             q = await ctx.send(embed=embed)
             response_found = False
             while not response_found:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         response_found = True
@@ -203,7 +203,7 @@ class Utility(commands.Cog):
             q = await ctx.send("What would you like the color to be (hex code)?")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -219,7 +219,7 @@ class Utility(commands.Cog):
             q = await ctx.send("What would you like the color name to be?")
             responsefound = False
             while not responsefound:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         responsefound = True
@@ -282,7 +282,7 @@ class Utility(commands.Cog):
             q = await ctx.send("What color would you like to delete?")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -314,7 +314,7 @@ class Utility(commands.Cog):
 
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break

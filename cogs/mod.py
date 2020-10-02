@@ -75,7 +75,7 @@ class Mod(commands.Cog):
             q = await ctx.send("Please enter the channel you would like HAL to send server updates in.")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -89,7 +89,7 @@ class Mod(commands.Cog):
             q = await ctx.send("Please enter the channel you would like HAL to send moderation logs and errors in.")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -103,7 +103,7 @@ class Mod(commands.Cog):
             q = await ctx.send('Please enter "yes" or "no" to configure whether copypasta is enabled on this server.')
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -132,7 +132,7 @@ class Mod(commands.Cog):
             q = await ctx.send("What would you like the new muted role to be?")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -150,7 +150,7 @@ class Mod(commands.Cog):
                                "inserted at?")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -165,7 +165,7 @@ class Mod(commands.Cog):
             q = await ctx.send("What config element would you like to wipe?")
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -303,7 +303,7 @@ class Mod(commands.Cog):
             q = await ctx.send(embed=embed_var)
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -319,7 +319,7 @@ class Mod(commands.Cog):
             q = await ctx.send(embed=embed_var)
             responsefound = False
             while not responsefound:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         responsefound = True
@@ -345,7 +345,7 @@ class Mod(commands.Cog):
             q = await ctx.send(embed=embed_var)
             response = ""
             while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         break
@@ -361,7 +361,7 @@ class Mod(commands.Cog):
             q = await ctx.send(embed=embed_var)
             responsefound = False
             while not responsefound:
-                async for message in ctx.channel.history(limit=10):
+                async for message in ctx.channel.history(limit=5):
                     if message.author == ctx.author and message.created_at > q.created_at:
                         response = message
                         responsefound = True
