@@ -34,7 +34,7 @@ class Random(commands.Cog):
             num, sides = die.split('d')
             if num == '':
                 num = '1'
-            rolls = [random.randint(1, int(sides)) for _ in itertools.repeat(None, num)]
+            rolls = [random.randint(1, int(sides)) for _ in itertools.repeat(None, int(num))]
             if sides == '20':
                 crits += rolls.count(20)
                 critf += rolls.count(1)
