@@ -54,6 +54,8 @@ class Fun(commands.Cog):
         except KeyError:
             enabled = False
         if enabled:
+            if args == None:
+                await ctx.send("List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
             if args == "navyseal":
                 await ctx.send(
                     "What the fuck did you just fucking say about me, you little bitch? I'll have you know I "
