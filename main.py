@@ -111,4 +111,9 @@ async def stop(ctx):
     await bot.logout()
 
 
+@bot.command()
+async def defenestrate(ctx):
+    await ctx.send("https colon slash slash open dot spotify dot com slash playlist slash one favwfbw seven yhpu three uupir two rg questionmark si equals ipv nine lkqit four dash bbcuduhn eight iq")
+
+
 bot.run()
