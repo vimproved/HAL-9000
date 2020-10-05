@@ -213,5 +213,5 @@ class Fun(commands.Cog):
         ```//alert <text>```"""
         alert_text = eval('"' + ' '.join(args).upper() + '"')
         await ctx.send(
-            f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + "ALERT :rotating_light: ***bwoop "
+            f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop "
                                                                                    "bwoop*** :rotating_light:")

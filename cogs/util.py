@@ -40,7 +40,7 @@ class Utility(commands.Cog):
                                 value="HAL-9000 is a multipurpose discord bot made by vi#7158 "
                                 "and rous#7120.\nThis is the help menu. Do `//help <"
                                 "command>` for information on a single command. Do `//help"
-                                " <category>` for information on a single category.\n",
+                                " <category>` for information on a single category.\nCategories:\n  ",
                                 inline=False)
             for cog in self.bot.cogs.values():
                 embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
@@ -69,7 +69,7 @@ class Utility(commands.Cog):
     async def poll(self, ctx, *args):
         """Creates a poll in a the specified channel and optionally pings a role.
         Admin only.
-        ```//poll <channel> <role(optional)>```"""
+        ```//poll <channel> <role (optional)>```"""
         poll_channel = await TextChannelConverter().convert(ctx, args[0])
         embed = discord.Embed(color=0xff0008)
         embed.add_field(name="__Poll Creation__", value='What is the name of your poll?\nType "cancel" at any time to '
