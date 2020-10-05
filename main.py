@@ -18,6 +18,10 @@ class HAL(commands.Bot):
         elif type(exception) is commands.errors.MissingPermissions:
             await ctx.send("You are missing permissions required to run this command.")
             return
+        elif str(exception).startswith("Command raised an exception: IndexError:"):
+            await ctx.send("This command requires arguments that you did not specify. Do //help <command> for "
+                           "information on how to use this command.")
+            return
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
