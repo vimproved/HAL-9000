@@ -29,7 +29,9 @@ class Fun(commands.Cog):
                     "Accept": "text/plain"})
             await ctx.send(dadjoke.content.decode('utf-8'))
         except discord.HTTPException:
-            await ctx.send("Hi " + args + ", I'm dad!")
+            await ctx.send("Hi " + args + ", I'm dad!", allowed_mentions=discord.AllowedMentions(everyone=False,
+                                                                                                 users=False,
+                                                                                                 roles=False))
 
     @commands.command()
     async def copypasta(self, ctx, args):
@@ -193,12 +195,6 @@ class Fun(commands.Cog):
             await ctx.send("Copypastas are not enabled on this server.")
 
     @commands.command()
-    async def weebalert(self, ctx):
-        """Weebery has been detected !BWOOP BWOOP! Ignores arguments."""
-        for x in range(0, 10):
-            await ctx.send(":rotating_light: WEEB ALERT :rotating_light:")
-
-    @commands.command()
     async def bonk(self, ctx):
         """BONK! Ignores arguments."""
         await ctx.send("go to #horny-jail")
@@ -212,6 +208,7 @@ class Fun(commands.Cog):
         """!BWOOP BWOOP! Sends an alert 5 times.
         ```//alert <text>```"""
         alert_text = eval('"' + ' '.join(args).upper() + '"')
-        await ctx.send(
-            f":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop "
-                                                                                   "bwoop*** :rotating_light:")
+        await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + "ALERT :rotating_light: "
+                                                                                             "***bwoop bwoop*** "
+                                                                                             ":rotating_light:",
+                       allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))

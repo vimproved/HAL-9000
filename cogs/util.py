@@ -273,7 +273,7 @@ class Utility(commands.Cog):
             await ctx.send(text)
         elif args == "delete":
             if not ctx.author.guild_permissions.manage_roles:
-                await ctx.send("Invalid permissions.")
+                raise discord.ext.commands.MissingPermissions
                 return
             try:
                 colors = config["colors"]

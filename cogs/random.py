@@ -46,4 +46,5 @@ class Random(commands.Cog):
     async def choose(self, ctx, *args):
         """Chooses between multiple things if you can't decide yourself.
         ```//choose <args>```"""
-        await ctx.send(random.choice(args))
+        await ctx.send(random.choice(args), allowed_mentions=discord.AllowedMentions(everyone=False, users=False,
+                                                                                     roles=False))
