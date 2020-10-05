@@ -15,6 +15,9 @@ class HAL(commands.Bot):
     async def on_command_error(self, ctx, exception):
         if type(exception) is commands.errors.CommandNotFound:
             return
+        elif type(exception) is commands.errors.MissingPermissions:
+            await ctx.send("You are missing permissions required to run this command.")
+            return
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
