@@ -189,7 +189,7 @@ class Utility(commands.Cog):
         //color set <color name>: Sets your color to the specified color.
         //color add <hex code> <color name>: Adds a color (Requires manage roles)
         //color delete <name/number on list>: Deletes a color.
-        //color addexisting <role>: Adds an existing role to the color list."""
+        //color addexisting <role>: Adds an existing role to the color list.```"""
         subcmd = args[0]
         args = args[1:]
         try:
