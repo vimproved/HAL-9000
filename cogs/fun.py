@@ -34,7 +34,7 @@ class Fun(commands.Cog):
                                                                                                  roles=False))
 
     @commands.command()
-    async def copypasta(self, ctx, args):
+    async def copypasta(self, ctx, *args):
         """Cum chalice.
         ```//copypasta navyseal
         //copypasta comedygod
@@ -43,6 +43,10 @@ class Fun(commands.Cog):
         //copypasta mcultimate
         //copypasta election
         //copypasta ti (written by @rous#7120)```"""
+        try:
+            argsB=' '.join(args) #Makes the entire argument string only one argument. This is to prevent mild conicery.
+        except:
+            argsB=None #I do not know what happens if .join has no arguments, so I put this here just in case.
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -56,9 +60,9 @@ class Fun(commands.Cog):
         except KeyError:
             enabled = False
         if enabled:
-            if args == None:
+            if argsB == None:
                 await ctx.send("List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
-            if args == "navyseal":
+            if argsB == "navyseal":
                 await ctx.send(
                     "What the fuck did you just fucking say about me, you little bitch? I'll have you know I "
                     "graduated top of my class in the Navy Seals, and I've been involved in numerous secret raids on "
@@ -77,7 +81,7 @@ class Fun(commands.Cog):
                     "maybe you would have held your fucking tongue. But you couldn't, you didn't, and now you're "
                     "paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. "
                     "You're fucking dead, kiddo.")
-            if args == "attackhelicopter":
+            if argsB == "attackhelicopter":
                 await ctx.send(
                     "I sexually Identify as the \"I sexually identify as an attack helicopter\" joke. Ever since I "
                     "was a child, I've dreamed of flippantly dismissing any concepts or discussions regarding gender "
@@ -87,7 +91,7 @@ class Fun(commands.Cog):
                     "I want you guys to call me \"epic kek dank meme trannies owned with facts and logic\" and "
                     "respect my right to shit up social media. If you can't accept me you're a memeophobe and need to "
                     "check your ability-to-critically-think privilege. Thank you for being so understanding.")
-            if args == "comedygod":
+            if argsB == "comedygod":
                 await ctx.send(
                     "WEE WOO WEE WOO\n\nALERT! COMEDY GOD HAS ENTERED THE BUILDING! GET TO COVER!\n\nsteps on "
                     "stage\n\nBystander: \"Oh god! Don't do it! I have a family!\"\n\nComedy God: "
@@ -104,7 +108,7 @@ class Fun(commands.Cog):
                     "people are laughing harder than they ever did\n\npeople who aren't killed die from "
                     "laughter\n\nliterally the funniest joke in the world\n\nthen the comedy god himself posts his "
                     "creation to reddit and gets karma")
-            if args == "emoji":
+            if argsB == "emoji":
                 await ctx.send(
                     "It was a bright day. I woke up at 3 pm after a long night of humping my Zero Two body "
                     "pillow. I get out of my bed, as I get up I smell the buildup of sweat and bacteria "
@@ -128,7 +132,7 @@ class Fun(commands.Cog):
                     "their level. I simply comment \"Reddit law requiers i downvote for excessive emoji "
                     "usage\". I post my comment. Another insta normie owned. I quietly say \"based\". I am "
                     "satisfied.")
-            if args == "gamergirl":
+            if argsB == "gamergirl":
                 await ctx.send(
                     "A girl.... AND a gamer? Whoa mama! Hummina hummina hummina bazooooooooing! *eyes pop out* "
                     "AROOOOOOOOGA! *jaw drops tongue rolls out* WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF WOOF "
@@ -138,12 +142,12 @@ class Fun(commands.Cog):
                     "it through shirt* ba-bum ba-bum ba-bum ba-bum ba-bum *milk truck crashes into a bakery store in "
                     "the background spiling white liquid and dough on the streets* BABY WANTS TO FUCK *inhales from "
                     "the gas tank* honka honka honka honka *masturabtes furiously* ohhhh my gooooodd~")
-            if args == "mcultimate":
+            if argsB == "mcultimate":
                 await ctx.send(
                     "Unpopular opinion but I don’t actually think Nestor, Cal, and Techno are gonna win tomorrow. "
                     "I’ve challenged them with an immediate disadvantage of being a team of 3 in a team of 4 event on "
                     "1.12... that’s gonna be really hard no matter how good they might be")
-            if args == "ti":
+            if argsB == "ti":
                 await ctx.send(
                     "we've all been to the store and seen those TI-84+s and TI-83+ and CEs and SEs and all the other "
                     "garbage that TI released, and on the box it says something like SAT CERTIFIED :tm: "
@@ -178,7 +182,7 @@ class Fun(commands.Cog):
                     "a COLOR SCREEN that's almost 1/20th the resolution of your computer BUT WAIT!!! this is the "
                     "HIGH:tm: RESOLUTION :copyright: VERSION WITH IMMERSIVE COLOR GRAPHICS! anyway to sum this all up "
                     "fuck ti they are pieces of shit")
-            if args == "novysole":
+            if argsB == "novysole":
                 await ctx.send(
                     "As far as I know about my son, I received a letter from a famous naval station stating that I "
                     "was involved with more than 300 people in a secret protest against Al Qaeda. My gorilla trained "
