@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 from discord.ext.commands import TextChannelConverter, RoleConverter
 import pickle
+from PIL import Image
 
 
 def setup(bot):
@@ -187,6 +188,7 @@ class Utility(commands.Cog):
         Subcommands:
         ```//color list: Lists all color names and hex codes.
         //color set <color name>: Sets your color to the specified color.
+        //color preview <name>: Sends an image containing the color of the role.
         //color add <hex code> <color name>: Adds a color (Requires manage roles)
         //color delete <name/number on list>: Deletes a color (Requires manage roles).
         //color addexisting <role>: Adds an existing role to the color list. (Requires manage roles)```"""
@@ -259,7 +261,8 @@ class Utility(commands.Cog):
                 text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex " \
                                                                                                           "color: " +\
                        str(x.color)
-            await ctx.send(text)
+            await ctx.send("I have sent you a DM with the list of colors!")
+            await ctx.author.send(text)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
@@ -334,6 +337,30 @@ class Utility(commands.Cog):
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Done!")
+        elif subcmd == "preview":
+            color = ' '.join(args)
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            colorc = []
+            for x in colors:
+                x = await RoleConverter().convert(ctx, str(x))
+                x = str(x.name)
+                colorc.append(x)
+            if color in colorc:
+                color = await RoleConverter().convert(ctx, str(colors[colorc.index(color)]))
+                color = str(color.color)
+            if "#" in color:
+                color = color.replace("#", "")
+            try:
+                print(color)
+                image = Image.new('RGB', (256, 256), color=tuple(int(color[i:i+2], 16) for i in (0, 2, 4)))
+            except ValueError:
+                await ctx.send("Invalid color name/hex color.")
+                return
+            image.save("previewimg.png")
+            await ctx.send("Here is the color preview:", file=discord.File(open("previewimg.png", "rb")))
         elif subcmd == "set":
             args = ' '.join(args)
             try:
