@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 from discord.ext.commands import TextChannelConverter, RoleConverter
 import pickle
+from PIL import Image
 
 
 def setup(bot):
@@ -183,11 +184,16 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def color(self, ctx, *args):
-        """Commands relating to the color system. ```//color list: Lists color names and hex codes. //color <color
-        name>: Sets your color. //color add: Adds a color. Requires manage roles. //color remove: Removes a color.
-        Requires manage roles. //color forcedelete: Forcibly deletes a color from the config list. Use only if
-        something breaks. Requires manage roles.``` """
-        args = ' '.join(args)
+        """Commands relating to the color system.
+        Subcommands:
+        ```//color list: Lists all color names and hex codes.
+        //color set <color name>: Sets your color to the specified color.
+        //color preview <name>: Sends an image containing the color of the role.
+        //color add <hex code> <color name>: Adds a color (Requires manage roles)
+        //color delete <name/number on list>: Deletes a color (Requires manage roles).
+        //color addexisting <role>: Adds an existing role to the color list. (Requires manage roles)```"""
+        subcmd = args[0]
+        args = args[1:]
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -196,19 +202,11 @@ class Utility(commands.Cog):
             config = globalconfig[ctx.guild.id]
         except KeyError:
             config = {}
-        if args == "add":
+        if subcmd == "add":
             if not ctx.author.guild_permissions.manage_roles:
                 await ctx.send("Invalid permissions.")
                 return
-            q = await ctx.send("What would you like the color to be (hex code)?")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            color = answer
+            color = args[0]
             if "#" in color:
                 color = color.replace("#", "")
             try:
@@ -216,16 +214,7 @@ class Utility(commands.Cog):
             except ValueError:
                 await ctx.send("Invalid color.")
                 return
-            q = await ctx.send("What would you like the color name to be?")
-            responsefound = False
-            while not responsefound:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        responsefound = True
-                        break
-            answer = response.content
-            name = answer
+            name = ' '.join(args[1:])
             try:
                 colorposition = config["colorposition"]
             except KeyError:
@@ -254,87 +243,79 @@ class Utility(commands.Cog):
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-        elif args == "list":
+        elif subcmd == "list":
             try:
                 colors = config["colors"]
             except KeyError:
                 colors = []
-            print(colors)
             colorroles = []
             for x in colors:
-                try:
-                    x = await RoleConverter().convert(ctx, str(x))
-                except commands.errors.BadArgument:
-                    await ctx.send("An error has occured: Color at index " + str(colors.index(x)) + "doesn't match "
-                                                                                                    "any roles. Use "
-                                                                                                    "//color "
-                                                                                                    "forcedelete " +
-                                   str(colors.index(x)) + "to forcibly delete the color from config. The role was "
-                                                          "likely manually deleted. To prevent this, use //color "
-                                                          "delete instead of manually deleting color roles.")
-                    return
-                print(x)
-                colorroles.append(x)
+                color = ctx.guild.get_role(x)
+                print(type(color))
+                if type(color) != discord.role.Role:
+                    colors.remove(x)
+                else:
+                    colorroles.append(color)
             text = ""
             for x in colorroles:
-                text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex " \
-                                                                                                          "color: " +\
-                       str(x.color)
-            await ctx.send(text)
-        elif args == "delete":
+                text = text + "\n**" + str(colorroles.index(x)+1) + ":** " + x.name
+            await ctx.send(text + "\n\n *Do* `//color preview <color>` *for a preview of the color!*")
+            config.update({"colors": colors})
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
+        elif subcmd == "delete":
             if not ctx.author.guild_permissions.manage_roles:
                 raise discord.ext.commands.MissingPermissions
             try:
                 colors = config["colors"]
             except KeyError:
                 colors = []
-            q = await ctx.send("What color would you like to delete?")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
+            answer = ' '.join(args)
             try:
-                answer = await RoleConverter().convert(ctx, answer)
-                await answer.delete()
-            except commands.errors.BadArgument:
-                await ctx.send("Exception in deleting role. Deleted already? If so use //color forcedelete to remove "
-                               "a color by position in config list.")
-            if answer.id not in colors:
-                await ctx.send("Invalid color in config list.")
+                answer = int(answer)-1
+                answer = colors[answer]
+                role = await RoleConverter().convert(ctx, str(answer))
+                colors.remove(answer)
+                await role.delete()
+            except ValueError:
+                try:
+                    answer = await RoleConverter().convert(ctx, answer)
+                    await answer.delete()
+                except commands.errors.BadArgument:
+                    await ctx.send("Invalid color.")
+                    return
+                if answer.id not in colors:
+                    await ctx.send("Invalid color in config list.")
+                    return
+                print(colors)
+                print(answer.id)
+                colors.remove(answer.id)
+            except IndexError:
+                await ctx.send("There is no color at that position.")
                 return
-            print(colors)
-            print(answer.id)
-            colors.remove(answer.id)
+            await ctx.send("Color deleted successfully.")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-        elif args == "forcedelete":
+        elif subcmd == "forcedelete":
             if not ctx.author.guild_permissions.manage_roles:
                 await ctx.send("Invalid permissions.")
                 return
-            q = await ctx.send("Do you really want to do this? This will delete a role from the config file forcibly. "
-                               "Enter color # to continue.")
             try:
                 colors = config["colors"]
             except KeyError:
                 colors = []
-
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            colors.pop(int(answer))
+            answer = args[0]
+            try:
+                colors.pop(int(answer))
+            except ValueError:
+                await ctx.sednd("Please enter an integer.")
+                return
             await ctx.send("Color removed.")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-        elif args == "addexisting":
+        elif subcmd == "addexisting":
             if not ctx.author.guild_permissions.manage_roles:
                 await ctx.send("Invalid permissions.")
                 return
@@ -342,14 +323,7 @@ class Utility(commands.Cog):
                 colors = config["colors"]
             except KeyError:
                 colors = []
-            q = await ctx.send("Type the name or ID of the role you would like to add to the color list.")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
+            answer = ' '.join(args)
             try:
                 colorrole = await RoleConverter().convert(ctx, answer)
             except commands.errors.BadArgument:
@@ -360,7 +334,32 @@ class Utility(commands.Cog):
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
             await ctx.send("Done!")
-        else:
+        elif subcmd == "preview":
+            color = ' '.join(args)
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            colorc = []
+            for x in colors:
+                x = await RoleConverter().convert(ctx, str(x))
+                x = str(x.name)
+                colorc.append(x)
+            if color in colorc:
+                color = await RoleConverter().convert(ctx, str(colors[colorc.index(color)]))
+                color = str(color.color)
+            if "#" in color:
+                color = color.replace("#", "")
+            try:
+                print(color)
+                image = Image.new('RGB', (256, 256), color=tuple(int(color[i:i+2], 16) for i in (0, 2, 4)))
+            except ValueError:
+                await ctx.send("Invalid color name/hex color.")
+                return
+            image.save("previewimg.png")
+            await ctx.send("Here is the color preview:", file=discord.File(open("previewimg.png", "rb")))
+        elif subcmd == "set":
+            args = ' '.join(args)
             try:
                 colors = config["colors"]
             except KeyError:
