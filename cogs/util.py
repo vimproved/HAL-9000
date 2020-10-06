@@ -259,7 +259,7 @@ class Utility(commands.Cog):
             text = ""
             for x in colorroles:
                 text = text + "**\n" + str(colorroles.index(x)+1) + ":** " + x.name
-            await ctx.send(text + "\n\n *Do `//color preview <color>` for a preview of the color!")
+            await ctx.send(text + "\n\n *Do* `//color preview <color>` *for a preview of the color!*")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
