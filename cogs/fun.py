@@ -43,10 +43,10 @@ class Fun(commands.Cog):
         //copypasta mcultimate
         //copypasta election
         //copypasta ti (written by @rous#7120)```"""
-        if len(args>0):
-            arg=' '.join(args) #Makes the entire argument string only one argument. This is to prevent mild conicery.
+        if len(args) > 0:
+            arg = ' '.join(args)
         else:
-            arg=None #To get that one bit working
+            arg = None
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
@@ -60,8 +60,11 @@ class Fun(commands.Cog):
         except KeyError:
             enabled = False
         if enabled:
-            if arg == None:
-                await ctx.send("List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
+            if arg is None:
+                await ctx.send(
+                    "List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta "
+                    "emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by "
+                    "@rous#7120)\n//copypasta novysole```")
             if arg == "navyseal":
                 await ctx.send(
                     "What the fuck did you just fucking say about me, you little bitch? I'll have you know I "
@@ -195,7 +198,8 @@ class Fun(commands.Cog):
                     "warnings will give you \"wisdom\" and guidance will help you move forward. But you can not, "
                     "you can not and you have to pay and lose. I was threatened with drowning. I'm in love")
             else:
-                await ctx.send("List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
+                await ctx.send(
+                    "List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
             await ctx.message.delete()
         else:
             await ctx.send("Copypastas are not enabled on this server.")
