@@ -17,9 +17,6 @@ class Mod(commands.Cog):
         self.bot = bot
         self.update_mutes.start()
 
-    def setup(self):
-        pass
-
     @tasks.loop(seconds=30)
     async def update_mutes(self):
         try:
@@ -52,6 +49,28 @@ class Mod(commands.Cog):
             config.update({"mutes": mutes})
             globalconfig.update({x.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
+        print("Starting color cleaning process.")
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError or KeyError:
+            globalconfig = {}
+        for guild in self.bot.guilds:
+            try:
+                config = globalconfig[guild.id]
+            except KeyError:
+                config = {}
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            for x in colors:
+                color = guild.get_role(x)
+                if type(color) != discord.role.Role:
+                    colors.remove(x)
+            config.update({"colors": colors})
+            globalconfig.update({guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
+        print("Done.")
 
     @commands.has_permissions(administrator=True)
     @commands.command()
