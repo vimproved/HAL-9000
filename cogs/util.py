@@ -334,6 +334,21 @@ class Utility(commands.Cog):
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
+        elif args == "addexisting":
+            try:
+                colors = config["colors"]
+            except KeyError:
+                colors = []
+            try:
+                colorrole = await RoleConverter().convert(ctx,args)
+            except commands.errors.BadArgument:
+                await ctx.send("Invalid role.")
+                return
+            colors.append(colorrole.id)
+            config.update({"colors": colors})
+            globalconfig.update({ctx.guild.id: config})
+            pickle.dump(globalconfig, open("config", "wb"))
+            await ctx.send("Done!")
         else:
             try:
                 colors = config["colors"]
