@@ -258,11 +258,8 @@ class Utility(commands.Cog):
                     colorroles.append(color)
             text = ""
             for x in colorroles:
-                text = text + "\n\n**__Color #" + str(colorroles.index(x)+1) + ":__**\nName: " + x.name + "\nHex " \
-                                                                                                          "color: " +\
-                       str(x.color)
-            await ctx.send("I have sent you a DM with the list of colors!")
-            await ctx.author.send(text)
+                text = text + "**\n" + str(colorroles.index(x)+1) + ":** " + x.name
+            await ctx.send(text + "\n\n *Do `//color preview <color>` for a preview of the color!")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
