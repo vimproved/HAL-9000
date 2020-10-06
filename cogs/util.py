@@ -335,12 +335,23 @@ class Utility(commands.Cog):
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
         elif args == "addexisting":
+            if not ctx.author.guild_permissions.manage_roles:
+                await ctx.send("Invalid permissions.")
+                return
             try:
                 colors = config["colors"]
             except KeyError:
                 colors = []
+            q = await ctx.send("Type the name or ID of the role you would like to add to the color list.")
+            response = ""
+            while type(response) != discord.Message:
+                async for message in ctx.channel.history(limit=5):
+                    if message.author == ctx.author and message.created_at > q.created_at:
+                        response = message
+                        break
+            answer = response.content
             try:
-                colorrole = await RoleConverter().convert(ctx,args)
+                colorrole = await RoleConverter().convert(ctx, answer)
             except commands.errors.BadArgument:
                 await ctx.send("Invalid role.")
                 return
