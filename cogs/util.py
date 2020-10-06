@@ -262,7 +262,17 @@ class Utility(commands.Cog):
             print(colors)
             colorroles = []
             for x in colors:
-                x = ctx.guild.get_role(x)
+                try:
+                    x = await RoleConverter().convert(ctx, str(x))
+                except commands.errors.BadArgument:
+                    await ctx.send("An error has occured: Color at index " + str(colors.index(x)) + "doesn't match "
+                                                                                                    "any roles. Use "
+                                                                                                    "//color "
+                                                                                                    "forcedelete " +
+                                   str(colors.index(x)) + "to forcibly delete the color from config. The role was "
+                                                          "likely manually deleted. To prevent this, use //color "
+                                                          "delete instead of manually deleting color roles.")
+                    return
                 print(x)
                 colorroles.append(x)
             text = ""
@@ -274,7 +284,6 @@ class Utility(commands.Cog):
         elif args == "delete":
             if not ctx.author.guild_permissions.manage_roles:
                 raise discord.ext.commands.MissingPermissions
-                return
             try:
                 colors = config["colors"]
             except KeyError:
@@ -290,13 +299,14 @@ class Utility(commands.Cog):
             try:
                 answer = await RoleConverter().convert(ctx, answer)
                 await answer.delete()
-            except commands.errors.ConversionError:
-                await ctx.send("Exception in deleting role. Deleted already? Proceeding with deletion from config.")
-            except discord.Permissions:
-                await ctx.send("Invalid permissions to delete role. Proceeding with deletion from config.")
-            if answer not in colors:
+            except commands.errors.BadArgument:
+                await ctx.send("Exception in deleting role. Deleted already? If so use //color forcedelete to remove "
+                               "a color by position in config list.")
+            if answer.id not in colors:
                 await ctx.send("Invalid color in config list.")
                 return
+            print(colors)
+            print(answer.id)
             colors.remove(answer.id)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
