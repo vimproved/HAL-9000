@@ -258,7 +258,7 @@ class Utility(commands.Cog):
                     colorroles.append(color)
             text = ""
             for x in colorroles:
-                text = text + "**\n" + str(colorroles.index(x)+1) + ":** " + x.name
+                text = text + "\n**" + str(colorroles.index(x)+1) + ":** " + x.name
             await ctx.send(text + "\n\n *Do* `//color preview <color>` *for a preview of the color!*")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
