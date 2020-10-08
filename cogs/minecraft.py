@@ -19,8 +19,8 @@ class Minecraft(commands.Cog):
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         profile = requests.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuidfromign["id"]).json()
         embed_var = discord.Embed(color=0xff0008, title=args)
-        embed_var.set_image(url="https://crafatar.com/renders/body/" + profile["id"] + ".png")
-        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + profile["id"] + ".png")
+        embed_var.set_image(url="https://crafatar.com/renders/body/" + profile["id"] + ".png?overlay")
+        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + profile["id"] + ".png?overlay")
         embed_var.add_field(name="__Name__", value=profile["name"], inline=False)
         embed_var.add_field(name="__UUID__", value=profile["id"], inline=False)
         embed_var.add_field(name="__Skin__", value=profile["name"]+"'s skin:")
@@ -33,8 +33,8 @@ class Minecraft(commands.Cog):
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
         embed_var = discord.Embed(color=0xff0008, title=args + "'s Skin", description="Skin for " + args + ":")
-        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?size=32")
-        embed_var.set_image(url="https://crafatar.com/skins/" + uuid + ".png")
+        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?size=32&overlay")
+        embed_var.set_image(url="https://crafatar.com/skins/" + uuid + ".png?overlay")
         await ctx.send(embed=embed_var)
 
     @commands.command()
@@ -44,8 +44,8 @@ class Minecraft(commands.Cog):
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
         embed_var = discord.Embed(color=0xff0008, title=args + "'s Head", description="Head render for " + args + ":")
-        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?size=32")
-        embed_var.set_image(url="https://crafatar.com/renders/head/" + uuid + ".png")
+        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?size=32&overlay")
+        embed_var.set_image(url="https://crafatar.com/renders/head/" + uuid + ".png?overlay")
         await ctx.send(embed=embed_var)
 
     @commands.command()
@@ -55,7 +55,7 @@ class Minecraft(commands.Cog):
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
         embed_var = discord.Embed(color=0xff0008, title=args + "'s Cape", description="Cape for " + args + ":")
-        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?size=32")
+        embed_var.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?size=32&overlay")
         embed_var.set_image(url="https://crafatar.com/cape/" + uuid + ".png?default=https://media.discordapp.net"
                                                                       "/attachments/717043951835676755"
                                                                       "/763783489107001394/Untitled.png")
@@ -79,8 +79,8 @@ class Minecraft(commands.Cog):
             uuid = uuidfromign["id"]
             stats = requests.get(f"https://api.slothpixel.me/api/players/{player}").json()
             embed = discord.Embed(color=0xff0008, title=player, description=f"Hypixel stats for {player}.")
-            embed.set_image(url="https://crafatar.com/renders/body/" + uuid + ".png")
-            embed.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png")
+            embed.set_image(url="https://crafatar.com/renders/body/" + uuid + ".png?overlay")
+            embed.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?overlay")
             if stats["online"]:
                 status = "Online"
             else:
