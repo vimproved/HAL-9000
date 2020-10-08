@@ -35,12 +35,14 @@ class HAL(commands.Bot):
         await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
             type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
-    async def on_ready(self):
+    @staticmethod
+    async def on_ready():
         print("HAL-9000")
         print("HAL is ready!")
         await bot.change_presence(activity=discord.Game(name='//help'))
 
-    async def on_connect(self):
+    @staticmethod
+    async def on_connect():
         print("HAL is connected!")
 
     def run(self):
@@ -50,8 +52,8 @@ class HAL(commands.Bot):
             pass
         except discord.LoginFailure:
             print("Invalid token")
-        except Exception:
-            print("Fatal exception")
+        except discord.HTTPException:
+            print("Could not connect.")
         finally:
             self.loop.run_until_complete(self.logout())
 
@@ -98,9 +100,8 @@ class HAL(commands.Bot):
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
-            print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
-                "error has occurred.")
+            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
+                  "error has occurred.")
             globalconfig = {}
         config = globalconfig[message.guild.id]
         logchannel = self.get_channel(int(config['logchannel']))
