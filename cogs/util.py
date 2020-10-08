@@ -3,7 +3,8 @@ import discord
 from discord.ext.commands import TextChannelConverter, RoleConverter
 import pickle
 from PIL import Image
-
+import random
+import itertools
 
 def setup(bot):
     bot.add_cog(Utility(bot))
@@ -11,6 +12,7 @@ def setup(bot):
 
 class Utility(commands.Cog):
     """Utility commands."""
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -36,15 +38,14 @@ class Utility(commands.Cog):
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="__//" + args.name + "__", value=args.help + "\n", inline=False)
         else:
-            embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="__Help Menu__",
-                                value="HAL-9000 is a multipurpose discord bot made by vi#7158 "
-                                "and rous#7120.\nThis is the help menu. Do `//help <"
-                                "command>` for information on a single command. Do `//help"
-                                " <category>` for information on a single category.\nCategories:\n  ",
-                                inline=False)
+            embed_var = discord.Embed(color=0xff0008, title="__Help Menu__",
+                                      description="HAL-9000 is a multipurpose discord bot made by vi#7158 "
+                                                  "and rous#7120. These are the categories of commands. Do `//help "
+                                                  "<category>` for information on a category.")
+            embed_var.set_thumbnail(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp"
+                                        "-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
             for cog in self.bot.cogs.values():
-                embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=False)
+                embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=True)
         await ctx.send(embed=embed_var)
 
     @commands.command()
@@ -53,7 +54,7 @@ class Utility(commands.Cog):
         being sent. Ignores arguments. """
         m = await ctx.send("Pong?")
         latency = m.created_at - ctx.message.created_at
-        await m.edit(content=f"Pong in {int(latency.microseconds/1000)} ms! :ping_pong:")
+        await m.edit(content=f"Pong in {int(latency.microseconds / 1000)} ms! :ping_pong:")
 
     @commands.command()
     async def invite(self, ctx):
@@ -126,8 +127,9 @@ class Utility(commands.Cog):
         for x in range(0, int(num_responses)):
             embed = discord.Embed(color=0xff0008)
             embed.add_field(name="__Poll Creation__",
-                            value='Type the text for response #' + str(x+1) + '.\nType "cancel" at any time to cancel '
-                                                                              'poll creation.',
+                            value='Type the text for response #' + str(
+                                x + 1) + '.\nType "cancel" at any time to cancel '
+                                         'poll creation.',
                             inline=False)
             q = await ctx.send(embed=embed)
             response_found = False
@@ -144,10 +146,10 @@ class Utility(commands.Cog):
             text = answer
             embed = discord.Embed(color=0xff0008)
             embed.add_field(name="__Poll Creation__",
-                            value='Type the emoji for response #' + str(x+1) + '. MAKE SURE THAT THE EMOJI IS EITHER '
-                                                                               'FROM THIS SERVER, OR A GLOBAL '
-                                                                               'EMOJI.\nType "cancel" at any time to '
-                                                                               'cancel poll creation.',
+                            value='Type the emoji for response #' + str(x + 1) + '. MAKE SURE THAT THE EMOJI IS EITHER '
+                                                                                 'FROM THIS SERVER, OR A GLOBAL '
+                                                                                 'EMOJI.\nType "cancel" at any time to '
+                                                                                 'cancel poll creation.',
                             inline=False)
             q = await ctx.send(embed=embed)
             response_found = False
@@ -258,7 +260,7 @@ class Utility(commands.Cog):
                     colorroles.append(color)
             text = ""
             for x in colorroles:
-                text = text + "\n**" + str(colorroles.index(x)+1) + ":** " + x.name
+                text = text + "\n**" + str(colorroles.index(x) + 1) + ":** " + x.name
             await ctx.send(text + "\n\n *Do* `//color preview <color>` *for a preview of the color!*")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
@@ -272,7 +274,7 @@ class Utility(commands.Cog):
                 colors = []
             answer = ' '.join(args)
             try:
-                answer = int(answer)-1
+                answer = int(answer) - 1
                 answer = colors[answer]
                 role = await RoleConverter().convert(ctx, str(answer))
                 colors.remove(answer)
@@ -352,7 +354,7 @@ class Utility(commands.Cog):
                 color = color.replace("#", "")
             try:
                 print(color)
-                image = Image.new('RGB', (256, 256), color=tuple(int(color[i:i+2], 16) for i in (0, 2, 4)))
+                image = Image.new('RGB', (256, 256), color=tuple(int(color[i:i + 2], 16) for i in (0, 2, 4)))
             except ValueError:
                 await ctx.send("Invalid color name/hex color.")
                 return
@@ -385,3 +387,37 @@ class Utility(commands.Cog):
                     await ctx.author.remove_roles(x)
             await ctx.author.add_roles(colorrole)
             await ctx.send("Color set to " + colorrole.name + "!")
+
+    @commands.command()
+    async def coinflip(self, ctx):
+        """Flips a coin. Ignores arguments."""
+        await ctx.send(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
+
+    @commands.command()
+    async def roll(self, ctx, args):
+        """Rolls dice of any quantity and size.
+        ```//roll <XdX>```"""
+        total = 0
+        crits = 0
+        critf = 0
+        for die in args.split():
+            if 'd' not in die:
+                total += int(die)
+                continue
+            num, sides = die.split('d')
+            if num == '':
+                num = '1'
+            rolls = [random.randint(1, int(sides)) for _ in itertools.repeat(None, int(num))]
+            if sides == '20':
+                crits += rolls.count(20)
+                critf += rolls.count(1)
+            total += sum(rolls)
+        await ctx.send(
+            "Result: " + str(total) + "\n***CRITICAL SUCCESS!***" * crits + "\n***CRITICAL FAILURE!***" * critf)
+
+    @commands.command()
+    async def choose(self, ctx, *args):
+        """Chooses between multiple things if you can't decide yourself.
+        ```//choose <args>```"""
+        await ctx.send(random.choice(args), allowed_mentions=discord.AllowedMentions(everyone=False, users=False,
+                                                                                     roles=False))
