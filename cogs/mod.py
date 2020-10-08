@@ -347,8 +347,11 @@ class Mod(commands.Cog):
             embed.add_field(name=answer, value=answer2 + "\n", inline=False)
         await channel.send(rmention, embed=embed)
         await ctx.send("Message sent!")
+
     @commands.command()
     async def embededit(self, ctx, args):
+        """Edits the embed in a message to the specified embed.
+        ```//embededit <message ID>```"""
         try:
             msg = await commands.MessageConverter().convert(ctx, args)
         except commands.errors.BadArgument:
