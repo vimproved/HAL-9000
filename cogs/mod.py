@@ -208,7 +208,7 @@ class Mod(commands.Cog):
     async def mute(self, ctx, *args):
         """Mutes a user for a certain amount of time.
         Requires manage roles.
-        ```//mute <user> <number> <units>"""
+        ```//mute <user> <number> <units>```"""
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError or KeyError:
