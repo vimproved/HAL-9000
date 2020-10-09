@@ -64,36 +64,42 @@ class Minecraft(commands.Cog):
     @commands.command()
     async def hypixel(self, ctx, *args):
         """Gets Hypixel stats for a player.
-        ```//hypixel <IGN>: Gets general hypixel stats.
+        ```//hypixel gamelist: lists the supported games.
+        //hypixel <IGN>: Gets general hypixel stats.
         //hypixel <IGN> <game>: Gets stats for a specific game.
         ```"""
         player = args[0]
-        try:
-            field = args[1]
-        except IndexError:
-            field = None
-        if field == "Skyblock":
-            pass
-        else:
-            uuidfromign = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{player}").json()
-            uuid = uuidfromign["id"]
-            stats = requests.get(f"https://api.slothpixel.me/api/players/{player}").json()
-            embed = discord.Embed(color=0xff0008, title=player, description=f"Hypixel stats for {player}.")
-            embed.set_image(url="https://crafatar.com/renders/body/" + uuid + ".png?overlay")
-            embed.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?overlay")
-            if stats["online"]:
-                status = "Online"
-            else:
-                status = "Offline"
-            embed.add_field(name="Status", value=status, inline=True)
-            embed.add_field(name="Rank", value=stats["rank"].replace("_PLUS", "+"), inline=True)
-            embed.add_field(name="Level", value=stats["level"], inline=True)
-            embed.add_field(name="Hypixel EXP", value=stats["exp"], inline=True)
-            embed.add_field(name="Karma", value=stats["karma"], inline=True)
-            embed.add_field(name="Achievement Points", value=stats["achievement_points"], inline=True)
-            socials = stats["links"]
-            embed.add_field(name="Social Media", value=f"Twitter: {socials['TWITTER']}\nYoutube: {socials['YOUTUBE']}\n"
-                                                       f"Instagram: {socials['INSTAGRAM']}\nTwitch: {socials['TWITCH']}"
-                                                       f"\nDiscord: {socials['DISCORD']}\nHypixel Forums: "
-                                                       f"{socials['HYPIXEL']}")
+        if player == "gamelist:":
+            embed = discord.embed(color=0xff0008, title="Supported Games")
+            embed.set_thumbnail(url="https://vignette.wikia.nocookie.net/youtube/images/9/90/Hypixel.jpg/")
             await ctx.send(embed=embed)
+        else:
+            try:
+                field = args[1]
+            except IndexError:
+                field = None
+            if field == "Skyblock":
+                pass
+            else:
+                uuidfromign = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{player}").json()
+                uuid = uuidfromign["id"]
+                stats = requests.get(f"https://api.slothpixel.me/api/players/{player}").json()
+                embed = discord.Embed(color=0xff0008, title=player, description=f"Hypixel stats for {player}.")
+                embed.set_image(url="https://crafatar.com/renders/body/" + uuid + ".png?overlay")
+                embed.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?overlay")
+                if stats["online"]:
+                    status = "Online"
+                else:
+                    status = "Offline"
+                embed.add_field(name="Status", value=status, inline=True)
+                embed.add_field(name="Rank", value=stats["rank"].replace("_PLUS", "+"), inline=True)
+                embed.add_field(name="Level", value=stats["level"], inline=True)
+                embed.add_field(name="Hypixel EXP", value=stats["exp"], inline=True)
+                embed.add_field(name="Karma", value=stats["karma"], inline=True)
+                embed.add_field(name="Achievement Points", value=stats["achievement_points"], inline=True)
+                socials = stats["links"]
+                embed.add_field(name="Social Media", value=f"Twitter: {socials['TWITTER']}\nYoutube: {socials['YOUTUBE']}\n"
+                                                           f"Instagram: {socials['INSTAGRAM']}\nTwitch: {socials['TWITCH']}"
+                                                           f"\nDiscord: {socials['DISCORD']}\nHypixel Forums: "
+                                                           f"{socials['HYPIXEL']}")
+                await ctx.send(embed=embed)
