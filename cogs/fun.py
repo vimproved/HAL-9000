@@ -24,7 +24,7 @@ class Fun(commands.Cog):
         if message.content == "paint":
             await message.channel.send("paint")
         elif message.content == self.bot.user.mention and message.guild.id == 300718768747970560:
-            await message.channelsend("<:pingree:669135258322731018>")
+            await message.channel.send("<:pingree:669135258322731018>")
 
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
