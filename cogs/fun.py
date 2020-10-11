@@ -22,6 +22,9 @@ class Fun(commands.Cog):
         if message.content == "paint":
             await message.content.send("paint")
 
+        if message.content == self.bot.mention and message.guild.id == 300718768747970560:
+            await message.channelsend("<:pingree:669135258322731018>    ")
+
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
         """Searches https://icanhazdadjoke.com for a dadjoke. Put no args or "random" for a random joke.
