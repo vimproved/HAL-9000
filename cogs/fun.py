@@ -23,7 +23,7 @@ class Fun(commands.Cog):
             return
         if message.content == "paint":
             await message.channel.send("paint")
-        elif message.content == self.bot.user.mention and message.guild.id == 300718768747970560:
+        elif message.content == "<@!717042126776434728>" and message.guild.id == 300718768747970560:
             await message.channel.send("<:pingree:669135258322731018>")
 
     @commands.command()
