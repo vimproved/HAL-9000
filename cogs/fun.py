@@ -17,6 +17,11 @@ class Fun(commands.Cog):
     def setup(self):
         pass
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.content == "paint":
+            await message.content.send("paint")
+
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
         """Searches https://icanhazdadjoke.com for a dadjoke. Put no args or "random" for a random joke.
