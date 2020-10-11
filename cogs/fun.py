@@ -19,8 +19,9 @@ class Fun(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        print(message.content)
         if message.content == "paint":
-            await message.content.send("paint")
+            await message.channel.send("paint")
 
         if message.content == self.bot.mention and message.guild.id == 300718768747970560:
             await message.channelsend("<:pingree:669135258322731018>    ")
