@@ -226,8 +226,9 @@ class Fun(commands.Cog):
     async def alert(self, ctx, *args):
         """!BWOOP BWOOP! Sends an alert 5 times.
         ```//alert <text>```"""
-        alert_text = eval('"' + ' '.join(args).upper() + '"')
-        await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: "
-                                                                                             "***bwoop bwoop*** "
-                                                                                             ":rotating_light:",
-                       allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
+        for n in range(5):
+            alert_text = eval('"' + ' '.join(args).upper() + '"')
+            await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: "
+                                                                                                 "***bwoop bwoop*** "
+                                                                                                 ":rotating_light:",
+                           allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
