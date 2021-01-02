@@ -71,24 +71,18 @@ class HAL(commands.Bot):
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
-            print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
-                "error has occurred.")
+            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
             globalconfig = {}
         config = globalconfig[member.guild.id]
         systemchannel = self.get_channel(int(config['systemchannel']))
-        embed_var = discord.Embed(color=0xff0008)
-        embed_var.add_field(name="__Ahoy There!__",
-                            value=member.mention + "joined the server! Make sure to read #readme!")
+        embed_var = discord.Embed(color=0xff0008, title="__Ahoy There!__", description=member.mention + "joined the server! Make sure to read #readme!")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
-            print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
-                "error has occurred.")
+            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
             globalconfig = {}
         config = globalconfig[member.guild.id]
         systemchannel = self.get_channel(int(config['systemchannel']))
@@ -100,13 +94,11 @@ class HAL(commands.Bot):
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
-            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
-                  "error has occurred.")
+            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
             globalconfig = {}
         config = globalconfig[message.guild.id]
         logchannel = self.get_channel(int(config['logchannel']))
-        await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(
-            datetime.now()) + ". Contents: " + message.content)
+        await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
 
 
 bot = HAL("//")
@@ -117,12 +109,6 @@ bot = HAL("//")
 async def stop(ctx):
     await ctx.send("Shutting down bot.")
     await bot.logout()
-
-
-@bot.command()
-async def defenestrate(ctx):
-    await ctx.send("https colon slash slash open dot spotify dot com slash playlist slash one favwfbw seven yhpu "
-                   "three uupir two rg questionmark si equals ipv nine lkqit four dash bbcuduhn eight iq")
 
 
 bot.run()
