@@ -77,7 +77,7 @@ class Mod(commands.Cog):
     async def config(self, ctx, args):
         """Configures the local server settings of HAL.
         Requires administrator.
-        ```//config logchannel: Sets the channel for HAL to send mod log messages in (HAL Errors, messasge deletions)
+        ```//config logchannel: Sets the channel for HAL to send mod log messages in (HAL Errors, message deletions)
         //config systemchannel: Sets the channel for HAL to send member joins/leaves in.
         //config copypasta: Sets whether //copypasta is enabled for this server.
         //config colorposition: Sets the role list position of new color roles.
