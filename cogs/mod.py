@@ -312,7 +312,27 @@ class Mod(commands.Cog):
         except commands.errors.BadArgument:
             await ctx.send("Please input a channel.")
             return
-        embed = discord.Embed(color=0xff0008)
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="Title", value="Respond with the title of the embed.", inline=False)
+        q = await ctx.send(embed=embed_var)
+        response = ""
+        while type(response) != discord.Message:
+            async for message in ctx.channel.history(limit=5):
+                if message.author == ctx.author and message.created_at > q.created_at:
+                    response = message
+                    break
+        title = response.content
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="Description", value="Respond with the description of the embed.", inline=False)
+        q = await ctx.send(embed=embed_var)
+        response = ""
+        while type(response) != discord.Message:
+            async for message in ctx.channel.history(limit=5):
+                if message.author == ctx.author and message.created_at > q.created_at:
+                    response = message
+                    break
+        desc = response.content
+        embed = discord.Embed(color=0xff0008, title=title, description=desc)
         for x in count(1):
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="Name #" + str(x), value="Respond with the name of field #" + str(
@@ -357,7 +377,27 @@ class Mod(commands.Cog):
         except commands.errors.BadArgument:
             await ctx.send("Invalid message.")
             return
-        embed = discord.Embed(color=0xff0008)
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="Title", value="Respond with the title of the embed.", inline=False)
+        q = await ctx.send(embed=embed_var)
+        response = ""
+        while type(response) != discord.Message:
+            async for message in ctx.channel.history(limit=5):
+                if message.author == ctx.author and message.created_at > q.created_at:
+                    response = message
+                    break
+        title = response.content
+        embed_var = discord.Embed(color=0xff0008)
+        embed_var.add_field(name="Description", value="Respond with the description of the embed.", inline=False)
+        q = await ctx.send(embed=embed_var)
+        response = ""
+        while type(response) != discord.Message:
+            async for message in ctx.channel.history(limit=5):
+                if message.author == ctx.author and message.created_at > q.created_at:
+                    response = message
+                    break
+        desc = response.content
+        embed = discord.Embed(color=0xff0008, title=title, description=desc)
         for x in count(1):
             embed_var = discord.Embed(color=0xff0008)
             embed_var.add_field(name="Name #" + str(x), value="Respond with the name of field #" + str(
