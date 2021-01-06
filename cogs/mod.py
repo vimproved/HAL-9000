@@ -198,9 +198,12 @@ class Mod(commands.Cog):
     async def ban(self, ctx, *args):
         """Bans a user.
         Requires ban users.
-        ```//ban <user>```"""
+        ```//ban <user> <reason>```"""
         user = await MemberConverter().convert(ctx, args[0])
-        await user.ban(reason=args[1])
+        try:
+            await user.ban(reason=args[1])
+        except IndexError:
+            await user.ban()
         await ctx.send(user.mention + " has been banned.")
 
     @commands.has_permissions(manage_roles=True)
