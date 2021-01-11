@@ -25,7 +25,7 @@ class Fun(commands.Cog):
             await message.channel.send("paint")
         if "<@!717042126776434728>" in message.content and message.guild.id == 300718768747970560:
             await message.channel.send("<:pingree:669135258322731018>")
-        if "bonk" in message.content and message.guild.id = 300718768747970560:
+        if "bonk" in message.content and message.guild.id == 300718768747970560:
             await ctx.send("go to horny jail")
             await ctx.send(
                 "https://media.discordapp.net/attachments/536731263764267009/752009497681068062/Screen_Shot_2020-04"
