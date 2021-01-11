@@ -21,7 +21,7 @@ class Fun(commands.Cog):
     async def on_message(self, message):
         if message.author.bot:
             return
-        if message.content == "paint":
+        if "paint" in message.content:
             await message.channel.send("paint")
         if "<@!717042126776434728>" in message.content and message.guild.id == 300718768747970560:
             await message.channel.send("<:pingree:669135258322731018>")
