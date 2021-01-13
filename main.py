@@ -67,6 +67,22 @@ class HAL(commands.Bot):
             except Exception as e:
                 print("Failed to load cog. Reason: " + str(e))
 
+    async def on_member_ban(self, guild, user):
+        try:
+            globalconfig = pickle.load(open("config", "rb"))
+        except EOFError:
+            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
+            globalconfig = {}
+        config = globalconfig[guild.id]
+        systemchannel = self.get_channel(int(config['systemchannel']))
+        ban = await guild.fetch_ban(user)
+        reason = ban[0]
+        if reason == None:
+            embed_var = discord.Embed(color=0xff0008, title="__Member banned.__", description=user.mention + " was banned from the server.")
+        else:
+            embed_var = discord.Embed(color=0xff0008, title="__Member banned.__", description=user.mention + " was banned from the server with reason \"" + reason + "\"")
+        await systemchannel.send(embed=embed_var)
+
     async def on_member_join(self, member):
         try:
             globalconfig = pickle.load(open("config", "rb"))
