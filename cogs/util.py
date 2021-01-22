@@ -409,7 +409,7 @@ class Utility(commands.Cog):
                 num = '1'
             num = int(num)
             sides = int(sides)
-            if num >= 100 or sides >= 100:
+            if num >= 100:
                 await ctx.send("That number is too large. To prevent crashes, I have exited the command.")
                 return()
             rolls = [random.randint(1, sides) for _ in itertools.repeat(None, num)]
