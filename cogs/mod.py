@@ -117,7 +117,7 @@ class Mod(commands.Cog):
             config.update({"logchannel": logchannel.id})
             globalconfig.update({ctx.guild.id: config})
             pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("Log channel set to" + response.content)
+            await ctx.send("Log channel set to " + response.content)
         elif args == "copypasta":
             q = await ctx.send('Please enter "yes" or "no" to configure whether copypasta is enabled on this server.')
             response = ""
