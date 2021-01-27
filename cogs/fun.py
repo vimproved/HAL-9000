@@ -56,7 +56,8 @@ class Fun(commands.Cog):
         //copypasta gamergirl
         //copypasta mcultimate
         //copypasta election
-        //copypasta ti (written by @rous#7120)```"""
+        //copypasta ti (written by @rous#7120)
+        //copypasta spoon```"""
         if len(args) > 0:
             arg = ' '.join(args)
         else:
@@ -211,6 +212,8 @@ class Fun(commands.Cog):
                     "full access to the U.S. Army. I will use it to help. Shame on you on this continent. Knowing bad "
                     "warnings will give you \"wisdom\" and guidance will help you move forward. But you can not, "
                     "you can not and you have to pay and lose. I was threatened with drowning. I'm in love")
+            elif arg == "spoon":
+                await ctx.send("So, listen to this comedic story. It starts with two individuals, king bach, and his friend. King bach gets famished and thinks of means to remedy his hunger. He finds that only ice cream can fix this hunger. King bach then asked for ice cream, but unfortunately, his friend (in a rather disappointed tone) says that king bach could get only a spoonful. Hearing this, Mr. Bach responds by changing his body language, bringing out a comically large spoon. This means that if Mr. Bach were to get only a spoonful, it would empty the entire quart of ice cream, leaving his friend with no ice cream and nothing to eat but his words. Why did king bach have that spoon with him in the first place? Did he know that his friend would retort only a spoonful when prompted for ice cream? Why bother carrying around a large spoon when you could have bought the ice cream for yourself? Why are you still reading this? The price of a spoon that big would have more than covered the price of a tub of ice cream. Why does king bach have to steal his friend's ice cream through a feat of semantics? It is not fair!")
             else:
                 await ctx.send(
                     "List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
