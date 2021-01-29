@@ -91,7 +91,7 @@ class HAL(commands.Bot):
             globalconfig = {}
         config = globalconfig[member.guild.id]
         systemchannel = self.get_channel(int(config['systemchannel']))
-        embed_var = discord.Embed(color=0xff0008, title="__Ahoy There!__", description=member.mention + "joined the server! Make sure to read #readme!")
+        embed_var = discord.Embed(color=0xff0008, title="__Ahoy There!__", description=member.mention + " joined the server! Make sure to read #readme!")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
@@ -123,7 +123,7 @@ bot = HAL("//")
 @commands.is_owner()
 @bot.command()
 async def stop(ctx):
-    await ctx.send("Shutting down bot.")
+    await ctx.send("Shutting down bot, beep boop.")
     await bot.logout()
 
 
