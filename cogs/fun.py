@@ -57,7 +57,8 @@ class Fun(commands.Cog):
         //copypasta mcultimate
         //copypasta election
         //copypasta ti (written by @rous#7120)
-        //copypasta spoon```"""
+        //copypasta spoon
+        //copypasta cat``"""
         if len(args) > 0:
             arg = ' '.join(args)
         else:
@@ -214,6 +215,8 @@ class Fun(commands.Cog):
                     "you can not and you have to pay and lose. I was threatened with drowning. I'm in love")
             elif arg == "spoon":
                 await ctx.send("So, listen to this comedic story. It starts with two individuals, king bach, and his friend. King bach gets famished and thinks of means to remedy his hunger. He finds that only ice cream can fix this hunger. King bach then asked for ice cream, but unfortunately, his friend (in a rather disappointed tone) says that king bach could get only a spoonful. Hearing this, Mr. Bach responds by changing his body language, bringing out a comically large spoon. This means that if Mr. Bach were to get only a spoonful, it would empty the entire quart of ice cream, leaving his friend with no ice cream and nothing to eat but his words. Why did king bach have that spoon with him in the first place? Did he know that his friend would retort only a spoonful when prompted for ice cream? Why bother carrying around a large spoon when you could have bought the ice cream for yourself? Why are you still reading this? The price of a spoon that big would have more than covered the price of a tub of ice cream. Why does king bach have to steal his friend's ice cream through a feat of semantics? It is not fair!")
+            elif arg == "meow":
+                await ctx.send("Wowwwww, you meow like a cat! That means you are one, right? Shut the fuck up. If you really want to be put on a leash and treated like a domestic animal then that’s called a fetish, not “quirky” or “cute”. What part of you seriously thinks that any part of acting like a feline establishes a reputation of appreciation? Is it your lack of any defining aspect of personality that urges you to resort to shitty representations of cats to create an illusion of meaning in your worthless life? Wearing “cat ears” in the shape of headbands further notes the complete absence of human attribution to your false sense of personality, such as intelligence or charisma in any form or shape. Where do you think this mindset’s gonna lead you? You think you’re funny, random, quirky even? What makes you think that acting like a fucking cat will make a goddamn hyena laugh? I, personally, feel extremely sympathetic towards you as your only escape from the worthless thing you call your existence is to pretend to be an animal. But it’s not a worthy choice to assert this horrifying fact as a dominant trait, mainly because personality traits require an initial personality to lay their foundation on. You’re not worthy of anybody’s time, so go fuck off, “cat-girl”.")
             else:
                 await ctx.send(
                     "List of copypastas:\n```//copypasta navyseal\n//copypasta comedygod\n//copypasta emoji\n//copypasta gamergirl\n//copypasta mcultimate\n//copypasta ti (written by @rous#7120)\n//copypasta novysole```")
