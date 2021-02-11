@@ -411,7 +411,7 @@ class Utility(commands.Cog):
             sides = int(sides)
             if num >= 100:
                 await ctx.send("That number is too large. To prevent crashes, I have exited the command.")
-                return()
+                return
             rolls = [random.randint(1, sides) for _ in itertools.repeat(None, num)]
             if sides == '20':
                 crits += rolls.count(20)
