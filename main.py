@@ -9,7 +9,7 @@ class HAL(commands.Bot):
         super().__init__(command_prefix, **options)
         self.description = "A multipurpose bot made by vi#7158 and rous#7120"
         self.token = open("token").read()
-        self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun", "cogs.minecraft"]
+        self.loaded_cogs = ["gears.mod", "gears.util", "gears.fun", "gears.minecraft"]
         self.startup()
 
     async def on_command_error(self, ctx, exception):
