@@ -7,9 +7,9 @@ import pickle
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
-        self.description = "A multipurpose bot made by vi#7158 and rous#7120"
+        self.description = "A multipurpose bot made by vi#7158."
         self.token = open("token").read()
-        self.loaded_cogs = ["gears.mod", "gears.util", "gears.fun", "gears.minecraft"]
+        self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun", "cogs.minecraft"]
         self.startup()
 
     async def on_command_error(self, ctx, exception):
@@ -19,21 +19,17 @@ class HAL(commands.Bot):
             await ctx.send("You are missing permissions required to run this command.")
             return
         elif str(exception).startswith("Command raised an exception: IndexError:"):
-            await ctx.send("This command requires arguments that you did not specify. Do //help <command> for "
-                           "information on how to use this command.")
+            await ctx.send("This command requires arguments that you did not specify. Do //help <command> for information on how to use this command.")
             return
         try:
             globalconfig = pickle.load(open("config", "rb"))
         except EOFError:
-            print(
-                "Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical "
-                "error has occurred.")
+            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
             globalconfig = {}
         await ctx.send(str(exception))
         config = globalconfig[ctx.guild.id]
         logchannel = self.get_channel(int(config['logchannel']))
-        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
-            type(exception)) + ". Invoke message: " + ctx.message.jump_url)
+        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
     @staticmethod
     async def on_ready():
@@ -123,7 +119,7 @@ bot = HAL("//")
 @commands.is_owner()
 @bot.command()
 async def stop(ctx):
-    await ctx.send("Shutting down bot, beep boop.")
+    await ctx.send("Shutting down bot.")
     await bot.logout()
 
 

@@ -1,16 +1,41 @@
 from discord.ext import commands
 import requests
+import pickle
 import discord
 
 
 def setup(bot):
-    bot.add_cog(Minecraft(bot))
+    bot.add_cog(Fun(bot))
 
 
-class Minecraft(commands.Cog):
-    """Commands relating to Minecraft."""
+class Fun(commands.Cog):
+    """Fun commands!"""
+
     def __init__(self, bot):
         self.bot = bot
+
+    def setup(self):
+        pass
+
+    @commands.command()
+    async def dadjoke(self, ctx, args="random"):
+        """Searches https://icanhazdadjoke.com for a dadjoke. Put no args or "random" for a random joke.
+        ```//dadjoke <joke>```"""
+        try:
+            if args.lower() == "random":
+                dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
+            else:
+                dadjoke = requests.get("https://icanhazdadjoke.com/search", params={"term": args, "limit": 1}, headers={"Accept": "text/plain"})
+            await ctx.send(dadjoke.content.decode('utf-8'))
+        except discord.HTTPException:
+            await ctx.send("Hi " + args + ", I'm dad!", allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
+
+    @commands.command()
+    async def alert(self, ctx, *args):
+        """!BWOOP BWOOP! Sends an alert 5 times.
+        ```//alert <text>```"""
+        alert_text = eval('"' + ' '.join(args).upper() + '"')
+        for n in range(5): await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:", allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
 
     @commands.command()
     async def mcprofile(self, ctx, args):
@@ -28,7 +53,7 @@ class Minecraft(commands.Cog):
 
     @commands.command()
     async def mcskin(self, ctx, args):
-        """Gets the skin file of a player.
+        """Gets the Minecraft skin file of a player.
         ```//mcskin <IGN>```"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
@@ -39,7 +64,7 @@ class Minecraft(commands.Cog):
 
     @commands.command()
     async def mchead(self, ctx, args):
-        """Gets a render of a user's head.
+        """Gets a render of a Minecraft user's head.
         ```//mchead <IGN>```"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
@@ -50,7 +75,7 @@ class Minecraft(commands.Cog):
 
     @commands.command()
     async def mccape(self, ctx, args):
-        """Gets a user's cape. Note: Cape must be mojang supported cape.
+        """Gets a user's Minecraft cape. Note: Cape must be mojang supported cape.
         ```//mccape <IGN>```"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
@@ -60,46 +85,3 @@ class Minecraft(commands.Cog):
                                                                       "/attachments/717043951835676755"
                                                                       "/763783489107001394/Untitled.png")
         await ctx.send(embed=embed_var)
-
-    @commands.command()
-    async def hypixel(self, ctx, *args):
-        """Gets Hypixel stats for a player.
-        ```//hypixel gamelist: lists the supported games.
-        //hypixel <IGN>: Gets general hypixel stats.
-        //hypixel <IGN> <game>: Gets stats for a specific game.
-        ```"""
-        player = args[0]
-        if player == "gamelist:":
-            embed = discord.embed(color=0xff0008, title="Supported Games")
-            embed.set_thumbnail(url="https://vignette.wikia.nocookie.net/youtube/images/9/90/Hypixel.jpg/")
-            await ctx.send(embed=embed)
-        else:
-            try:
-                field = args[1]
-            except IndexError:
-                field = None
-            if field == "Skyblock":
-                pass
-            else:
-                uuidfromign = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{player}").json()
-                uuid = uuidfromign["id"]
-                stats = requests.get(f"https://api.slothpixel.me/api/players/{player}").json()
-                embed = discord.Embed(color=0xff0008, title=player, description=f"Hypixel stats for {player}.")
-                embed.set_image(url="https://crafatar.com/renders/body/" + uuid + ".png?overlay")
-                embed.set_thumbnail(url="https://crafatar.com/avatars/" + uuid + ".png?overlay")
-                if stats["online"]:
-                    status = "Online"
-                else:
-                    status = "Offline"
-                embed.add_field(name="Status", value=status, inline=True)
-                embed.add_field(name="Rank", value=stats["rank"].replace("_PLUS", "+"), inline=True)
-                embed.add_field(name="Level", value=stats["level"], inline=True)
-                embed.add_field(name="Hypixel EXP", value=stats["exp"], inline=True)
-                embed.add_field(name="Karma", value=stats["karma"], inline=True)
-                embed.add_field(name="Achievement Points", value=stats["achievement_points"], inline=True)
-                socials = stats["links"]
-                embed.add_field(name="Social Media", value=f"Twitter: {socials['TWITTER']}\nYoutube: {socials['YOUTUBE']}\n"
-                                                           f"Instagram: {socials['INSTAGRAM']}\nTwitch: {socials['TWITCH']}"
-                                                           f"\nDiscord: {socials['DISCORD']}\nHypixel Forums: "
-                                                           f"{socials['HYPIXEL']}")
-                await ctx.send(embed=embed)
