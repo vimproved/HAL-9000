@@ -15,7 +15,6 @@ class Mod(commands.Cog):
     """Commands for server moderation."""
     def __init__(self, bot):
         self.bot = bot
-        self.update_mutes.start()
 
     @commands.has_permissions(administrator=True)
     @commands.command()
