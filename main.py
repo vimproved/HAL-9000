@@ -121,7 +121,7 @@ bot = HAL("//")
 async def stop(ctx):
     await ctx.send("Shutting down bot.")
     await bot.logout()
-	os.exit()
+    sys.exit()
 
 
 bot.run()
