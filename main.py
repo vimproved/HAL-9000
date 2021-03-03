@@ -2,7 +2,7 @@ from discord.ext import commands
 from datetime import datetime
 import discord
 import pickle
-
+import sys
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
@@ -121,6 +121,7 @@ bot = HAL("//")
 async def stop(ctx):
     await ctx.send("Shutting down bot.")
     await bot.logout()
+	os.exit()
 
 
 bot.run()
