@@ -56,7 +56,7 @@ class HAL(commands.Bot):
     def startup(self):
         print("Loading cogs...")
         for cog in self.loaded_cogs:
-            print("Loading", cog)
+            print("Loading " + cog + ".")
             try:
                 self.load_extension(cog)
                 print("Cog loaded.")
