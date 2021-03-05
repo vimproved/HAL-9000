@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 #yeet
-config
+config.toml
 token
 venv/

@@ -1,6 +1,5 @@
 from discord.ext import commands
 import requests
-import pickle
 import discord
 
 

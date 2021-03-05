@@ -1,9 +1,9 @@
 from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter, RoleConverter, TextChannelConverter
-import pickle
 import discord
 from itertools import count
 import time
+import toml
 
 
 def setup(bot):
@@ -18,124 +18,33 @@ class Mod(commands.Cog):
 
     @commands.has_permissions(administrator=True)
     @commands.command()
-    async def config(self, ctx, args):
+    async def config(self, ctx, *args):
         """Configures the local server settings of HAL.
         Requires administrator.
-        ```//config logchannel: Sets the channel for HAL to send mod log messages in (HAL Errors, message deletions)
-        //config systemchannel: Sets the channel for HAL to send member joins/leaves in.
-        //config copypasta: Sets whether //copypasta is enabled for this server.
-        //config colorposition: Sets the role list position of new color roles.
+        ```//config logchannel <channel>: Sets the channel for HAL to send mod log messages in (HAL Errors, message deletions)
+        //config systemchannel <channel>: Sets the channel for HAL to send member joins/leaves in.
+        //config colorposition <integer>: Sets the role list position of new color roles.
         //config read: Sends the config settings.```"""
-        try:
-            globalconfig = pickle.load(open("config", "rb"))
-        except EOFError or KeyError:
-            globalconfig = {}
-        try:
-            config = globalconfig[ctx.guild.id]
-        except KeyError:
-            config = {}
-        if args == "systemchannel":
-            q = await ctx.send("Please enter the channel you would like HAL to send server updates in.")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            systemchannel = await TextChannelConverter().convert(ctx, answer)
+        config = toml.loads(open("config.toml", "rt").read())
+        if args[0] == "systemchannel":
+            systemchannel = await TextChannelConverter().convert(ctx, args[1])
             config.update({"systemchannel": systemchannel.id})
-            globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("System channel set to " + response.content)
-        elif args == "logchannel":
-            q = await ctx.send("Please enter the channel you would like HAL to send moderation logs and errors in.")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            logchannel = await TextChannelConverter().convert(ctx, answer)
+            open("config.toml", "w").write(toml.dumps(config))
+            await ctx.send("System channel set to " + args[1] + ".")
+        elif args[0] == "logchannel":
+            logchannel = await TextChannelConverter().convert(ctx, args[1])
             config.update({"logchannel": logchannel.id})
-            globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("Log channel set to " + response.content)
-        elif args == "copypasta":
-            q = await ctx.send('Please enter "yes" or "no" to configure whether copypasta is enabled on this server.')
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            if answer == "yes":
-                enabled = True
-            elif answer == "no":
-                enabled = False
-            else:
-                await ctx.send("That is not a valid response")
-                return
-            config.update({"copypastaenabled": enabled})
-            globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("Copypasta enabled set to " + str(enabled).lower() + ".")
-        elif args == "read":
-            message = ""
-            for x in config.keys():
-                try:
-                    value = (await TextChannelConverter().convert(ctx, str(config[x]))).mention
-                except commands.errors.BadArgument:
-                    value = str(config[x])
-                message = message + "\n" + str(x) + ": " + value
-            await ctx.send(message)
-        elif args == "muterole":
-            q = await ctx.send("What would you like the new muted role to be?")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            try:
-                muterole = await RoleConverter().convert(ctx, answer)
-                config.update({"muterole": muterole.id})
-                globalconfig.update({ctx.guild.id: config})
-                pickle.dump(globalconfig, open("config", "wb"))
-                await ctx.send("Set muted role to " + muterole.name + ".")
-            except commands.errors.BadArgument:
-                await ctx.send("Role not found.")
-        elif args == "colorposition":
-            q = await ctx.send("What position (from the top of the roles list) would you like new colors to be "
-                               "inserted at?")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = int(response.content)
-            answer = (len(ctx.guild.roles) - answer) + 1
-            position = answer
+            open("config.toml", "w").write(toml.dumps(config))
+            await ctx.send("Log channel set to " + args[1] + ".")
+        elif args[0] == "colorposition":
+            position = (len(ctx.guild.roles) - int(args[1])) + 1
             config.update({"colorposition": position})
-            globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
-            await ctx.send("Done!")
-        elif args == "wipe":
-            q = await ctx.send("What config element would you like to wipe?")
-            response = ""
-            while type(response) != discord.Message:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        break
-            answer = response.content
-            config.pop(answer)
-            globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
+            open("config.toml", "w").write(toml.dumps(config))
+            await ctx.send("Color position set to " + str(args[1]) + ".")
+        elif args[0] == "read":
+            await ctx.send("Config file:\n" + open("config.toml").read())
+        else:
+            await ctx.send("Please select a valid configuration option.")
 
     @commands.has_permissions(ban_members=True)
     @commands.command()
@@ -161,4 +70,3 @@ class Mod(commands.Cog):
             deletionlist.append(message)
         await ctx.channel.delete_messages(deletionlist)
         await ctx.send("Deleted " + args + " messages.")
-

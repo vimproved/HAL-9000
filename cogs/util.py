@@ -1,7 +1,6 @@
 from discord.ext import commands
 import discord
 from discord.ext.commands import TextChannelConverter, RoleConverter
-import pickle
 from PIL import Image
 import random
 import itertools
@@ -196,14 +195,7 @@ class Utility(commands.Cog):
         //color addexisting <role>: Adds an existing role to the color list. (Requires manage roles)```"""
         subcmd = args[0]
         args = args[1:]
-        try:
-            globalconfig = pickle.load(open("config", "rb"))
-        except EOFError or KeyError:
-            globalconfig = {}
-        try:
-            config = globalconfig[ctx.guild.id]
-        except KeyError:
-            config = {}
+        config = toml.loads(open("config.toml", "rt").read())
         if subcmd == "add":
             if not ctx.author.guild_permissions.manage_roles:
                 await ctx.send("Invalid permissions.")
@@ -244,7 +236,7 @@ class Utility(commands.Cog):
             colors.append(colorrole.id)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
+            open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "list":
             try:
                 colors = config["colors"]
@@ -264,7 +256,7 @@ class Utility(commands.Cog):
             await ctx.send(text + "\n\n *Do* `//color preview <color>` *for a preview of the color!*")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
+            open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "delete":
             if not ctx.author.guild_permissions.manage_roles:
                 raise discord.ext.commands.MissingPermissions
@@ -298,11 +290,10 @@ class Utility(commands.Cog):
             await ctx.send("Color deleted successfully.")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
+            open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "forcedelete":
             if not ctx.author.guild_permissions.manage_roles:
-                await ctx.send("Invalid permissions.")
-                return
+                raise discord.ext.commands.MissingPermissions
             try:
                 colors = config["colors"]
             except KeyError:
@@ -316,11 +307,10 @@ class Utility(commands.Cog):
             await ctx.send("Color removed.")
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
+            open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "addexisting":
             if not ctx.author.guild_permissions.manage_roles:
-                await ctx.send("Invalid permissions.")
-                return
+                raise discord.ext.commands.MissingPermissions
             try:
                 colors = config["colors"]
             except KeyError:
@@ -334,7 +324,7 @@ class Utility(commands.Cog):
             colors.append(colorrole.id)
             config.update({"colors": colors})
             globalconfig.update({ctx.guild.id: config})
-            pickle.dump(globalconfig, open("config", "wb"))
+            open("config.toml", "w").write(toml.dumps(config))
             await ctx.send("Done!")
         elif subcmd == "preview":
             color = ' '.join(args)

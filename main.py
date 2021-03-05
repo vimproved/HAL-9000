@@ -1,12 +1,13 @@
 from discord.ext import commands
 from datetime import datetime
 import discord
-import pickle
 import sys
+import toml
 
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
+        config = toml.loads(open("config.toml", "rt").read())
         super().__init__(command_prefix, **options)
         self.description = "A multipurpose bot made by vi#7158."
         self.token = open("token").read()
@@ -23,7 +24,8 @@ class HAL(commands.Bot):
 	        await ctx.send("This command requires arguments that you did not specify. Do //help <command> for information on how to use this command.")
         	return
         await ctx.send(str(exception))
-        logchannel = None
+        config = toml.loads(open("config.toml", "rt").read())
+        logchannel = self.get_channel(config['logchannel'])
         await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
     @staticmethod
@@ -69,36 +71,21 @@ class HAL(commands.Bot):
         await systemchannel.send(embed=embed_var)
 
     async def on_member_join(self, member):
-        try:
-            globalconfig = pickle.load(open("config", "rb"))
-        except EOFError:
-            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
-            globalconfig = {}
-        config = globalconfig[member.guild.id]
-        systemchannel = self.get_channel(int(config['systemchannel']))
+        config = toml.loads(open("config.toml", "rt").read())
+        systemchannel = self.get_channel(config['systemchannel'])
         embed_var = discord.Embed(color=0xff0008, title="__Ahoy There!__", description=member.mention + " joined the server! Make sure to read #readme!")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
-        try:
-            globalconfig = pickle.load(open("config", "rb"))
-        except EOFError:
-            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
-            globalconfig = {}
-        config = globalconfig[member.guild.id]
-        systemchannel = self.get_channel(int(config['systemchannel']))
+        config = toml.loads(open("config.toml", "rt").read())
+        systemchannel = self.get_channel(config['systemchannel'])
         embed_var = discord.Embed(color=0xff0008)
         embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
         await systemchannel.send(embed=embed_var)
 
     async def on_message_delete(self, message):
-        try:
-            globalconfig = pickle.load(open("config", "rb"))
-        except EOFError:
-            print("Config file is blank. If you're seeing this your installation of HAL is probably new, or a critical error has occurred.")
-            globalconfig = {}
-        config = globalconfig[message.guild.id]
-        logchannel = self.get_channel(int(config['logchannel']))
+        config = toml.loads(open("config.toml", "rt").read())
+        logchannel = self.get_channel(config['logchannel'])
         await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
 
 
