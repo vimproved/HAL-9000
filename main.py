@@ -3,12 +3,10 @@ from datetime import datetime
 import discord
 import pickle
 import sys
-import toml
 
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
-        config = toml.loads(open("config.toml", "rt").read())
         super().__init__(command_prefix, **options)
         self.description = "A multipurpose bot made by vi#7158."
         self.token = open("token").read()
@@ -25,8 +23,7 @@ class HAL(commands.Bot):
 	        await ctx.send("This command requires arguments that you did not specify. Do //help <command> for information on how to use this command.")
         	return
         await ctx.send(str(exception))
-        config = toml.loads(open("config.toml", "rt").read())
-        logchannel = self.get_channel(config['logchannel'])
+        logchannel = None
         await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
     @staticmethod
