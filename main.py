@@ -13,6 +13,7 @@ class HAL(commands.Bot):
         self.token = open("token").read()
         self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun"]
         self.startup()
+        open("config.toml", "a")
 
     async def on_command_error(self, ctx, exception):
         if type(exception) is commands.errors.CommandNotFound:
