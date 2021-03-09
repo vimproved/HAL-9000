@@ -1,8 +1,5 @@
-from discord.ext import commands, tasks
-from discord.ext.commands import MemberConverter, RoleConverter, TextChannelConverter
-import discord
-from itertools import count
-import time
+from discord.ext import commands
+from discord.ext.commands import MemberConverter, TextChannelConverter
 import toml
 
 

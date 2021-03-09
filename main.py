@@ -7,7 +7,6 @@ import toml
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
-        config = toml.loads(open("config.toml", "rt").read())
         super().__init__(command_prefix, **options)
         self.description = "A multipurpose bot made by vi#7158."
         self.token = open("token").read()
@@ -22,8 +21,8 @@ class HAL(commands.Bot):
             await ctx.send("You are missing permissions required to run this command.")
             return
         elif str(exception).startswith("Command raised an exception: IndexError:"):
-	        await ctx.send("This command requires arguments that you did not specify. Do //help <command> for information on how to use this command.")
-        	return
+            await ctx.send("This command requires arguments that you did not specify. Do //help <command> for information on how to use this command.")
+            return
         await ctx.send(str(exception))
         config = toml.loads(open("config.toml", "rt").read())
         logchannel = self.get_channel(config['logchannel'])
@@ -62,10 +61,11 @@ class HAL(commands.Bot):
                 print("Failed to load cog. Reason: " + str(e))
 
     async def on_member_ban(self, guild, user):
+        config = toml.loads(open("config.toml", "rt").read())
         systemchannel = self.get_channel(config['systemchannel'])
         ban = await guild.fetch_ban(user)
         reason = ban[0]
-        if reason == None:
+        if reason is None:
             embed_var = discord.Embed(color=0xff0008, title="__Member banned.__", description=user.mention + " was banned from the server.")
         else:
             embed_var = discord.Embed(color=0xff0008, title="__Member banned.__", description=user.mention + " was banned from the server with reason \"" + reason + "\"")

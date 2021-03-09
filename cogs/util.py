@@ -4,6 +4,8 @@ from discord.ext.commands import TextChannelConverter, RoleConverter
 from PIL import Image
 import random
 import itertools
+import toml
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
@@ -235,7 +237,6 @@ class Utility(commands.Cog):
                 colors = []
             colors.append(colorrole.id)
             config.update({"colors": colors})
-            globalconfig.update({ctx.guild.id: config})
             open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "list":
             try:
@@ -255,7 +256,6 @@ class Utility(commands.Cog):
                 text = text + "\n**" + str(colorroles.index(x) + 1) + ":** " + x.name
             await ctx.send(text + "\n\n *Do* `//color preview <color>` *for a preview of the color!*")
             config.update({"colors": colors})
-            globalconfig.update({ctx.guild.id: config})
             open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "delete":
             if not ctx.author.guild_permissions.manage_roles:
@@ -289,7 +289,6 @@ class Utility(commands.Cog):
                 return
             await ctx.send("Color deleted successfully.")
             config.update({"colors": colors})
-            globalconfig.update({ctx.guild.id: config})
             open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "forcedelete":
             if not ctx.author.guild_permissions.manage_roles:
@@ -306,7 +305,6 @@ class Utility(commands.Cog):
                 return
             await ctx.send("Color removed.")
             config.update({"colors": colors})
-            globalconfig.update({ctx.guild.id: config})
             open("config.toml", "w").write(toml.dumps(config))
         elif subcmd == "addexisting":
             if not ctx.author.guild_permissions.manage_roles:
@@ -323,7 +321,6 @@ class Utility(commands.Cog):
                 return
             colors.append(colorrole.id)
             config.update({"colors": colors})
-            globalconfig.update({ctx.guild.id: config})
             open("config.toml", "w").write(toml.dumps(config))
             await ctx.send("Done!")
         elif subcmd == "preview":
