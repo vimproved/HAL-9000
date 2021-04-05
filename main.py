@@ -3,6 +3,7 @@ from datetime import datetime
 import discord
 import sys
 import toml
+from cogs.util import Utility
 
 
 class HAL(commands.Bot):
@@ -12,16 +13,19 @@ class HAL(commands.Bot):
         self.token = open("token").read()
         self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun"]
         self.startup()
+        self.util = Utility(self)
+        # Open config file in append mode.
         open("config.toml", "a")
 
     async def on_command_error(self, ctx, exception):
+        # Exception handling happens here.
         if type(exception) is commands.errors.CommandNotFound:
             return
         elif type(exception) is commands.errors.MissingPermissions:
             await ctx.send("You are missing permissions required to run this command.")
             return
-        elif str(exception).startswith("Command raised an exception: IndexError:"):
-            await ctx.send("This command requires arguments that you did not specify. Do //help <command> for information on how to use this command.")
+        elif type(exception) is commands.errors.MissingRequiredArgument or IndexError:
+            await self.util.help(self.util, ctx, ctx.command.name)
             return
         await ctx.send(str(exception))
         config = toml.loads(open("config.toml", "rt").read())
@@ -32,7 +36,7 @@ class HAL(commands.Bot):
     async def on_ready():
         print("HAL-9000")
         print("HAL is ready!")
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='you...'))
+        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='//help'))
 
     @staticmethod
     async def on_connect():
