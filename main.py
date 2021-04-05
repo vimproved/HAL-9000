@@ -5,6 +5,7 @@ import sys
 import toml
 from cogs.util import Utility
 
+# commenting here so i can push
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
