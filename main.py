@@ -19,11 +19,13 @@ class HAL(commands.Bot):
 
     async def on_command_error(self, ctx, exception):
         # Exception handling happens here.
+        # Returns if command not found.
         if type(exception) is commands.errors.CommandNotFound:
             return
         elif type(exception) is commands.errors.MissingPermissions:
             await ctx.send("You are missing permissions required to run this command.")
             return
+        # Prints help message if arguments are missing.
         elif type(exception) is commands.errors.MissingRequiredArgument or IndexError:
             await self.util.help(self.util, ctx, ctx.command.name)
             return

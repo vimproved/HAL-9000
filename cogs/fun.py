@@ -18,8 +18,9 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def dadjoke(self, ctx, args="random"):
-        """Searches https://icanhazdadjoke.com for a dadjoke. Put no args or "random" for a random joke.
-        ```//dadjoke <joke>```"""
+        """Searches https://icanhazdadjoke.com for a dadjoke.
+        `//dadjoke <keyword>`: Searches for a keyword.
+        `//dadjoke`: Sends a random dadjoke."""
         try:
             if args.lower() == "random":
                 dadjoke = requests.get("https://icanhazdadjoke.com/", headers={"Accept": "text/plain"})
@@ -31,15 +32,15 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def alert(self, ctx, *args):
-        """!BWOOP BWOOP! Sends an alert 5 times.
-        ```//alert <text>```"""
+        """!BWOOP BWOOP! Sends an alert with sirens blaring!
+        `//alert <text>`"""
         alert_text = eval('"' + ' '.join(args).upper() + '"')
         await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:", allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
 
     @commands.command()
     async def mcprofile(self, ctx, args):
         """Gets a Minecraft profile from IGN.
-        ```//mcprofile <IGN>```"""
+        `//mcprofile <IGN>`"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         profile = requests.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuidfromign["id"]).json()
         embed_var = discord.Embed(color=0xff0008, title=args)
@@ -53,7 +54,7 @@ class Fun(commands.Cog):
     @commands.command()
     async def mcskin(self, ctx, args):
         """Gets the Minecraft skin file of a player.
-        ```//mcskin <IGN>```"""
+        `//mcskin <IGN>`"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
         embed_var = discord.Embed(color=0xff0008, title=args + "'s Skin", description="Skin for " + args + ":")
@@ -64,7 +65,7 @@ class Fun(commands.Cog):
     @commands.command()
     async def mchead(self, ctx, args):
         """Gets a render of a Minecraft user's head.
-        ```//mchead <IGN>```"""
+        `//mchead <IGN>`"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
         embed_var = discord.Embed(color=0xff0008, title=args + "'s Head", description="Head render for " + args + ":")
@@ -75,7 +76,7 @@ class Fun(commands.Cog):
     @commands.command()
     async def mccape(self, ctx, args):
         """Gets a user's Minecraft cape. Note: Cape must be mojang supported cape.
-        ```//mccape <IGN>```"""
+        `//mccape <IGN>`"""
         uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/" + args).json()
         uuid = uuidfromign["id"]
         embed_var = discord.Embed(color=0xff0008, title=args + "'s Cape", description="Cape for " + args + ":")

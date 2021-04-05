@@ -12,7 +12,7 @@ def setup(bot):
 
 
 class Utility(commands.Cog):
-    """Utility commands."""
+    """Commands for server / bot utility."""
 
     def __init__(self, bot):
         self.bot = bot
@@ -20,181 +20,85 @@ class Utility(commands.Cog):
     @commands.command()
     async def help(self, ctx, args=""):
         """Help command.
-        ```//help <command>: Help for a single command
-        //help <category>: Help for all the commands in a category.```"""
-        names_lower = []
-        names = []
-        for x in self.bot.cogs.keys():
-            names_lower.append(x.lower())
-            names.append(x)
-        if args.lower() in names_lower:
-            args = self.bot.get_cog(names[names_lower.index(args.lower())])
+        `//help <command>`: Help for a single command."""
+        cmds = [i.name for i in self.bot.commands]
+        cmds_lower = [i.lower() for i in cmds]
+        if args.lower() in cmds_lower:
+            cmd = self.bot.get_command(cmds[cmds_lower.index(args.lower())])
             embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="__" + args.qualified_name + "__",
-                                value=args.description + "\n", inline=False)
-            for command in args.get_commands():
-                embed_var.add_field(name="//" + command.name, value=command.help + "\n", inline=False)
-        elif self.bot.get_command(args) in self.bot.commands:
-            args = self.bot.get_command(args)
-            embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="__//" + args.name + "__", value=args.help + "\n", inline=False)
+            embed_var.add_field(name="//"+cmd.name, value=cmd.help + "\n", inline=False)
         else:
-            embed_var = discord.Embed(color=0xff0008, title="__Help Menu__",
-                                      description="HAL-9000 is a multipurpose discord bot made by vi#7158 "
-                                                  "and rous#7120. These are the categories of commands. Do `//help "
-                                                  "<category>` for information on a category.")
-            embed_var.set_thumbnail(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp"
-                                        "-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
+            embed_var = discord.Embed(color=0xff0008, title="Help Menu", description="HAL-9000 is a multipurpose discord bot made by vi#7402. This is a list of commands. Do `//help <command>` for information on a command.")
+            embed_var.set_thumbnail(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
             for cog in self.bot.cogs.values():
-                embed_var.add_field(name=cog.qualified_name, value=cog.description, inline=True)
+                embed_var.add_field(name=cog.qualified_name, value="`"+"`, `".join([i.name for i in cog.get_commands()])+"`", inline=False)
         await ctx.send(embed=embed_var)
+
+    @commands.has_permissions(administrator=True)
+    @commands.command()
+    async def config(self, ctx, *args):
+        """Configures the local server settings of HAL.
+        Requires administrator.
+        `//config logchannel <channel>': Sets the channel for HAL to send mod log messages in (HAL Errors, message deletions)
+        '//config systemchannel <channel>': Sets the channel for HAL to send member joins/leaves in.
+        '//config colorposition <integer>': Sets the role list position of new color roles.
+        '//config read': Sends the config settings."""
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(ctx.guild.id)]
+        except KeyError:
+            config = {}
+        if args[0] == "systemchannel":
+            systemchannel = await TextChannelConverter().convert(ctx, args[1])
+            config.update({"systemchannel": systemchannel.id})
+        elif args[0] == "logchannel":
+            logchannel = await TextChannelConverter().convert(ctx, args[1])
+            config.update({"logchannel": logchannel.id})
+        elif args[0] == "colorposition":
+            position = (len(ctx.guild.roles) - int(args[1])) + 1
+            config.update({"colorposition": position})
+        elif args[0] == "read":
+            await ctx.send("Config file:\n" + toml.dumps(config))
+        else:
+            await ctx.send("Please select a valid configuration option.")
+        globalconfig.update({str(ctx.guild.id): config})
+        open("config.toml", "w").write(toml.dumps(globalconfig))
+        await ctx.send("Configuration set.")
 
     @commands.command()
     async def ping(self, ctx):
         """Pings the bot and displays the time in milliseconds between your message being sent and the ping message
-        being sent. Ignores arguments. """
+        being sent.
+        Ignores arguments. """
         m = await ctx.send("Pong?")
         latency = m.created_at - ctx.message.created_at
         await m.edit(content=f"Pong in {int(latency.microseconds / 1000)} ms! :ping_pong:")
 
     @commands.command()
     async def invite(self, ctx):
-        """Sends an oath2 link for HAL. Ignores arguments."""
+        """Sends an oath2 link for HAL.
+        Ignores arguments."""
         await ctx.send("https://discord.com/api/oauth2/authorize?client_id=717042126776434728&permissions=8&scope=bot")
 
     @commands.command()
     async def repo(self, ctx):
-        """Sends the link to the GitHub repo for HAL. Ignores arguments."""
+        """Sends the link to the GitHub repo for HAL.
+        Ignores arguments."""
         await ctx.send("https://github.com/Paradigmmmm/HAL-9000")
-
-    @commands.has_permissions(administrator=True)
-    @commands.command()
-    async def poll(self, ctx, *args):
-        """Creates a poll in a the specified channel and optionally pings a role.
-        Admin only.
-        ```//poll <channel> <role (optional)>```"""
-        poll_channel = await TextChannelConverter().convert(ctx, args[0])
-        embed = discord.Embed(color=0xff0008)
-        embed.add_field(name="__Poll Creation__", value='What is the name of your poll?\nType "cancel" at any time to '
-                                                        'cancel poll creation.', inline=False)
-        q = await ctx.send(embed=embed)
-        response = ""
-        while type(response) != discord.Message:
-            async for message in ctx.channel.history(limit=5):
-                if message.author == ctx.author and message.created_at > q.created_at:
-                    response = message
-                    break
-        answer = response.content
-        if answer.lower() == "cancel":
-            await ctx.send("Poll cancelled.")
-            return
-        title = answer
-        embed = discord.Embed(color=0xff0008)
-        embed.add_field(name="__Poll Creation__",
-                        value='Type a brief description of your poll.\nType "cancel" at any time to cancel poll '
-                              'creation.',
-                        inline=False)
-        q = await ctx.send(embed=embed)
-        response_found = False
-        while not response_found:
-            async for message in ctx.channel.history(limit=5):
-                if message.author == ctx.author and message.created_at > q.created_at:
-                    response = message
-                    response_found = True
-                    break
-        answer = response.content
-        if answer.lower() == "cancel":
-            return
-        description = answer
-        embed = discord.Embed(color=0xff0008)
-        embed.add_field(name="__Poll Creation__",
-                        value='How many voting options would you like?.\nType "cancel" at any time to cancel poll '
-                              'creation.',
-                        inline=False)
-        q = await ctx.send(embed=embed)
-        response_found = False
-        while not response_found:
-            async for message in ctx.channel.history(limit=5):
-                if message.author == ctx.author and message.created_at > q.created_at:
-                    response = message
-                    response_found = True
-                    break
-        answer = response.content
-        num_responses = answer
-        if answer.lower() == "cancel":
-            await ctx.send("Poll cancelled.")
-            return
-        options = {}
-        for x in range(0, int(num_responses)):
-            embed = discord.Embed(color=0xff0008)
-            embed.add_field(name="__Poll Creation__",
-                            value='Type the text for response #' + str(
-                                x + 1) + '.\nType "cancel" at any time to cancel '
-                                         'poll creation.',
-                            inline=False)
-            q = await ctx.send(embed=embed)
-            response_found = False
-            while not response_found:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        response_found = True
-                        break
-            answer = response.content
-            if answer.lower() == "cancel":
-                await ctx.send("Poll cancelled.")
-                return
-            text = answer
-            embed = discord.Embed(color=0xff0008)
-            embed.add_field(name="__Poll Creation__",
-                            value='Type the emoji for response #' + str(x + 1) + '. MAKE SURE THAT THE EMOJI IS EITHER '
-                                                                                 'FROM THIS SERVER, OR A GLOBAL '
-                                                                                 'EMOJI.\nType "cancel" at any time to '
-                                                                                 'cancel poll creation.',
-                            inline=False)
-            q = await ctx.send(embed=embed)
-            response_found = False
-            while not response_found:
-                async for message in ctx.channel.history(limit=5):
-                    if message.author == ctx.author and message.created_at > q.created_at:
-                        response = message
-                        response_found = True
-                        break
-            answer = response.content
-            emoji = answer
-            options.update({emoji: text})
-        await ctx.send("Sending poll message.")
-        response_str = ""
-        for x in options.keys():
-            response_str = response_str + "\n\n" + x + ": " + options[x]
-        embed = discord.Embed(color=0xff0008)
-        embed.add_field(name="*__POLL: " + title + "__*",
-                        value='Description:\n' + description,
-                        inline=False)
-        embed.add_field(name="*Responses*",
-                        value=response_str,
-                        inline=False)
-        embed.add_field(name="*Created by:*",
-                        value=ctx.author.mention,
-                        inline=False)
-        if args[1] == "everyone":
-            thing = "@everyone"
-        else:
-            thing = args[1]
-        poll = await poll_channel.send(thing, embed=embed)
-        for x in options.keys():
-            await poll.add_reaction(x)
 
     @commands.command()
     async def color(self, ctx, *args):
         """Commands relating to the color system.
         Subcommands:
-        ```//color list: Lists all color names and hex codes.
-        //color set <color name>: Sets your color to the specified color.
-        //color preview <name>: Sends an image containing the color of the role.
-        //color add <hex code> <color name>: Adds a color (Requires manage roles)
-        //color delete <name/number on list>: Deletes a color (Requires manage roles).
-        //color addexisting <role>: Adds an existing role to the color list. (Requires manage roles)```"""
+        `//color list`: Lists all color names.
+        `//color set <color name>`: Sets your color to the specified color.
+        `//color preview <name>`: Sends an image containing the color of the role.
+        `//color add <hex code> <color name>`: Adds a color with the specified hex codes (Requires manage roles).
+        `//color delete <name/number on list>`: Deletes a color (Requires manage roles).
+        `//color addexisting <role>`: Adds an existing role to the color list. (Requires manage roles)"""
         subcmd = args[0]
         args = args[1:]
         config = toml.loads(open("config.toml", "rt").read())
@@ -377,13 +281,14 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def coinflip(self, ctx):
-        """Flips a coin. Ignores arguments."""
+        """Flips a coin.
+        Ignores arguments."""
         await ctx.send(random.choice(["Heads!"] * 50 + ["Tails!"] * 50 + ["The coin landed on the side!!"]))
 
     @commands.command()
     async def roll(self, ctx, args):
         """Rolls dice of any quantity and size.
-        ```//roll <XdX>```"""
+        `//roll XdY`: Rolls X amount of Y sided dice."""
         total = 0
         crits = 0
         critf = 0
@@ -410,6 +315,6 @@ class Utility(commands.Cog):
     @commands.command()
     async def choose(self, ctx, *args):
         """Chooses between multiple things if you can't decide yourself.
-        ```//choose <args>```"""
+        `//choose <args>`: Choses between multiple phrases at random. To clump multiple words into one argument, encase in quotes."""
         await ctx.send(random.choice(args), allowed_mentions=discord.AllowedMentions(everyone=False, users=False,
                                                                                      roles=False))
