@@ -62,7 +62,7 @@ class Fun(commands.Cog):
             embed_var.add_field(name="__Name__", value=profile["name"], inline=False)
             embed_var.add_field(name="__UUID__", value=profile["id"], inline=False)
             embed_var.add_field(name="__Skin__", value=profile["name"] + "'s skin:")
-            embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
+            embed_var.set_author(name="HAL-9000", url="https://namemc.com/profile/"+args,  icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
             await ctx.send(embed=embed_var)
         elif subcmd == "skin":
             uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/"+args).json()
@@ -70,7 +70,7 @@ class Fun(commands.Cog):
             embed_var = discord.Embed(color=0xff0008, title=args+"'s Skin", description="Skin for "+args+":")
             embed_var.set_thumbnail(url="https://crafatar.com/avatars/"+uuid+".png?size=32&overlay")
             embed_var.set_image(url="https://crafatar.com/skins/"+uuid+".png?overlay")
-            embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
+            embed_var.set_author(name="HAL-9000", url="https://namemc.com/profile/"+args, icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
             await ctx.send(embed=embed_var)
         elif subcmd == "head":
             uuidfromign = requests.get("https://api.mojang.com/users/profiles/minecraft/"+args).json()
@@ -78,7 +78,7 @@ class Fun(commands.Cog):
             embed_var = discord.Embed(color=0xff0008, title=args+"'s Head", description="Head render for "+args+":")
             embed_var.set_thumbnail(url="https://crafatar.com/avatars/"+uuid+".png?size=32&overlay")
             embed_var.set_image(url="https://crafatar.com/renders/head/"+uuid+".png?overlay")
-            embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
+            embed_var.set_author(name="HAL-9000", url="https://namemc.com/profile/"+args,  icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
             await ctx.send(embed=embed_var)
         else:
             raise commands.errors.MissingRequiredArgument
