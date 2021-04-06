@@ -5,7 +5,6 @@ import sys
 import toml
 from cogs.util import Utility
 
-# commenting here so i can push
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
@@ -30,10 +29,22 @@ class HAL(commands.Bot):
         elif type(exception) is commands.errors.MissingRequiredArgument or IndexError:
             await self.util.help(self.util, ctx, ctx.command.name)
             return
+        # Sends exception if unhandled by the previous code.
         await ctx.send(str(exception))
-        config = toml.loads(open("config.toml", "rt").read())
-        logchannel = self.get_channel(config['logchannel'])
-        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(type(exception)) + ". Invoke message: " + ctx.message.jump_url)
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(ctx.guild.id)]
+        except KeyError:
+            config = {}
+        try:
+            logchannel = self.get_channel(config['logchannel'])
+        except KeyError:
+            return
+        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
+            type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
     @staticmethod
     async def on_ready():
@@ -68,33 +79,75 @@ class HAL(commands.Bot):
                 print("Failed to load cog. Reason: " + str(e))
 
     async def on_member_ban(self, guild, user):
-        config = toml.loads(open("config.toml", "rt").read())
-        systemchannel = self.get_channel(config['systemchannel'])
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(guild.id)]
+        except KeyError:
+            config = {}
+        try:
+            systemchannel = self.get_channel(config['systemchannel'])
+        except KeyError:
+            return
         ban = await guild.fetch_ban(user)
         reason = ban[0]
         if reason is None:
             embed_var = discord.Embed(color=0xff0008, title="__Member banned.__", description=user.mention + " was banned from the server.")
         else:
             embed_var = discord.Embed(color=0xff0008, title="__Member banned.__", description=user.mention + " was banned from the server with reason \"" + reason + "\"")
+        embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_join(self, member):
-        config = toml.loads(open("config.toml", "rt").read())
-        systemchannel = self.get_channel(config['systemchannel'])
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(member.guild.id)]
+        except KeyError:
+            config = {}
+        try:
+            systemchannel = self.get_channel(config['systemchannel'])
+        except KeyError:
+            return
         embed_var = discord.Embed(color=0xff0008, title="__Ahoy There!__", description=member.mention + " joined the server! Make sure to read #readme!")
+        embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
         await systemchannel.send(embed=embed_var)
 
     async def on_member_remove(self, member):
-        config = toml.loads(open("config.toml", "rt").read())
-        systemchannel = self.get_channel(config['systemchannel'])
-        embed_var = discord.Embed(color=0xff0008)
-        embed_var.add_field(name="__See You Later!__", value=member.mention + " left the server. See you next time!")
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(member.guild.id)]
+        except KeyError:
+            config = {}
+        try:
+            systemchannel = self.get_channel(config['systemchannel'])
+        except KeyError:
+            return
+        embed_var = discord.Embed(color=0xff0008, title="__See You Later!__", description=member.mention + " left the server. See you next time!")
+        embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
         await systemchannel.send(embed=embed_var)
 
     async def on_message_delete(self, message):
-        config = toml.loads(open("config.toml", "rt").read())
-        logchannel = self.get_channel(config['logchannel'])
-        await logchannel.send("Message sent by " + str(message.author) + " deleted at " + str(datetime.now()) + ". Contents: " + message.content)
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(message.guild.id)]
+        except KeyError:
+            config = {}
+        try:
+            logchannel = self.get_channel(config['logchannel'])
+        except KeyError:
+            return
+        await logchannel.send("Message sent by "+str(message.author)+" deleted at "+str(datetime.now())+". Contents: "+message.content)
 
 
 bot = HAL("//")

@@ -20,16 +20,18 @@ class Utility(commands.Cog):
     @commands.command()
     async def help(self, ctx, args=""):
         """Help command.
-        `//help <command>`: Help for a single command."""
+
+        Syntax:
+        `//help <command>`"""
         cmds = [i.name for i in self.bot.commands]
         cmds_lower = [i.lower() for i in cmds]
         if args.lower() in cmds_lower:
             cmd = self.bot.get_command(cmds[cmds_lower.index(args.lower())])
-            embed_var = discord.Embed(color=0xff0008)
-            embed_var.add_field(name="//"+cmd.name, value=cmd.help + "\n", inline=False)
+            embed_var = discord.Embed(color=0xff0008, title=cmd.name, description=cmd.help + "\n")
+            embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
         else:
             embed_var = discord.Embed(color=0xff0008, title="Help Menu", description="HAL-9000 is a multipurpose discord bot made by vi#7402. This is a list of commands. Do `//help <command>` for information on a command.")
-            embed_var.set_thumbnail(url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
+            embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
             for cog in self.bot.cogs.values():
                 embed_var.add_field(name=cog.qualified_name, value="`"+"`, `".join([i.name for i in cog.get_commands()])+"`", inline=False)
         await ctx.send(embed=embed_var)
@@ -39,10 +41,15 @@ class Utility(commands.Cog):
     async def config(self, ctx, *args):
         """Configures the local server settings of HAL.
         Requires administrator.
-        `//config logchannel <channel>': Sets the channel for HAL to send mod log messages in (HAL Errors, message deletions)
-        '//config systemchannel <channel>': Sets the channel for HAL to send member joins/leaves in.
-        '//config colorposition <integer>': Sets the role list position of new color roles.
-        '//config read': Sends the config settings."""
+
+        Subcommands:
+        `logchannel <channel>`: Sets the channel for HAL to send mod log messages in (HAL Errors, message deletions)
+        `systemchannel <channel>`: Sets the channel for HAL to send member joins/leaves in.
+        `colorposition <integer>`: Sets the role list position of new color roles.
+        `read`: Sends the config settings.
+
+        Syntax:
+        `//config <subcommand> <value>`"""
         try:
             globalconfig = toml.loads(open("config.toml", "rt").read())
         except KeyError:
@@ -92,13 +99,17 @@ class Utility(commands.Cog):
     @commands.command()
     async def color(self, ctx, *args):
         """Commands relating to the color system.
+
         Subcommands:
-        `//color list`: Lists all color names.
-        `//color set <color name>`: Sets your color to the specified color.
-        `//color preview <name>`: Sends an image containing the color of the role.
-        `//color add <hex code> <color name>`: Adds a color with the specified hex codes (Requires manage roles).
-        `//color delete <name/number on list>`: Deletes a color (Requires manage roles).
-        `//color addexisting <role>`: Adds an existing role to the color list. (Requires manage roles)"""
+        `list`: Lists all color names.
+        `set <color name>`: Sets your color to the specified color.
+        `preview <name>`: Sends an image containing the color of the role.
+        `add <hex code> <color name>`: Adds a color with the specified hex codes (Requires manage roles).
+        `delete <name/number on list>`: Deletes a color (Requires manage roles).
+        `addexisting <role>`: Adds an existing role to the color list. (Requires manage roles)
+
+        Syntax:
+        `//color <subcommand> <arguments>`"""
         subcmd = args[0]
         args = args[1:]
         config = toml.loads(open("config.toml", "rt").read())
@@ -288,7 +299,9 @@ class Utility(commands.Cog):
     @commands.command()
     async def roll(self, ctx, args):
         """Rolls dice of any quantity and size.
-        `//roll XdY`: Rolls X amount of Y sided dice."""
+
+        Syntax:
+        `//roll <integer>d<integer>`"""
         total = 0
         crits = 0
         critf = 0
@@ -315,6 +328,8 @@ class Utility(commands.Cog):
     @commands.command()
     async def choose(self, ctx, *args):
         """Chooses between multiple things if you can't decide yourself.
-        `//choose <args>`: Choses between multiple phrases at random. To clump multiple words into one argument, encase in quotes."""
+
+        Syntax:
+        `//choose <arg1> <arg2> <arg3> ...`"""
         await ctx.send(random.choice(args), allowed_mentions=discord.AllowedMentions(everyone=False, users=False,
                                                                                      roles=False))

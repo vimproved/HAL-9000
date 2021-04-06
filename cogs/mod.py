@@ -1,6 +1,5 @@
 from discord.ext import commands
-from discord.ext.commands import MemberConverter, TextChannelConverter
-import toml
+from discord.ext.commands import MemberConverter
 
 
 def setup(bot):
@@ -18,6 +17,8 @@ class Mod(commands.Cog):
     async def ban(self, ctx, *args):
         """Bans a user.
         Requires ban users.
+
+        Syntax:
         `//ban <user> <reason>`"""
         user = await MemberConverter().convert(ctx, args[0])
         try:
@@ -31,6 +32,8 @@ class Mod(commands.Cog):
     async def bulkdelete(self, ctx, args):
         """Deletes messages in bulk.
         Requires manage messages.
+
+        Syntax:
         `//bulkdelete <# of messages>`"""
         deletionlist = []
         async for message in ctx.channel.history(limit=int(args) + 1):
