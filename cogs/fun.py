@@ -38,7 +38,11 @@ class Fun(commands.Cog):
         Syntax:
         `//alert <text>`"""
         alert_text = eval('"' + ' '.join(args).upper() + '"')
-        await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:", allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
+        if ctx.guild.id == 300718768747970560:
+            for i in range (0, 5):
+                await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:", allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
+        else:
+            await ctx.send(":rotating_light: ***bwoop bwoop*** :rotating_light: " + alert_text + " ALERT :rotating_light: ***bwoop bwoop*** :rotating_light:", allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False))
 
     @commands.command()
     async def mc(self, ctx, *args):
