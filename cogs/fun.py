@@ -112,7 +112,7 @@ Syntax:
         //emojify <args>"""
         output = ""
         text = ' '.join(args)
-        emojiList = [a[1:-1] for a in list(emojis.db.get_emoji_aliases().keys())]
+        emojiList = sorted([a[1:-1] for a in list(emojis.db.get_emoji_aliases().keys())])[::-1]
         while text:
             recent = None
             for emoji in emojiList:
