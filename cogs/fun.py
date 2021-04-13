@@ -1,6 +1,8 @@
 from discord.ext import commands
 import requests
 import discord
+import random
+import emojis
 
 
 def setup(bot):
@@ -86,3 +88,19 @@ class Fun(commands.Cog):
             await ctx.send(embed=embed_var)
         else:
             raise commands.errors.MissingRequiredArgument
+
+    @commands.command()
+    async def emojify(self, ctx, *args):
+        """Emojifies text.
+        
+Syntax:
+        //emojify <args>"""
+        response = ""
+        for i in args:
+            i = i + " " + random.choice(list(emojis.db.get_emoji_aliases().values()))
+            response = response + i + " "
+        try:
+            await ctx.send(response)
+        except discord.errors.HTTPException:
+            await ctx.send("Message too long.")
+
