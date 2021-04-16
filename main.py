@@ -148,7 +148,9 @@ class HAL(commands.Bot):
         except KeyError:
             return
         await logchannel.send("Message sent by "+str(message.author)+" deleted at "+str(datetime.now())+". Contents: "+message.content)
-
+    async def on_message(self, message):
+        if "based" in message.content.lower():
+            message.reply("""Based on fucking what? BASED ON FYCKING WHAT? You fucking cunt, you notherfucker. All I read is "based based based cringe cringe based", can't you fucking come up with anything else? It feels as if I'm talking to people with fuckijng dementia or something and they keep repeating the same fucking words on loop. BASEd ON FUCKING WHAT??? THE BIBLE? THE OXFORD DICITONARY? MY HAIRY ASSHOLE? OH my God just shut the fuck up it's like you can't form a coherent sentence without using one of these saturated, dumbass words that lost all meaning overtime. "BASEE BASED BASED CRINGE CRINGE WOKE REDPILL CRIMGE WOKE GO FUCK YOURSELF YOU LITTLE BITCH YOU CUNT YOU FUCking asshole you bitch you cunt little shit""")
 
 bot = HAL("//")
 
