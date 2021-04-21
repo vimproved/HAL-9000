@@ -5,7 +5,7 @@ import sys
 import random
 import toml
 from cogs.util import Utility
-
+# dskfhjasdkfghasdkjghasdkj
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
