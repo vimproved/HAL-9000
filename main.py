@@ -2,6 +2,7 @@ from discord.ext import commands
 from datetime import datetime
 import discord
 import sys
+import random
 import toml
 from cogs.util import Utility
 
@@ -135,6 +136,8 @@ class HAL(commands.Bot):
         await systemchannel.send(embed=embed_var)
 
     async def on_message_delete(self, message):
+        if message.guild.id == 300718768747970560:
+            await message.channel.send("literally " + str(random.randint(0, 10000)))
         try:
             globalconfig = toml.loads(open("config.toml", "rt").read())
         except KeyError:
