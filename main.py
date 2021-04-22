@@ -18,34 +18,34 @@ class HAL(commands.Bot):
         # Open config file in append mode.
         open("config.toml", "a")
 
-    #async def on_command_error(self, ctx, exception):
-    #    # Exception handling happens here.
-    #    # Returns if command not found.
-    #    if type(exception) is commands.errors.CommandNotFound:
-    #        return
-    #    elif type(exception) is commands.errors.MissingPermissions:
-    #        await ctx.send("You are missing permissions required to run this command.")
-    #        return
+    async def on_command_error(self, ctx, exception):
+        # Exception handling happens here.
+        # Returns if command not found.
+        if type(exception) is commands.errors.CommandNotFound:
+            return
+        elif type(exception) is commands.errors.MissingPermissions:
+            await ctx.send("You are missing permissions required to run this command.")
+            return
     #    # Prints help message if arguments are missing.
     #    elif type(exception) is commands.errors.MissingRequiredArgument or IndexError:
     #        await self.util.help(self.util, ctx, ctx.command.name)
     #        return
-    #    # Sends exception if unhandled by the previous code.
-    #    await ctx.send(str(exception))
-    #    try:
-    #        globalconfig = toml.loads(open("config.toml", "rt").read())
-    #    except KeyError:
-    #        globalconfig = {}
-    #    try:
-    #        config = globalconfig[str(ctx.guild.id)]
-    #    except KeyError:
-    #        config = {}
-    #    try:
-    #        logchannel = self.get_channel(config['logchannel'])
-    #    except KeyError:
-    #        return
-    #    await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
-    #        type(exception)) + ". Invoke message: " + ctx.message.jump_url)
+        # Sends exception if unhandled by the previous code.
+        await ctx.send(str(exception))
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(ctx.guild.id)]
+        except KeyError:
+            config = {}
+        try:
+            logchannel = self.get_channel(config['logchannel'])
+        except KeyError:
+            return
+        await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
+            type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
     @staticmethod
     async def on_ready():
