@@ -53,7 +53,7 @@ class Mod(commands.Cog):
         except IndexError:
             warns = []
         try:
-            systemchannel = await TextChannelConverter().convert(ctx, config["systemchannel"])
+            systemchannel = await TextChannelConverter().convert(ctx, str(config["systemchannel"]))
         except KeyError:
             systemchannel = ctx.channel
         try:
