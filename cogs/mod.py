@@ -53,7 +53,7 @@ class Mod(commands.Cog):
         except IndexError:
             warns = []
         try:
-            systemchannel = await TextChannelConverter(ctx, config["systemchannel"])
+            systemchannel = await TextChannelConverter().convert(ctx, config["systemchannel"])
         except KeyError:
             systemchannel = ctx.channel
         try:
@@ -89,7 +89,7 @@ class Mod(commands.Cog):
         except IndexError:
             warns = []
         if len(warns) == 0:
-            ctx.send("Member has no warnings.")
+            await ctx.send("Member has no warnings.")
             return
         embed_var = discord.Embed(color=0xff0008, title="__Warnings for " + str(user) + ".__", description=user.name + "'s warnings.")
         embed_var.set_author(name="HAL-9000", icon_url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fchurchm.ag%2Fwp-content%2Fuploads%2F2015%2F12%2FHAL9000_iconic_eye.png&f=1&nofb=1")
