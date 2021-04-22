@@ -22,7 +22,7 @@ class Mod(commands.Cog):
         `//ban <user> <reason>`"""
         user = await MemberConverter().convert(ctx, args[0])
         try:
-            await user.ban(reason=args[1])
+            await user.ban(reason=' '.join(args[1:]))
         except IndexError:
             await user.ban()
         await ctx.send(user.mention + " has been banned.")
