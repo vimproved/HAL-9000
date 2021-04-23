@@ -5,7 +5,8 @@ import sys
 import random
 import toml
 from cogs.util import Utility
-
+from ctypes import *
+import os
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
@@ -152,7 +153,11 @@ class HAL(commands.Bot):
             return
         await logchannel.send("Message sent by "+str(message.author)+" deleted at "+str(datetime.now())+". Contents: "+message.content)
 
-
+cdll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+"/../cone/b.so")
+cone = CDLL(os.path.dirname(os.path.abspath(__file__))+"/../cone/b.so") 
+cone.parsepoll.argtypes = [c_void_p, c_ulong]
+cone.parsepoll.restype  = py_object
+        
 bot = HAL("//")
 
 
