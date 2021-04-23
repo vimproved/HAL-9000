@@ -2,7 +2,14 @@ from discord.ext import commands
 import discord
 import toml
 from discord.ext.commands import TextChannelConverter, MemberConverter
-
+import requests
+import json
+import os
+from ctypes import *
+cdll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+"/../cone/b.so")
+cone = CDLL(os.path.dirname(os.path.abspath(__file__))+"/../cone/b.so") 
+cone.parsepoll.argtypes = [c_void_p, c_ulong]
+cone.parsepoll.restype  = py_object
 
 def setup(bot):
     bot.remove_command("help")
