@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#yeet
+config.toml
+token
+venv/
+servers/
