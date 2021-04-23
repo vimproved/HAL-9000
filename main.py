@@ -6,6 +6,7 @@ import random
 import toml
 from cogs.util import Utility
 from ctypes import *
+import os
 
 
 class HAL(commands.Bot):
@@ -13,7 +14,7 @@ class HAL(commands.Bot):
         super().__init__(command_prefix, **options)
         self.description = "A multipurpose bot made by vi#7158."
         self.token = open("token").read()
-        self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun"]
+        self.loaded_cogs = ["gears.mod", "gears.util", "gears.fun"]
         self.startup()
         self.util = Utility(self)
         # Open config file in append mode.
