@@ -104,3 +104,31 @@ Syntax:
         except discord.errors.HTTPException:
             await ctx.send("Message too long.")
 
+    @commands.command()
+    async def emojify2(self, ctx, *args):
+        """Emojifies text.
+        
+Syntax:
+        //emojify <args>"""
+        output = ""
+        text = ' '.join(args)
+        emojiList = sorted([a[1:-1] for a in list(emojis.db.get_emoji_aliases().keys())])[::-1]
+        while text:
+            recent = None
+            for emoji in emojiList:
+                if text.startswith(emoji):
+                    recent = ':' + emoji + ': '
+                    text = text[len(emoji):]
+                    break
+            else:
+                if text[0].lower() not in 'qwertyuiopasdfghjklxcvbnm':
+                    recent = text[0]
+                else:
+                    recent = ':regional_indicator_' + text[0].lower() + ': '
+                text = text[1:]
+            if len(output) + len(emojis.encode(recent)) > 2000:
+                await ctx.send(output)
+                output = ""
+            output += emojis.encode(recent)
+        await ctx.send(output)
+
