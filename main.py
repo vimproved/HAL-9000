@@ -6,7 +6,7 @@ import random
 import toml
 from cogs.util import Utility
 from ctypes import *
-import os
+
 
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
@@ -157,7 +157,7 @@ cdll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+"/../cone/b.so")
 cone = CDLL(os.path.dirname(os.path.abspath(__file__))+"/../cone/b.so") 
 cone.parsepoll.argtypes = [c_void_p, c_ulong]
 cone.parsepoll.restype  = py_object
-        
+
 bot = HAL("//")
 
 
