@@ -102,7 +102,7 @@ pps:
 		pushq %rax
 		addq  %rax, %rdi
 		decb  %bh
-	jnz ppsloopB
+	jne ppsloopB
 	
 	addq $3, %rdx
 	cmpq %rdx, %rdi
@@ -149,7 +149,7 @@ pps:
 			incq %rsi
 		loop ppsloopC
 		decb %dh
-	jnz ppsloopD
+	jne ppsloopD
 	
 	ppsplaceB:
 	
