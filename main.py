@@ -4,9 +4,9 @@ import discord
 import sys
 import random
 import toml
-from cogs.util import Utility
+from cogs.util import Utility 
 
-
+#a
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
