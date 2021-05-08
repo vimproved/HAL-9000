@@ -133,3 +133,6 @@ config.toml
 token
 venv/
 servers/
+a.out
+cone/b.so
+.inpid
