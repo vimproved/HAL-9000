@@ -117,3 +117,32 @@ class Mod(commands.Cog):
             deletionlist.append(message)
         await ctx.channel.delete_messages(deletionlist)
         await ctx.send("Deleted " + args + " messages.")
+
+    @commands.has_permissions(administrator=True)
+    @commands.command()
+    async def poll(self, ctx, *args):
+        """Creates a poll in a the specified channel via an attatched text file.
+        All 3 fields must be proceeded by 3 uppercase hexidecimal characters that specify the length of the field.
+        Admin only.
+        ```//poll <channel> <role (optional)>```"""
+        global cone
+        try:
+        	pchan = await TextChannelConverter().convert(ctx, args[0])
+        except:
+        	await ctx.send('Error processing channel')
+        	return
+        try:
+                mesgurl = requests.get("https://discord.com/api/v6/channels/"+str(ctx.channel.id)+"/messages/"+str(ctx.message.id), headers={"Authorization": "Bot "+open("token").read()[:-1], "Accept": "*/*"})
+                mesgurl = json.loads(mesgurl.content.decode('utf-8'))['attachments'][0]['url']
+                passtoc = bytes(requests.get(mesgurl, headers={"Authorization": "Bot "+open("token").read()[:-1], "Accept": "*/*"}).content.decode('utf-8'),'utf-8')
+                agh = cone.parsepoll(passtoc,len(passtoc))
+        except:
+                await ctx.send('Error obtaining embed')
+                agh = 257
+        if (agh==257):
+                await ctx.send('Error processing embed')
+        else:
+                segf = [int.from_bytes(agh[i*8:i*8+7],byteorder='little') for i in [0,1,2]]
+                agb  = agh[24:].decode('utf-8')
+                poll = discord.Embed(color=0xc04080,title=agb[0:segf[1]],description=agb[segf[1]:segf[2]]).add_field(name="Things",value=agb[segf[2]:],inline=False)
+                await pchan.send('',embed=poll)
