@@ -144,5 +144,5 @@ class Mod(commands.Cog):
         else:
                 segf = [int.from_bytes(agh[i*8:i*8+7],byteorder='little') for i in [0,1,2]]
                 agb  = agh[24:].decode('utf-8')
-                poll = discord.Embed(color=0xc04080,title=agb[0:segf[1]],description=agb[segf[1]:segf[2]]).add_field(name="Things",value=agb[segf[2]:],inline=False)
+                poll = discord.Embed(color=0xc04080,title=agb[0:segf[1]],description=agb[segf[1]:segf[2]]).add_field(name="Reactions:",value=agb[segf[2]:],inline=False)
                 await pchan.send('',embed=poll)
