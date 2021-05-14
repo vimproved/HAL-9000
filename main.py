@@ -10,7 +10,7 @@ from cogs.util import Utility
 class HAL(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
-        self.description = "A multipurpose bot made by vi#7158."
+        self.description = "This text should not be seen. If it is, that is likely because hal is compiled wrong. Blame soup"
         self.token = open("token").read()
         self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun"]
         self.startup()
