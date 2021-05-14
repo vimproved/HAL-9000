@@ -1,6 +1,6 @@
 from discord.ext import commands
 import discord
-from discord.ext.commands import TextChannelConverter, RoleConverter, command
+from discord.ext.commands import CommandRegistrationError, TextChannelConverter, RoleConverter, command
 from PIL import Image
 import random
 import itertools
@@ -377,7 +377,11 @@ class Utility(commands.Cog):
                     nargs.append(a)
             await cmd(actx, *nargs)
         coro.__doc__ = ["ALIAS", guildid, cmd.name + " " + ' '.join(aliasargs)]
-        newcmd = self.bot.command(newname, hidden=True)(coro)
+        try:
+            newcmd = self.bot.command(newname, hidden=True)(coro)
+        except CommandRegistrationError:
+            self.bot.remove_command(newname)
+            newcmd = self.bot.command(newname, hidden=True)(coro)
 
     @commands.command()
     async def whatis(self, ctx, cmdname):
