@@ -411,3 +411,7 @@ class Utility(commands.Cog):
             self.bot.remove_command(aliasname)
         else:
             await ctx.send("That's not an alias.")
+
+    @commands.command()
+    async def echo(self, ctx, *stuff):
+        await ctx.send(' '.join(stuff))
