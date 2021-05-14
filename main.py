@@ -18,6 +18,22 @@ class HAL(commands.Bot):
         # Open config file in append mode.
         open("config.toml", "a")
 
+    async def load_aliases(self):
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        for guild in self.guilds:
+            try:
+                config = globalconfig[str(guild.id)]
+            except KeyError:
+                config = {}
+            if config.get("aliases"):
+                print("Loading aliases for guild " + str(guild.name))
+                for alias in config["aliases"]:
+                    await self.util.register_alias(guild.id, self.get_command(alias[0]), alias[1], *alias[2:])
+
+
     async def on_command_error(self, ctx, exception):
         # Exception handling happens here.
         # Returns if command not found.
@@ -47,14 +63,13 @@ class HAL(commands.Bot):
         await logchannel.send("Error log at " + str(datetime.now()) + ": " + str(exception) + " Type: " + str(
             type(exception)) + ". Invoke message: " + ctx.message.jump_url)
 
-    @staticmethod
-    async def on_ready():
+    async def on_ready(self):
         print("HAL-9000")
         print("HAL is ready!")
         await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='//help'))
+        await self.load_aliases()
 
-    @staticmethod
-    async def on_connect():
+    async def on_connect(self):
         print("HAL is connected!")
 
     def run(self):

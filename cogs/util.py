@@ -1,6 +1,6 @@
 from discord.ext import commands
 import discord
-from discord.ext.commands import TextChannelConverter, RoleConverter
+from discord.ext.commands import TextChannelConverter, RoleConverter, command
 from PIL import Image
 import random
 import itertools
@@ -333,3 +333,77 @@ class Utility(commands.Cog):
         `//choose <arg1> <arg2> <arg3> ...`"""
         await ctx.send(random.choice(args), allowed_mentions=discord.AllowedMentions(everyone=False, users=False,
                                                                                      roles=False))
+    @commands.command()
+    async def alias(self, ctx, newname, oldname, *aliasargs):
+        """Aliases one command to another. Optionally adds fixed arguments to the command; use $$ to insert the normal argument list.
+        Example: //alias mycommand choose no $$ yes, then doing //mycommand maybe will choose between no, yes and maybe.
+        This is just as if you had run //choose no maybe yes.
+
+        Syntax:
+        `//alias <newname> <oldname> [aliasargs...]`"""
+        if ctx.guild is None:
+            await ctx.send("You must be in a guild for this.")
+            return
+        try:
+            globalconfig = toml.loads(open("config.toml", "rt").read())
+        except KeyError:
+            globalconfig = {}
+        try:
+            config = globalconfig[str(ctx.guild.id)]
+        except KeyError:
+            config = {}
+        
+        cmd = self.bot.get_command(oldname)
+        if cmd is None:
+            await ctx.send("No existing command with that name.")
+            return
+        if not config.get("aliases"):
+            config["aliases"] = []
+        await self.register_alias(ctx.guild.id, cmd, newname, *aliasargs)
+        config["aliases"].append((oldname, newname, *aliasargs,))
+
+        globalconfig.update({str(ctx.guild.id): config})
+        open("config.toml", "w").write(toml.dumps(globalconfig))
+
+    async def register_alias(self, guildid, cmd, newname, *aliasargs):
+        async def coro(actx, *aargs):
+            if actx.guild is None or actx.guild.id != guildid: 
+                return
+            nargs = []
+            for a in aliasargs:
+                if a == "$$":
+                    nargs += aargs
+                else:
+                    nargs.append(a)
+            await cmd(actx, *nargs)
+        coro.__doc__ = ["ALIAS", guildid, cmd.name + " " + ' '.join(aliasargs)]
+        newcmd = self.bot.command(newname, hidden=True)(coro)
+
+    @commands.command()
+    async def whatis(self, ctx, cmdname):
+        """What is a particular command: an alias or not?
+        
+        Syntax:
+        `//whatis <cmdname>`
+        """
+        cmd = self.bot.get_command(cmdname)
+        if cmd is None:
+            await ctx.send(cmdname + " is: nonexistent")
+        elif cmd.callback.__doc__[0] == "ALIAS" and ctx.guild is not None and cmd.callback.__doc__[1] == ctx.guild.id:
+            await ctx.send(cmdname + " is: an alias of //"+ cmd.callback.__doc__[2])
+        elif cmd.callback.__doc__[0] == "ALIAS":
+            await ctx.send(cmdname + " is: nonexistent")
+        else:
+            await ctx.send(cmdname + " is: builtin")
+
+    @commands.command()
+    async def rmalias(self, ctx, aliasname):
+        """Removes an existing alias.
+
+        Syntax:
+        `//rmalias <aliasname>`"""
+        cmd = self.bot.get_command(aliasname)
+        if cmd.callback.__doc__[0] == "ALIAS" and ctx.guild is not None and cmd.callback.__doc__[1] == ctx.guild.id:
+            self.bot.remove_command(aliasname)
+        else:
+            await ctx.send("That's not an alias.")
