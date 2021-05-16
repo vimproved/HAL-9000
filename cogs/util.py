@@ -375,7 +375,10 @@ class Utility(commands.Cog):
                     nargs += aargs
                 else:
                     nargs.append(a)
-            await cmd(actx, *nargs)
+            actx.command = cmd
+            actx.args = nargs
+            #await cmd(actx, *nargs)
+            await self.bot.invoke(actx)
         coro.__doc__ = ["ALIAS", guildid, cmd.name + " " + ' '.join(aliasargs)]
         try:
             newcmd = self.bot.command(newname, hidden=True)(coro)
