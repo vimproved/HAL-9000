@@ -12,7 +12,6 @@ cone.parsepoll.argtypes = [c_void_p, c_ulong]
 cone.parsepoll.restype  = py_object
 
 def setup(bot):
-    bot.remove_command("help")
     bot.add_cog(Mod(bot))
 
 
