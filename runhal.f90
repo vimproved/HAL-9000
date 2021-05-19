@@ -12,7 +12,7 @@ program halexit
 	open(9,file='.inpid',action='read')
 	read(9,'(A)') ptk
 
-	call execute_command_line('ps -C "python3 main.py" -o pid= > .inpid&') !gets the process id
+	call execute_command_line('ps -C "python3" -o pid= > .inpid&') !gets the process id
 	read(9,'(A)') ptk
 	call execute_command_line('kill -9 '//trim(adjustl(ptk))) !kills the programs
 
