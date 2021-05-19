@@ -4,6 +4,7 @@ import discord
 import sys
 import random
 import toml
+import os
 from cogs.util import Utility 
 
 #a
@@ -12,7 +13,10 @@ class HAL(commands.Bot):
         super().__init__(command_prefix, **options)
         self.description = "This text should not be seen. If it is, that is likely because hal is compiled wrong. Blame soup"
         self.token = open("token").read()
-        self.loaded_cogs = ["cogs.mod", "cogs.util", "cogs.fun"]
+        self.loaded_cogs = []
+        for i in os.listdir("cogs"):
+            if i.endswith(".py"):
+                self.loaded_cogs.append("cogs."+i[:-3])
         self.startup()
         self.util = Utility(self)
         # Open config file in append mode.
