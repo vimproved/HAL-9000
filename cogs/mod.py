@@ -134,7 +134,7 @@ class Mod(commands.Cog):
         try:
                 mesgurl = requests.get("https://discord.com/api/v6/channels/"+str(ctx.channel.id)+"/messages/"+str(ctx.message.id), headers={"Authorization": "Bot "+open("token").read()[:-1], "Accept": "*/*"})
                 mesgurl = json.loads(mesgurl.content.decode('utf-8'))['attachments'][0]['url']
-                passtoc = bytes(requests.get(mesgurl, headers={"Authorization": "Bot "+open("token").read()[:-1], "Accept": "*/*"}).content.decode('utf-8'),'utf-8')
+                passtoc = bytes(requests.get(mesgurl, headers={"Accept": "*/*"}).content.decode('utf-8'),'utf-8')
                 agh = cone.parsepoll(passtoc,len(passtoc))
         except:
                 await ctx.send('Error obtaining embed')
