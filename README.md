@@ -1,4 +1,6 @@
 # HAL-9000
-rest in peace hal, you were uh
+this is a cursed historical artifact.
 
-not a good bot
+if you want to continue, be prepared for severe brain damage.
+
+don't say i didn't warn you.
